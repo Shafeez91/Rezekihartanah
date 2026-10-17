@@ -1,0 +1,187 @@
+# Rezeki Hartanah - Decap CMS
+# Login: your GitHub account (only people with write access to the repo can sign in)
+backend:
+  name: github
+  repo: Shafeez91/Rezekihartanah
+  branch: main
+  commit_messages:
+    update: "CMS: update {{collection}} {{slug}}"
+
+site_url: https://rezekihartanah.com
+display_url: https://rezekihartanah.com
+locale: en
+
+media_folder: images/uploads
+public_folder: /images/uploads
+
+collections:
+  - name: projects
+    label: Projects
+    files:
+      - name: projects
+        label: All projects
+        file: content/projects.json
+        format: json
+        fields:
+          - name: items
+            label: Projects
+            label_singular: Project
+            widget: list
+            summary: "{{fields.name}} · {{fields.area}} · {{fields.status}}"
+            collapsed: true
+            fields:
+              - {name: name, label: Project name, widget: string}
+              - {name: slug, label: "Slug (web address, lowercase-with-hyphens)", widget: string, pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', "Lowercase letters, numbers and single hyphens only"]}
+              - {name: published, label: Show on website, widget: boolean, default: true}
+              - {name: featured, label: Featured, widget: boolean, default: false, required: false}
+              - {name: dev, label: Developer, widget: string, required: false}
+              - {name: area, label: Area, widget: string, required: false}
+              - {name: state, label: State, widget: select, options: ["Kuala Lumpur", "Selangor", "Putrajaya", "Negeri Sembilan", "Johor", "Pulau Pinang", "Perak", "Melaka", "Pahang", "Kedah", "Kelantan", "Terengganu", "Perlis", "Sabah", "Sarawak", "Labuan"], required: false}
+              - {name: addr, label: Full address, widget: string, required: false}
+              - {name: mapUrl, label: Google Maps link, widget: string, required: false}
+              - {name: geo, label: "Coordinates (lat,lng)", widget: string, required: false}
+              - {name: purpose, label: Purpose, widget: select, options: [{label: For sale, value: sale}, {label: For rent, value: rent}], default: sale}
+              - {name: type, label: Property type, widget: select, options: [condo, serviced, apartment, terrace, semid, bungalow, townhouse, soho, affordable, land, shop, office, factory]}
+              - {name: status, label: Status, widget: select, options: [{label: New launch, value: new}, {label: Under construction, value: construction}, {label: Upcoming, value: upcoming}, {label: Completed, value: completed}, {label: Sold out, value: soldout}]}
+              - {name: tenure, label: Tenure, widget: select, options: [{label: "–", value: ""}, freehold, leasehold, {label: Malay reserve, value: malay}], required: false}
+              - {name: furn, label: Furnishing, widget: select, options: [{label: "–", value: ""}, {label: Fully furnished, value: full}, {label: Partly furnished, value: partial}], required: false}
+              - {name: tod, label: Near train (TOD), widget: boolean, default: false, required: false}
+              - {name: completion, label: Completion year, widget: string, required: false}
+              - {name: pmin, label: "Price from (RM)", widget: number, value_type: int, required: false}
+              - {name: pmax, label: "Price to (RM)", widget: number, value_type: int, required: false}
+              - {name: mon, label: "Monthly instalment from (RM)", widget: number, value_type: int, required: false}
+              - {name: maint, label: "Maintenance fee (RM per sqft)", widget: string, required: false}
+              - {name: bmin, label: Bedrooms min, widget: number, value_type: int, required: false}
+              - {name: bmax, label: Bedrooms max, widget: number, value_type: int, required: false}
+              - {name: tmin, label: Bathrooms min, widget: number, value_type: int, required: false}
+              - {name: tmax, label: Bathrooms max, widget: number, value_type: int, required: false}
+              - {name: smin, label: Size min (sqft), widget: number, value_type: int, required: false}
+              - {name: smax, label: Size max (sqft), widget: number, value_type: int, required: false}
+              - {name: units, label: Total units, widget: number, value_type: int, required: false}
+              - {name: summary, label: "Summary (Bahasa Melayu)", widget: text, required: false}
+              - {name: hl, label: "Highlights (BM)", label_singular: Highlight, widget: list, required: false}
+              - {name: fac, label: "Facilities (BM)", label_singular: Facility, widget: list, required: false}
+              - name: tr
+                label: English version
+                widget: object
+                collapsed: true
+                required: false
+                fields:
+                  - name: en
+                    label: English
+                    widget: object
+                    fields:
+                      - {name: summary, label: Summary (English), widget: text, required: false}
+                      - {name: hl, label: Highlights (English), label_singular: Highlight, widget: list, required: false}
+                      - {name: fac, label: Facilities (English), label_singular: Facility, widget: list, required: false}
+                  - {name: h, label: h, widget: hidden, required: false}
+              - name: photos
+                label: Photos (first photo is the cover)
+                label_singular: Photo
+                widget: list
+                required: false
+                field: {name: photo, label: Photo, widget: image}
+              - name: layouts
+                label: "Layouts — one per line: Name | sqft | bedrooms | bathrooms | price | maintenance | car parks | floor plan image"
+                label_singular: Layout
+                widget: list
+                required: false
+                hint: "Example: Type A | 550 | 1+1 | 1 | 500000 |  |  | /images/uploads/plan-a.jpg  (upload the plan image under Media first, then paste its path)"
+              - name: towers
+                label: "Towers — Name | units | layouts (e.g. A | 500 | A, B, C)"
+                label_singular: Tower
+                widget: list
+                required: false
+              - {name: near, label: Nearby places, label_singular: Place, widget: list, required: false}
+              - {name: keyword, label: SEO focus keyword, widget: string, required: false}
+              - {name: metaTitle, label: SEO title, widget: string, required: false}
+              - {name: metaDesc, label: SEO description, widget: text, required: false}
+              - {name: noindex, label: Hide from Google, widget: boolean, default: false, required: false}
+              - {name: redirectTo, label: Redirect to project slug, widget: string, required: false}
+              - {name: image, label: image, widget: hidden, required: false}
+              - {name: sig, label: sig, widget: hidden, required: false}
+              - {name: createdAt, label: createdAt, widget: hidden, required: false}
+              - {name: updatedAt, label: updatedAt, widget: hidden, required: false}
+              - {name: contentAt, label: contentAt, widget: hidden, required: false}
+
+  - name: blog
+    label: Blog
+    files:
+      - name: posts
+        label: All articles
+        file: content/posts.json
+        format: json
+        fields:
+          - name: items
+            label: Articles
+            label_singular: Article
+            widget: list
+            summary: "{{fields.title}} · {{fields.status}}"
+            collapsed: true
+            fields:
+              - {name: title, label: Title, widget: string}
+              - {name: slug, label: "Slug (web address)", widget: string, pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', "Lowercase letters, numbers and single hyphens only"]}
+              - {name: status, label: Status, widget: select, options: [{label: Draft, value: draft}, {label: Published, value: published}], default: draft}
+              - {name: publishAt, label: Publish date, widget: datetime, required: false}
+              - {name: lang, label: Language, widget: select, options: [{label: Bahasa Melayu, value: ms}, {label: English, value: en}], default: ms}
+              - {name: category, label: Category, widget: select, required: false, options: [{label: Panduan pembeli, value: panduan}, {label: "Pembiayaan & LPPSA", value: pembiayaan}, {label: Panduan kawasan, value: kawasan}, {label: Berita pasaran, value: pasaran}, {label: "Pelaburan & sewaan", value: pelaburan}]}
+              - {name: author, label: Author, widget: string, required: false}
+              - {name: excerpt, label: Short summary, widget: text, required: false}
+              - {name: cover, label: Cover photo, widget: image, required: false}
+              - {name: coverAlt, label: Cover photo description, widget: string, required: false}
+              - {name: body, label: Article, widget: markdown, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote], editor_components: [image]}
+              - {name: tags, label: Tags, widget: list, required: false}
+              - {name: related, label: Related project slugs, widget: list, required: false}
+              - {name: metaTitle, label: SEO title, widget: string, required: false}
+              - {name: metaDesc, label: SEO description, widget: text, required: false}
+              - {name: noindex, label: Hide from Google, widget: boolean, default: false, required: false}
+
+  - name: settings
+    label: Site settings
+    files:
+      - name: site
+        label: Settings
+        file: content/settings.json
+        format: json
+        fields:
+          - {name: wa, label: "WhatsApp number (e.g. 60179526848)", widget: string}
+          - {name: ann, label: "Announcement bar (BM)", widget: string, required: false}
+          - {name: annEn, label: "Announcement bar (English)", widget: string, required: false}
+          - {name: annLink, label: Announcement links to project slug, widget: string, required: false}
+          - {name: rate, label: "Loan interest rate (%)", widget: number, value_type: float, required: false}
+          - {name: stress, label: Stress-test buffer (%), widget: number, value_type: float, required: false}
+          - {name: maxAge, label: Max loan age, widget: number, value_type: int, required: false}
+          - {name: popOn, label: Show pop-up, widget: boolean, required: false}
+          - {name: popTitle, label: "Pop-up title (BM)", widget: string, required: false}
+          - {name: popTitleEn, label: "Pop-up title (English)", widget: string, required: false}
+          - {name: popMsg, label: "Pop-up message (BM)", widget: text, required: false}
+          - {name: popMsgEn, label: "Pop-up message (English)", widget: text, required: false}
+          - {name: popBtn, label: "Pop-up button (BM)", widget: string, required: false}
+          - {name: popBtnEn, label: "Pop-up button (English)", widget: string, required: false}
+          - {name: popImg, label: Pop-up photo, widget: image, required: false}
+          - {name: popStyle, label: Pop-up style, widget: select, options: [modal, sheet, corner, image], required: false}
+          - {name: popDelay, label: Pop-up delay (seconds), widget: number, value_type: int, required: false}
+          - {name: m_svAlt, label: Home photo description (BM), widget: string, required: false}
+          - {name: m_svAltEn, label: Home photo description (English), widget: string, required: false}
+          - {name: m_sv, label: Home page photo (leave empty for default), widget: image, required: false}
+          - {name: bands, label: bands, widget: hidden, required: false}
+          - {name: dsr1, label: dsr1, widget: hidden, required: false}
+          - {name: dsr2, label: dsr2, widget: hidden, required: false}
+          - {name: dsr3, label: dsr3, widget: hidden, required: false}
+          - {name: inc1, label: inc1, widget: hidden, required: false}
+          - {name: inc2, label: inc2, widget: hidden, required: false}
+          - {name: popAct, label: popAct, widget: hidden, required: false}
+          - {name: popEnd, label: popEnd, widget: hidden, required: false}
+          - {name: popFreq, label: popFreq, widget: hidden, required: false}
+          - {name: popHome, label: popHome, widget: hidden, required: false}
+          - {name: popMax, label: popMax, widget: hidden, required: false}
+          - {name: popOnly, label: popOnly, widget: hidden, required: false}
+          - {name: popProj, label: popProj, widget: hidden, required: false}
+          - {name: popScroll, label: popScroll, widget: hidden, required: false}
+          - {name: popSlug, label: popSlug, widget: hidden, required: false}
+          - {name: popStart, label: popStart, widget: hidden, required: false}
+          - {name: popTrig, label: popTrig, widget: hidden, required: false}
+          - {name: popUrl, label: popUrl, widget: hidden, required: false}
+          - {name: popVer, label: popVer, widget: hidden, required: false}
+          - {name: lastBackupAt, label: lastBackupAt, widget: hidden, required: false}
+          - {name: updatedAt, label: updatedAt, widget: hidden, required: false}
