@@ -2088,7 +2088,7 @@ function pendingChanges(){const st=S.settings||{},last=num(st.lastExportAt),ch=[
   for(const a of S.posts.values()){const at=Math.max(num(a.updatedAt),num(a.contentAt),num(a.createdAt));if(at>last)ch.push("Article: "+(a.title||a.slug))}
   if(num(st.updatedAt)>last)ch.push("Settings");if(num(st.contentChangedAt)>last)ch.push("Deleted article");return {last,ch}}
 function pendingBanner(){if(!S.db)return "";const {last,ch}=pendingChanges();if(!ch.length)return "";
-  return `<div class="pend" role="status"><b>${ch.length} change${ch.length>1?"s are":" is"} not on your live website yet</b><span>${esc(ch.slice(0,4).join(" · "))}${ch.length>4?` · +${ch.length-4} more`:""}${last?` · last upload package ${esc(ago(last))}`:" · never exported"}</span><button class="btn btn-brand btn-sm" data-tab="seo">Update live site</button></div>`}
+  return `<div class="pend" role="status"><b>${ch.length} change${ch.length>1?"s are":" is"} not on your live website yet</b><span>${esc(ch.slice(0,4).join(" · "))}${ch.length>4?` · +${ch.length-4} more`:""}${last?` · last upload package ${esc(ago(last))}`:" · never exported"}</span>${S.static?`<button class="btn btn-brand btn-sm" data-hkvdeploy>Update live site</button>`:`<button class="btn btn-brand btn-sm" data-tab="seo">Update live site</button>`}</div>`}
 function admShell(title,actions,body){
   const nNew=S.leads.filter(l=>leadSt(l)==="new").length,cur=admTab==="editor"?"projects":admTab==="post"?"blog":admTab;
   const nav=[["overview","Overview"],["projects","Projects"],["blog","Blog"],["leads","Enquiries",nNew],["seo","SEO"],["settings","Settings"]];
@@ -2101,7 +2101,7 @@ function admShell(title,actions,body){
   </div>`;
 }
 function viewAdmin(){
-  if(!S.isAdmin) return `<div class="cms-lock"><div class="panel"><span class="logo-mark" style="margin:0 auto 14px;background:#F2B54F" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A1226" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><h1 style="font-size:1.6rem">RH CMS</h1><p class="sub" style="margin:10px auto 18px">This area is only for the site owner and editors. Sign in with the owner account to manage projects, enquiries and SEO.</p><a class="btn btn-brand" href="#/">Back to site</a></div></div>`;
+  if(!S.isAdmin) return `<div class="cms-lock"><div class="panel"><span class="logo-mark" style="margin:0 auto 14px;background:#F2B54F" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A1226" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><h1 style="font-size:1.6rem">RH CMS</h1><p class="sub" style="margin:10px auto 18px">This area is only for the site owner and editors. Sign in with the owner account to manage projects, enquiries and SEO.</p>${S.static?`<button class="btn btn-brand" data-ghlogin>Sign in with GitHub</button> <a class="btn btn-ghost" href="#/">Back to site</a><p class="msg" id="ghMsg" role="status" style="margin-top:12px"></p>`:`<a class="btn btn-brand" href="#/">Back to site</a>`}</div></div>`;
   if(admTab==="editor") return admShell(edIsNew?"New project":"Edit project",`<button class="btn btn-ghost btn-sm" data-cancel>Cancel</button>`,editorView());
   if(admTab==="projects") return admShell("Projects",`${S.sample?`<button class="btn btn-ghost btn-sm" data-trproj title="Translate descriptions, highlights & facilities of all projects into BM and English">🌐 Translate all</button> `:""}<button class="btn btn-brand btn-sm" data-new>+ New project</button>`,admProjects());
   if(admTab==="leads") return admShell("Enquiries",`<button class="btn btn-ghost btn-sm" data-addlead>${S.addLead?"Close form":"+ Add"}</button><button class="btn btn-ghost btn-sm" data-csv>Download CSV</button>`,admLeads());
@@ -2206,7 +2206,7 @@ function mediaAlt(k){const s=S.settings||{},d=MEDIA_SLOTS[k];return L2(s["m_"+k+
 function mediaSettingsHtml(s){return `<section class="panel" style="grid-column:1/-1"><h3>Site media</h3><p class="fine" style="margin-bottom:12px">Replace photos used on the public site. Upload, then press Save settings. Project photos are managed in Projects.</p>${Object.entries(MEDIA_SLOTS).map(([k,d])=>{const cur=s["m_"+k]||"";return `<div class="media-slot" data-mslot="${k}" style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;margin-bottom:12px"><div class="pop-thumb" data-mthumb style="width:96px;aspect-ratio:3/4"><img src="${esc(cur||d.src)}" alt=""></div><div style="flex:1;min-width:220px"><b style="font-size:14px">${esc(d.label)}</b><p class="fine">${esc(d.where)}. ${esc(d.size)}, JPG/PNG/WebP max 5MB.</p><input type="hidden" name="m_${k}" value="${esc(cur)}"><div style="margin:8px 0"><label class="btn btn-ghost btn-sm" ${S.assets?"":"aria-disabled=\"true\""}>📷 Upload photo<input type="file" class="m-file" accept="image/jpeg,image/png,image/webp" hidden ${S.assets?"":"disabled"}></label> <button type="button" class="btn btn-ghost btn-sm" data-mreset ${cur?"":"hidden"}>Use original photo</button> <span class="fine" data-mnote></span></div><div class="edgrid" style="grid-template-columns:1fr 1fr"><div class="field"><label for="m_${k}Alt">Alt text BM (for Google Images)</label><input id="m_${k}Alt" name="m_${k}Alt" maxlength="160" value="${esc(s["m_"+k+"Alt"]||"")}" placeholder="${esc(d.alt)}"></div><div class="field"><label for="m_${k}AltEn">Alt text EN</label><input id="m_${k}AltEn" name="m_${k}AltEn" maxlength="160" value="${esc(s["m_"+k+"AltEn"]||"")}" placeholder="${esc(d.altEn)}"></div></div></div></div>`}).join("")}</section>`}
 document.addEventListener("change",async e=>{if(!e.target.classList||!e.target.classList.contains("m-file"))return;const slot=e.target.closest("[data-mslot]"),f=e.target.files[0],note=slot.querySelector("[data-mnote]");if(!f||!S.assets)return;
   if(!/^image\/(jpeg|png|webp)$/.test(f.type)||f.size>5*1024*1024){note.textContent="Choose a JPG, PNG or WebP under 5MB.";return}
-  note.textContent="Uploading…";try{const r=await S.assets.upload(f),u="/_blob/"+r.id;slot.querySelector("input[type=hidden]").value=u;slot.querySelector("[data-mthumb]").innerHTML=`<img src="${u}" alt="">`;slot.querySelector("[data-mreset]").hidden=false;note.textContent="Uploaded. Save settings to use it."}catch(x){note.textContent="Upload failed. Try again."}});
+  note.textContent="Uploading…";try{const r=await S.assets.upload(f),u=(r.url||"/_blob/"+r.id);slot.querySelector("input[type=hidden]").value=u;slot.querySelector("[data-mthumb]").innerHTML=`<img src="${u}" alt="">`;slot.querySelector("[data-mreset]").hidden=false;note.textContent="Uploaded. Save settings to use it."}catch(x){note.textContent="Upload failed. Try again."}});
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-mreset]");if(!b)return;const slot=b.closest("[data-mslot]"),k=slot.dataset.mslot;slot.querySelector("input[type=hidden]").value="";slot.querySelector("[data-mthumb]").innerHTML=`<img src="${esc(MEDIA_SLOTS[k].src)}" alt="">`;b.hidden=true;slot.querySelector("[data-mnote]").textContent="Original photo will be used after you save."});
 function admSettings(){const s=S.settings||{};return `<form id="setForm" novalidate><div class="cms-grid" style="margin-top:0">
  <section class="panel"><h3>Contact</h3><div class="field"><label for="st_wa">WhatsApp number (starting with 60)</label><input id="st_wa" name="wa" inputmode="tel" value="${esc(WA)}"></div><p class="fine">Used for every WhatsApp button on the site.</p></section>
@@ -2288,7 +2288,7 @@ function syncLay(){const box=$("#layRows"),ta=$("#ed_layouts");if(!box||!ta)retu
 async function uploadPlan(inp){const row=inp.closest(".lay-row"),th=row.querySelector(".lr-thumb"),file=inp.files[0];if(!file||!S.assets)return;
   if(!/^image\/(jpeg|png|webp)$/.test(file.type)||file.size>5*1024*1024){toast("Choose a JPG, PNG or WebP under 5MB.");inp.value="";return}
   const keep=th.querySelector("img,span");if(keep)keep.outerHTML="<span>Uploading…</span>";
-  try{const r=await S.assets.upload(file);row.dataset.plan="/_blob/"+r.id;toast("Plan uploaded")}catch(x){toast("Plan upload failed. Try again.")}
+  try{const r=await S.assets.upload(file);row.dataset.plan=(r.url||"/_blob/"+r.id);toast("Plan uploaded")}catch(x){toast("Plan upload failed. Try again.")}
   th.querySelector("span,img").outerHTML=layThumb(row.dataset.plan);row.querySelector("[data-lay-unplan]").hidden=!row.dataset.plan;inp.value="";edDirty=true;updateSeoPanel()}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-lay-add],[data-lay-del],[data-lay-unplan]");if(!b||!b.closest("#edForm"))return;
   if(b.hasAttribute("data-lay-add")){$("#layRows").insertAdjacentHTML("beforeend",layRow(""));$("#layRows .lay-row:last-child .lr-i").focus()}
@@ -2365,7 +2365,7 @@ async function uploadImages(files){
   let ok=0,bad=0;
   for(let k=0;k<list.length;k++){const f=list[k];if(!/^image\/(jpeg|png|webp)$/.test(f.type)||f.size>5*1024*1024){bad++;continue}
     note.textContent=`Uploading ${k+1}/${list.length}…`;
-    try{const r=await S.assets.upload(f);const a=galGet();a.push("/_blob/"+r.id);galSet(a);ok++}catch(x){bad++}}
+    try{const r=await S.assets.upload(f);const a=galGet();a.push((r.url||"/_blob/"+r.id));galSet(a);ok++}catch(x){bad++}}
   inp.value="";note.textContent=`${ok} photo(s) uploaded${bad?`, ${bad} failed (choose JPG/PNG/WebP under 5MB)`:""}. The first photo is the cover; tap ★ to change.`+(all.length>list.length?" 20-photo limit reached.":"");
 }
 async function saveLead(lead){if(!S.user)throw new Error("no user");const id=await S.user.id();const ref=S.db.collection("leads").doc(id);let old=null;try{const d=await ref.get();if(d&&d.exists)old=d.data()}catch(e){}if(old){const{prev,...o}=old;lead.prev=[o,...(Array.isArray(prev)?prev:[])].slice(0,10)}await ref.set(lead)}
@@ -2759,7 +2759,7 @@ document.addEventListener("change",async e=>{
   if(e.target.closest&&e.target.closest("#setForm"))popSyncForm();
   if(e.target.id==="popFile"){const f=e.target.files[0],note=$("#popImgNote");if(!f||!S.assets)return;
     if(!/^image\/(jpeg|png|webp)$/.test(f.type)||f.size>5*1024*1024){note.textContent="Choose a JPG, PNG or WebP under 5MB.";return}
-    note.textContent="Uploading…";try{const r=await S.assets.upload(f),u="/_blob/"+r.id;$("#setForm [name=popImg]").value=u;$("#popThumb").innerHTML=`<img src="${u}" alt="">`;$("[data-popimgdel]").hidden=false;note.textContent="Image uploaded. Save settings to use it."}catch(x){note.textContent="Upload failed. Try again."}}
+    note.textContent="Uploading…";try{const r=await S.assets.upload(f),u=(r.url||"/_blob/"+r.id);$("#setForm [name=popImg]").value=u;$("#popThumb").innerHTML=`<img src="${u}" alt="">`;$("[data-popimgdel]").hidden=false;note.textContent="Image uploaded. Save settings to use it."}catch(x){note.textContent="Upload failed. Try again."}}
 });
 document.addEventListener("click",e=>{
   if(e.target.closest("[data-poppreview]")){const fm=$("#setForm");if(fm)showPop({...POPDEF,...popReadForm(fm)},true)}
@@ -2780,7 +2780,7 @@ function nearbyProjects(p,ps){
   return others.map(x=>{const h=geoAny(x);return {p:x,km:h?kmBetween(g,h):null}}).filter(s=>s.km!=null&&s.km<=NEAR_KM).sort((a,b)=>a.km-b.km).slice(0,3);
 }
 function locP(p){
-  if(!p||!p.tr||(S.static?S.lang!=="en":p.tr.h!==trHash(trSrc(p))))return p;const v=p.tr[S.lang];if(!v)return p;const o={...p};
+  if(!p||!p.tr||p.tr.h!==trHash(trSrc(p)))return p;const v=p.tr[S.lang];if(!v)return p;const o={...p};
   if(typeof v.summary==="string"&&v.summary.trim())o.summary=v.summary;
   if(Array.isArray(v.hl)&&v.hl.length===(p.hl||[]).length)o.hl=v.hl.map(String);
   if(Array.isArray(v.fac)&&v.fac.length===(p.fac||[]).length)o.fac=v.fac.map(String);
@@ -3244,7 +3244,7 @@ function initEnq(){
     store.set("lastEnq",Date.now());
     const lead={name:name.slice(0,80),phone:phone.slice(0,20),email:email.slice(0,120),budget:$("#qBudget").value,project:$("#qProj").value,msg:$("#qMsg").value.trim().slice(0,1000),lang:S.lang,at:Date.now(),consent:true};
     lead.src=leadSource();
-    if(S.db){try{await saveLead(lead)}catch(e){console.error("lead save failed",e);track("lead_save_error",{})}}else if(S.static){try{const fd=new URLSearchParams({"form-name":"enquiry",name:lead.name,phone:lead.phone,email:lead.email,budget:lead.budget,project:lead.project,message:lead.msg,lang:lead.lang,source:typeof lead.src==="string"?lead.src:JSON.stringify(lead.src||"")});await fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:fd.toString()})}catch(e){console.error("lead post failed",e);track("lead_save_error",{})}}
+    if(S.db&&!S.static){try{await saveLead(lead)}catch(e){console.error("lead save failed",e);track("lead_save_error",{})}}else if(S.static){try{const fd=new URLSearchParams({"form-name":"enquiry",name:lead.name,phone:lead.phone,email:lead.email,budget:lead.budget,project:lead.project,message:lead.msg,lang:lead.lang,source:typeof lead.src==="string"?lead.src:JSON.stringify(lead.src||"")});await fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:fd.toString()})}catch(e){console.error("lead post failed",e);track("lead_save_error",{})}}
     track("generate_lead",{form:"enquiry",project:lead.project||"",budget:lead.budget});
     const p=bySlug(lead.project);
     window.open(waLink(`${p?t("wa_proj").replace("{p}",p.name):t("wa_gen")}\n\nNama: ${lead.name}\nTel: ${lead.phone}\nBajet: ${lead.budget}${lead.msg?"\nMesej: "+lead.msg:""}`),"_blank","noopener");
@@ -3488,7 +3488,7 @@ async function uploadPostImage(file){
   const note=$("#peImgNote");if(!S.assets||!file)return "";
   if(!/^image\/(jpeg|png|webp)$/.test(file.type)||file.size>5*1024*1024){toast("Choose a JPG, PNG or WebP image under 5MB");return ""}
   if(note){note.className="msg";note.textContent="Uploading…"}
-  try{const r=await S.assets.upload(file);if(note)note.textContent="";return "/_blob/"+r.id}catch(e){if(note){note.className="msg err";note.textContent="Upload failed. Try again."}return ""}
+  try{const r=await S.assets.upload(file);if(note)note.textContent="";return (r.url||"/_blob/"+r.id)}catch(e){if(note){note.className="msg err";note.textContent="Upload failed. Try again."}return ""}
 }
 document.addEventListener("click",e=>{ // capture: guard unsaved article edits before the main tab handler runs
   const el=e.target.closest&&e.target.closest("[data-tab]");if(!el||admTab!=="post")return;
@@ -3683,9 +3683,113 @@ async function hkvLoad(){
   if(po&&Array.isArray(po.items))S.posts=new Map(po.items.filter(x=>x&&x.slug).map(x=>{const a={...x,publishAt:ts(x.publishAt),createdAt:ts(x.createdAt)||ts(x.publishAt)};if(!a.updatedAt)a.updatedAt=a.publishAt;if(!a.contentAt)a.contentAt=a.publishAt;return [a.slug,a]}));
   if(st&&typeof st==="object"){S.settings=st;applySettings()}
 }
-function hkvAdminLinks(){document.querySelectorAll('a[href="#/admin"]').forEach(a=>{a.href="/admin/";a.removeAttribute("data-route")});if(route().a==="admin")location.replace("/admin/")}
-if(S.static){window.addEventListener("hashchange",hkvAdminLinks);hkvLoad().finally(()=>{hkvAdminLinks();siteLd();render();schedulePop();scheduleSpot();})}else{siteLd();render();schedulePop();scheduleSpot();}
+if(S.static){hkvLoad().finally(()=>{siteLd();render();schedulePop();scheduleSpot();})}else{siteLd();render();schedulePop();scheduleSpot();}
 new MutationObserver(()=>{fillCap();const f=$("#setForm");if(f&&!f.dataset.popsync){f.dataset.popsync="1";popSyncForm();bandSync()}}).observe($("#app"),{childList:true});
+/* ===== Netlify mode: owner dashboard backed by GitHub (content) + Netlify Forms (enquiries) ===== */
+const HKV_GH={owner:"Shafeez91",repo:"Rezekihartanah",branch:"main"},HKV_SITE="rezekihartanah.netlify.app";
+const HKV_FILES={projects:"content/projects.json",posts:"content/posts.json",settings:"content/settings.json"};
+const hkvLS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const hkvPreview={};
+document.addEventListener("error",e=>{const t=e.target;if(t&&t.tagName==="IMG"){const u=t.getAttribute("src");if(u&&hkvPreview[u]&&t.src!==hkvPreview[u])t.src=hkvPreview[u]}},true);
+function hkvB64(bytes){let bin="";for(let i=0;i<bytes.length;i+=0x8000)bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+0x8000));return btoa(bin)}
+function hkvUnB64(s){return new TextDecoder().decode(Uint8Array.from(atob(String(s).replace(/\s/g,"")),c=>c.charCodeAt(0)))}
+function hkvStore(token){
+  const api=(p,o={})=>fetch("https://api.github.com/repos/"+HKV_GH.owner+"/"+HKV_GH.repo+p,{...o,cache:"no-store",headers:{Authorization:"Bearer "+token,Accept:"application/vnd.github+json",...(o.headers||{})}});
+  const chain={},mir={projects:new Map(),posts:new Map(),settings:{}},lis={projects:[],posts:[],settings:[],leads:[]};
+  async function read(path){const r=await api("/contents/"+path+"?ref="+HKV_GH.branch);if(r.status===404)return {sha:null,json:null};if(!r.ok)throw new Error("GitHub "+r.status);
+    const j=await r.json();let txt=j.content?hkvUnB64(j.content):"";if(!txt&&j.sha){const b=await api("/git/blobs/"+j.sha);txt=hkvUnB64((await b.json()).content)}return {sha:j.sha,json:txt?JSON.parse(txt):null}}
+  async function put(path,b64,msg,sha){const r=await api("/contents/"+path,{method:"PUT",body:JSON.stringify({message:msg,content:b64,branch:HKV_GH.branch,...(sha?{sha}:{})})});if(!r.ok){const e=new Error("GitHub save failed ("+r.status+")");e.status=r.status;throw e}return r.json()}
+  function mutate(path,fn,msg){const run=async()=>{for(let k=0;;k++){const {sha,json}=await read(path);const next=fn(json);
+      try{return await put(path,hkvB64(new TextEncoder().encode(JSON.stringify(next,null,2)+"\n")),msg,sha)}catch(e){if(k>=2||(e.status!==409&&e.status!==422))throw e}}};
+    const p=(chain[path]||Promise.resolve()).then(run,run);chain[path]=p.catch(()=>{});return p}
+  const SKIP="[skip netlify] ";
+  const snap=m=>({docs:[...m.entries()].map(([id,d])=>({id,exists:true,data:()=>d}))});
+  const emit=n=>{for(const cb of lis[n]){try{cb(n==="settings"?{exists:true,data:()=>mir.settings}:snap(mir[n]))}catch(e){console.error(e)}}};
+  function writeCol(n,id,fn,what){const cur=mir[n].get(id);const nv=fn(cur);if(nv===undefined)mir[n].delete(id);else mir[n].set(id,nv);emit(n);
+    return mutate(HKV_FILES[n],j=>{const items=(j&&Array.isArray(j.items))?j.items.filter(x=>x&&x.slug!==id):[];if(nv!==undefined)items.push({...nv,slug:nv.slug||id});
+      const order=[...mir[n].keys()];items.sort((a,b)=>order.indexOf(a.slug)-order.indexOf(b.slug));return {...(j||{}),items}},SKIP+"CMS: "+what+" "+n+" "+id)}
+  function writeSettings(fn,msg){mir.settings=fn(mir.settings||{});emit("settings");return mutate(HKV_FILES.settings,j=>fn(j||{}),msg)}
+  /* enquiries: Netlify Forms (read with a Netlify token) + status/notes kept on this device */
+  const meta=()=>hkvLS.get("hkv_leadmeta",{}),manual=()=>hkvLS.get("hkv_manual_leads",[]);
+  let netLeads=[],leadsErr="";
+  async function loadLeads(){const tk=hkvLS.get("hkv_ntoken","");if(!tk){netLeads=[];leadsErr="";emitLeads();return}
+    try{const out=[];for(let page=1;page<=10;page++){const r=await fetch("https://api.netlify.com/api/v1/sites/"+HKV_SITE+"/submissions?per_page=100&page="+page,{headers:{Authorization:"Bearer "+tk}});
+        if(!r.ok)throw new Error("Netlify "+r.status);const arr=await r.json();for(const x of arr){const d=x.data||{};let src=d.source||"";try{src=JSON.parse(src)}catch(e){}
+          out.push({id:String(x.id),name:d.name||x.name||"",phone:d.phone||"",email:d.email||x.email||"",budget:d.budget||"",project:d.project||"",msg:d.message||"",lang:d.lang||"",src,at:Date.parse(x.created_at)||0,status:"new",source:"netlify"})}
+        if(arr.length<100)break}
+      netLeads=out;leadsErr=""}catch(e){console.error(e);leadsErr="Could not load enquiries from Netlify. Check the token."}emitLeads()}
+  function allLeads(){const m=meta();return [...netLeads,...manual()].map(l=>({...l,...(m[l.id]||{})})).filter(l=>!l.deleted).sort((a,b)=>num(b.at)-num(a.at))}
+  function emitLeads(){S.leadsErr=leadsErr;const s={docs:allLeads().map(l=>{const {id,...rest}=l;return {id,exists:true,data:()=>rest}})};for(const cb of lis.leads){try{cb(s)}catch(e){}}}
+  const leadDoc=id=>({update:async p=>{const m=meta();m[id]={...(m[id]||{}),...p};hkvLS.set("hkv_leadmeta",m);emitLeads()},set:async p=>{const m=meta();m[id]={...p};hkvLS.set("hkv_leadmeta",m);emitLeads()},delete:async()=>{const m=meta();m[id]={...(m[id]||{}),deleted:true};hkvLS.set("hkv_leadmeta",m);emitLeads()},get:async()=>({exists:false,data:()=>null})});
+  const col=n=>{if(n==="leads"){const q={orderBy:()=>q,limit:()=>q,onSnapshot:cb=>{lis.leads.push(cb);emitLeads();return()=>{}},doc:leadDoc,
+        add:async o=>{const id="m"+Date.now().toString(36);const a=manual();a.push({...o,id,source:o.source||"manual"});hkvLS.set("hkv_manual_leads",a);emitLeads();return {id}}};return q}
+    return {onSnapshot:cb=>{lis[n].push(cb);cb(snap(mir[n]));return()=>{}},
+      doc:id=>({set:async o=>writeCol(n,id,()=>JSON.parse(JSON.stringify(o)),"save"),update:async p=>writeCol(n,id,c=>({...(c||{slug:id}),...JSON.parse(JSON.stringify(p))}),"update"),
+        delete:async()=>writeCol(n,id,()=>undefined,"delete"),get:async()=>{const d=mir[n].get(id);return {exists:!!d,data:()=>d}}})}};
+  const db={collection:col,doc:path=>{if(path!=="settings/site")throw new Error("unknown doc "+path);
+    return {onSnapshot:cb=>{lis.settings.push(cb);cb({exists:true,data:()=>mir.settings});return()=>{}},
+      set:async o=>writeSettings(()=>JSON.parse(JSON.stringify(o)),SKIP+"CMS: save settings"),update:async p=>writeSettings(c=>({...c,...JSON.parse(JSON.stringify(p))}),SKIP+"CMS: update settings"),
+      get:async()=>({exists:true,data:()=>mir.settings})}}};
+  const assets={upload:async file=>{const ext=((file.name||"").match(/\.([a-z0-9]{2,5})$/i)||[,"jpg"])[1].toLowerCase();
+      const base=String(file.name||"photo").replace(/\.[^.]*$/,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,40)||"photo";
+      const name=base+"-"+Date.now().toString(36)+"."+ext,path="images/uploads/"+name,url="/"+path;
+      const bytes=new Uint8Array(await file.arrayBuffer());await put(path,hkvB64(bytes),SKIP+"CMS: upload "+name);
+      try{hkvPreview[url]=URL.createObjectURL(file)}catch(e){}return {id:name,url}},
+    list:async()=>({usage:null})};
+  return {db,assets,loadLeads,
+    async verify(){const r=await api("");if(!r.ok)return null;const j=await r.json();if(!(j.permissions&&j.permissions.push))return null;
+      const u=await fetch("https://api.github.com/user",{headers:{Authorization:"Bearer "+token}});return u.ok?(await u.json()).login:"owner"},
+    async loadAll(){const [p,po,st]=await Promise.all([read(HKV_FILES.projects),read(HKV_FILES.posts),read(HKV_FILES.settings)]);
+      mir.projects=new Map(((p.json&&p.json.items)||[]).filter(x=>x&&x.slug).map(x=>[x.slug,x]));
+      mir.posts=new Map(((po.json&&po.json.items)||[]).filter(x=>x&&x.slug).map(x=>[x.slug,x]));mir.settings=st.json||{}},
+    deploy(){const at=Date.now();return writeSettings(c=>({...c,lastExportAt:at}),"Publish website changes")}};
+}
+const hkvDownloads={save:async({filename,data})=>{const blob=data instanceof Blob?data:new Blob([data]);const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename||"download";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},3000)}};
+let hkvSt=null;
+async function hkvAdminStart(token){
+  const st=hkvStore(token),login=await st.verify();if(!login)throw new Error("This GitHub account cannot edit the website.");
+  await st.loadAll();hkvSt=st;hkvLS.set("hkv_gtoken",token);
+  S.db=st.db;S.assets=st.assets;S.downloads=hkvDownloads;S.user={isOwner:async()=>true,id:async()=>login};S.isAdmin=true;S.ghLogin=login;
+  const busy=()=>{const ae=document.activeElement;return route().a==="admin"&&(admTab==="editor"||admTab==="post"||(ae&&ae.closest&&ae.closest(".cms")&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))};
+  S.db.doc("settings/site").onSnapshot(d=>{S.settings=d.data()||{};applySettings();if(!busy())render()});
+  S.db.collection("projects").onSnapshot(s=>{S.remote=new Map(s.docs.map(d=>[d.id,d.data()]));siteLd();if(!busy())render()});
+  S.db.collection("posts").onSnapshot(s=>{S.posts=new Map(s.docs.map(d=>[d.id,d.data()]));if(!busy())render()});
+  S.db.collection("leads").orderBy("at","desc").limit(1000).onSnapshot(s=>{S.leads=s.docs.map(d=>({id:d.id,...d.data()}));if(route().a==="admin"&&!busy())render()});
+  st.loadLeads();setInterval(()=>{if(document.visibilityState==="visible")st.loadLeads()},90000);
+  render();
+}
+function hkvGhLogin(){return new Promise((res,rej)=>{
+  const host=/localhost|127\.0\.0\.1/.test(location.hostname)?HKV_SITE:location.hostname;
+  const w=window.open("https://api.netlify.com/auth?provider=github&site_id="+encodeURIComponent(host)+"&scope=repo","hkvgh","width=520,height=680");
+  if(!w){rej(new Error("Pop-up blocked. Allow pop-ups for this site and try again."));return}
+  const on=e=>{if(e.origin!=="https://api.netlify.com"||typeof e.data!=="string")return;
+    if(e.data==="authorizing:github"){w.postMessage(e.data,e.origin);return}
+    const m=e.data.match(/^authorization:github:(success|error):(.*)$/s);if(!m)return;window.removeEventListener("message",on);try{w.close()}catch(x){}
+    let d={};try{d=JSON.parse(m[2])}catch(x){}if(m[1]==="success"&&d.token)res(d.token);else rej(new Error(d.message||"GitHub sign-in failed"))};
+  window.addEventListener("message",on)})}
+document.addEventListener("click",async e=>{
+  if(!S.static)return;
+  const lg=e.target.closest("[data-ghlogin]");
+  if(lg){const msg=$("#ghMsg");lg.disabled=true;if(msg){msg.className="msg";msg.textContent="Opening GitHub…"}
+    try{const tk=await hkvGhLogin();if(msg)msg.textContent="Loading your website data…";await hkvAdminStart(tk)}
+    catch(x){if(msg){msg.className="msg err";msg.textContent=x.message||"Sign-in failed"}lg.disabled=false}return}
+  const dp=e.target.closest("[data-hkvdeploy]");
+  if(dp&&hkvSt){dp.disabled=true;dp.textContent="Publishing…";try{await hkvSt.deploy();toast("Publishing. Your live website updates in about 1 minute.")}catch(x){toast("Publish failed. Try again.");dp.disabled=false;dp.textContent="Update live site"}return}
+  if(e.target.closest("[data-hkvlogout]")){hkvLS.del("hkv_gtoken");location.hash="#/";location.reload();return}
+  if(e.target.closest("[data-hkvntok]")){const v=($("#hkvNtok")||{}).value||"";hkvLS.set("hkv_ntoken",v.trim());toast(v.trim()?"Netlify connected. Loading enquiries…":"Netlify token removed");if(hkvSt)hkvSt.loadLeads();render();return}
+});
+/* extra panels in the dashboard on Netlify */
+new MutationObserver(()=>{if(!S.static||!S.isAdmin||route().a!=="admin")return;const main=document.querySelector(".cms-main")||document.querySelector(".cms");if(!main)return;
+  if(admTab==="leads"&&!$("#hkvLeadsBox")){const has=!!hkvLS.get("hkv_ntoken","");const box=document.createElement("section");box.id="hkvLeadsBox";box.className="panel";box.style.margin="0 0 14px";
+    box.innerHTML=has?`<p class="fine" style="margin:0">Enquiries come from your website form through Netlify Forms. Status and notes are saved on this device.${S.leadsErr?` <b style="color:#c0392b">${esc(S.leadsErr)}</b>`:""} <button class="btn btn-ghost btn-sm" data-hkvntok-reset>Change Netlify token</button></p>`
+      :`<h3 style="margin:0 0 6px">Connect enquiries</h3><p class="fine" style="margin:0 0 10px">Paste a Netlify personal access token (Netlify › your avatar › User settings › Applications › New access token) to show your website enquiries here.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="hkvNtok" type="password" autocomplete="off" placeholder="Netlify access token" style="flex:1;min-width:220px"><button class="btn btn-brand btn-sm" data-hkvntok>Connect</button></div>`;
+    const anchor=main.querySelector(".pend");if(anchor&&anchor.parentNode)anchor.parentNode.insertBefore(box,anchor.nextSibling);else main.prepend(box)}
+  if(admTab==="settings"&&!$("#hkvAcct")){const box=document.createElement("section");box.id="hkvAcct";box.className="panel";box.style.margin="0 0 14px";
+    box.innerHTML=`<h3 style="margin:0 0 6px">Account</h3><p class="fine" style="margin:0 0 10px">Signed in with GitHub as <b>${esc(S.ghLogin||"")}</b>. Your dashboard password is your GitHub password.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn btn-brand btn-sm" href="https://github.com/settings/security" target="_blank" rel="noopener">🔒 Change password</a><button class="btn btn-ghost btn-sm" data-hkvlogout>Sign out</button></div>`;
+    const anchor=main.querySelector(".pend");if(anchor&&anchor.parentNode)anchor.parentNode.insertBefore(box,anchor.nextSibling);else main.prepend(box)}
+}).observe(document.getElementById("app"),{childList:true,subtree:true});
+document.addEventListener("click",e=>{if(e.target.closest("[data-hkvntok-reset]")){hkvLS.del("hkv_ntoken");render()}});
+if(S.static){const tk=hkvLS.get("hkv_gtoken","");if(tk)hkvAdminStart(tk).catch(()=>hkvLS.del("hkv_gtoken"))}
 (async()=>{
   if(!window.claude||!window.claude.use)return;
   const [db,user,assets,downloads,sample]=await Promise.all(["db","user","assets","downloads","sample"].map(n=>window.claude.use(n).catch(()=>null)));
