@@ -22,6 +22,7 @@
 <meta name="twitter:title" content="Rezeki Hartanah — Katalog Projek Hartanah di Klang Valley">
 <meta name="twitter:description" content="Bandingkan projek hartanah di Klang Valley: harga, ansuran, susun atur & pembiayaan.">
 <meta name="theme-color" content="#060B1A">
+<link rel="preconnect" href="https://dttxithovvlmgeyahllk.supabase.co" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght,SOFT@9..144,600,50;9..144,700,50&display=swap" rel="stylesheet">
@@ -949,7 +950,10 @@ footer a{text-decoration:none}footer a:hover{text-decoration:underline}
 .sbstat i{width:9px;height:9px;border-radius:50%;flex:none;background:#9AA5C0}.sbstat.ok i{background:#1FAF5A;box-shadow:0 0 0 4px rgba(31,175,90,.18)}.sbstat.sync i,.sbstat.connecting i{background:#F2B54F;animation:shp 1.2s ease-in-out infinite}.sbstat.error{border-color:#E5484D;color:#E5484D}.sbstat.error i{background:#E5484D}
 header.top .icon-btn#siteShareBtn{color:#F2B54F;border-color:rgba(242,181,79,.5)}
 .shd.site{max-width:min(460px,96vw)}.shd.site .shd-body{grid-template-columns:1fr}
-@media(max-width:420px){.bar{gap:8px}.logo b{font-size:18px}}
+.shd-card{display:flex;gap:12px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2)}.shd-card img{width:72px;height:54px;object-fit:cover;border-radius:9px;flex:none}.shd-card b{display:block;font-size:14px}.shd-card small{display:block;font-size:12px;color:var(--muted);word-break:break-all}
+@media(max-width:480px){.bar{gap:6px;height:58px}.logo{gap:8px}.logo b{font-size:17px}.logo small{display:none}.logo-mark{width:32px;height:32px;border-radius:9px}.seg button{padding:4px 8px;font-size:12px}header.top .icon-btn{width:34px;height:34px}header.top .icon-btn svg{width:16px;height:16px}}
+@media(max-width:360px){.logo b{font-size:15px}.bar{gap:4px}}
+#admBtn[hidden],#siteShareBtn[hidden]{display:none!important}
 .shd-link{display:flex;gap:8px;align-items:center;padding:6px 6px 6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--paper)}
 .shd-link input{flex:1;min-width:0;border:0;background:none;font-size:13px;color:var(--muted);padding:0;outline:none}
 @media(max-width:720px){
@@ -2517,7 +2521,7 @@ function initLoc(){
 /* ============ SHARE + POSTER ============ */
 let lastList=route().a==="p"?"#/":curHash();
 window.addEventListener("hashchange",()=>{if(route().a!=="p")lastList=curHash();const d=$("#shareDlg");if(d&&d.open)d.close()});
-const shUrl=p=>`${SITE}/listings/${pubSlug(p)}`;
+const shUrl=p=>`${SITE}/listings/${p.slug}`;
 const shText=p=>L2(`🏙️ ${p.name}, ${p.area}\n${t("t_"+p.type)} · Harga dari ${rmFull(p.pmin)} · ansuran ~${rmFull(monthlyOf(p))}/bln`,`🏙️ ${p.name}, ${p.area}\n${t("t_"+p.type)} · From ${rmFull(p.pmin)} · ~${rmFull(monthlyOf(p))}/mo`);
 let QRP=null;
 function loadQR(){if(window.qrcode)return Promise.resolve(true);return QRP||(QRP=new Promise(r=>{const s=document.createElement("script");s.src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js";s.onload=()=>r(!!window.qrcode);s.onerror=()=>r(false);document.head.appendChild(s);setTimeout(()=>r(!!window.qrcode),6000)}))}
@@ -2538,10 +2542,14 @@ async function drawPoster(p,fmt){
   if(!img){let svg=art(p);if(!/xmlns=/.test(svg))svg=svg.replace("<svg ",'<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" ');img=await loadImg("data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg))}
   if(img){const s=Math.max(W/img.width,imgH/img.height),iw=img.width*s,ih=img.height*s;c.drawImage(img,(W-iw)/2,(imgH-ih)/2,iw,ih)}
   let g=c.createLinearGradient(0,0,0,imgH);g.addColorStop(0,"rgba(14,26,58,.55)");g.addColorStop(.25,"rgba(14,26,58,0)");g.addColorStop(.5,"rgba(14,26,58,.3)");g.addColorStop(.78,"rgba(14,26,58,.85)");g.addColorStop(1,NAVY);c.fillStyle=g;c.fillRect(0,0,W,imgH);
-  // top brand + status
-  c.font=`800 30px ${fam}`;c.textBaseline="middle";
-  rr(c,48,48,72,72,18);c.fillStyle=GOLD;c.fill();c.fillStyle=NAVY;c.font=`800 34px ${fam}`;c.textAlign="center";c.fillText("HK",84,86);
-  c.textAlign="left";c.fillStyle="#fff";c.font=`800 30px ${fam}`;c.fillText("Hartanah",138,74);c.fillStyle="rgba(255,255,255,.75)";c.font=`600 22px ${body}`;c.fillText("Klang Valley",138,104);
+  // top brand (same as the site header: gold logo tile + “Rezeki Hartanah” wordmark) + status
+  try{await document.fonts.load('700 34px "Fraunces"')}catch(e){}
+  const WM='"Fraunces","Playfair Display",Georgia,serif';c.textBaseline="middle";
+  {const lg=c.createLinearGradient(48,48,120,120);lg.addColorStop(0,"#FFD58A");lg.addColorStop(1,"#E39A2D");rr(c,48,48,72,72,20);c.fillStyle=lg;c.fill();
+   c.save();c.translate(48+15,48+15);c.scale(42/24,42/24);c.strokeStyle="#0A1226";c.lineWidth=2;c.lineCap="round";c.lineJoin="round";c.stroke(new Path2D("M3 21V10l6-4v15M9 21V3l8 5v13M17 21v-8l4 2v6M2 21h20"));c.restore()}
+  c.textAlign="left";c.font=`700 34px ${WM}`;c.fillStyle="#fff";c.fillText("Rezeki ",138,72);
+  {const wR=c.measureText("Rezeki ").width,g2=c.createLinearGradient(138+wR,0,138+wR+170,0);g2.addColorStop(0,"#FFD58A");g2.addColorStop(.55,"#F2B54F");g2.addColorStop(1,"#D9922E");c.fillStyle=g2;c.fillText("Hartanah",138+wR,72)}
+  c.fillStyle="rgba(255,255,255,.72)";c.font=`600 15px ${body}`;{const sp="KLANG VALLEY".split("").join(String.fromCharCode(8202));c.fillText(sp,139,103)}
   const stx=t("st_"+p.status).toUpperCase();c.font=`800 24px ${body}`;const sw=c.measureText(stx).width+44;rr(c,W-48-sw,56,sw,56,28);c.fillStyle=GOLD;c.fill();c.fillStyle=NAVY;c.textAlign="center";c.fillText(stx,W-48-sw/2,85);c.textAlign="left";
   // text block
   let y=imgH-150;const X=64,MW=W-128;
@@ -2582,51 +2590,28 @@ const SHI={wa:'<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10
  more:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12m0-12-4 4m4-4 4 4"/><path d="M6 11H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1"/></svg>'};
 async function openShare(slug){
   const p=bySlug(slug);if(!p)return;
-  let dlg=$("#shareDlg");if(!dlg){dlg=document.createElement("dialog");dlg.id="shareDlg";dlg.className="shd";document.body.appendChild(dlg);
+  let dlg=$("#shareDlg");if(!dlg){dlg=document.createElement("dialog");dlg.id="shareDlg";dlg.className="shd site";document.body.appendChild(dlg);
     dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()})}
   const url=shUrl(p),txt=shText(p),enc=encodeURIComponent,native=!!navigator.share;
   const links={wa:"https://wa.me/?text="+enc(txt+"\n"+url),fb:"https://www.facebook.com/sharer/sharer.php?u="+enc(url),tg:"https://t.me/share/url?url="+enc(url)+"&text="+enc(txt),x:"https://twitter.com/intent/tweet?text="+enc(p.name+" · "+L2("dari ","from ")+rmFull(p.pmin))+"&url="+enc(url),mail:"mailto:?subject="+enc(p.name)+"&body="+enc(txt+"\n\n"+url)};
   const a=(k,l,cls)=>`<a class="shd-b ${cls}" href="${esc(links[k])}" target="_blank" rel="noopener noreferrer"><span>${SHI[k]}</span>${l}</a>`;
+  const img=photosOf(p)[0]||"";
   dlg.innerHTML=`<div class="shd-in">
    <div class="shd-h"><div><b>${L2("Kongsi projek ini","Share this project")}</b><small>${esc(p.name)}</small></div><button type="button" class="dbtn x" data-shclose aria-label="${L2("Tutup","Close")}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
-   <div class="shd-body">
-    <div class="shd-pvw"><div class="seg shd-seg" role="group"><button type="button" data-fmt="post" aria-pressed="true">Post 4:5</button><button type="button" data-fmt="story" aria-pressed="false">Story 9:16</button></div>
-     <div class="shd-pv" id="shPv"><div class="shd-ld">${L2("Menyediakan poster…","Preparing poster…")}</div></div>
-     <p class="shd-tip">${L2("Tip: di telefon, butang WhatsApp menghantar poster ini bersama pautan — pilih WhatsApp dalam senarai kongsi.","Tip: on your phone, the WhatsApp button sends this poster with the link — pick WhatsApp in the share sheet.")}</p></div>
-    <div class="shd-act">
-     ${native?`<button type="button" class="shd-main" data-shnative><span>${SHI.more}</span>${L2("Kongsi poster & pautan","Share poster & link")}</button>`:""}
-     <div class="shd-grid">${a("wa","WhatsApp","wa")}${a("fb","Facebook","fb")}${a("tg","Telegram","tg")}${a("x","X","xx")}${a("mail",L2("E-mel","Email"),"ml")}<button type="button" class="shd-b dl" data-shsave><span>${SHI.dl}</span>${L2("Simpan poster","Save poster")}</button></div>
-     <label class="shd-lbl" for="shLink">${L2("Pautan projek","Project link")}</label>
-     <div class="shd-link"><input id="shLink" readonly value="${esc(url)}"><button type="button" class="btn btn-brand btn-sm" data-shcopy>${L2("Salin","Copy")}</button></div>
-    </div>
-   </div></div>`;
+   <div class="shd-body"><div class="shd-act">
+    <div class="shd-card">${img?`<img src="${esc(img)}" alt="">`:""}<div><b>${esc(p.name)}</b><small>${esc(p.area)}${p.pmin?" · "+L2("dari ","from ")+esc(rmFull(p.pmin)):""}</small><small>${esc(url.replace(/^https?:\/\//,""))}</small></div></div>
+    <p class="shd-tip" style="text-align:left">${L2("Pautan sahaja dihantar — WhatsApp & Facebook memaparkan pratonton projek secara automatik.","Only the link is sent — WhatsApp & Facebook show the project preview automatically.")}</p>
+    ${native?`<button type="button" class="shd-main" data-shnative><span>${SHI.more}</span>${L2("Kongsi pautan","Share link")}</button>`:""}
+    <div class="shd-grid">${a("wa","WhatsApp","wa")}${a("fb","Facebook","fb")}${a("tg","Telegram","tg")}${a("x","X","xx")}${a("mail",L2("E-mel","Email"),"ml")}</div>
+    <label class="shd-lbl" for="shLink">${L2("Pautan projek","Project link")}</label>
+    <div class="shd-link"><input id="shLink" readonly value="${esc(url)}"><button type="button" class="btn btn-brand btn-sm" data-shcopy>${L2("Salin","Copy")}</button></div>
+   </div></div></div>`;
   if(!dlg.open)dlg.showModal();
-  let fmt="post",blob=null,cur=0;
-  const render=async()=>{const my=++cur;blob=null;$("#shPv").innerHTML=`<div class="shd-ld">${L2("Menyediakan poster…","Preparing poster…")}</div>`;
-    const cv=await drawPoster(p,fmt);if(my!==cur)return;blob=await toBlob(cv);
-    const src=blob?URL.createObjectURL(blob):cv.toDataURL("image/png");
-    $("#shPv").innerHTML=`<img src="${src}" alt="${esc(L2("Poster ","Poster ")+p.name)}" class="${fmt}">`};
   dlg.onclick=async e=>{
-    if(e.target===dlg){dlg.close();return}
-    if(e.target.closest("[data-shclose]")){dlg.close();return}
-    if(e.target.closest(".shd-b.wa")&&navigator.share&&navigator.canShare){
-      if(!blob){e.preventDefault();toast(L2("Poster sedang disediakan, cuba lagi sebentar","Poster is still loading, try again in a moment"));return}
-      const file=new File([blob],`${p.slug}.png`,{type:"image/png"});
-      if(navigator.canShare({files:[file]})){e.preventDefault();
-        try{await navigator.share({files:[file],text:txt+"\n"+url});}
-        catch(x){if(!(x&&x.name==="AbortError"))window.open(links.wa,"_blank","noopener")}
-        return}
-    }
-    const f=e.target.closest("[data-fmt]");if(f){fmt=f.dataset.fmt;dlg.querySelectorAll("[data-fmt]").forEach(b=>b.setAttribute("aria-pressed",b===f));render();return}
+    if(e.target===dlg||e.target.closest("[data-shclose]")){dlg.close();return}
     if(e.target.closest("[data-shcopy]")){const i=$("#shLink");try{await navigator.clipboard.writeText(url);toast(L2("Pautan disalin","Link copied"))}catch(x){i.select();try{document.execCommand("copy");toast(L2("Pautan disalin","Link copied"))}catch(y){toast(L2("Salin pautan secara manual","Copy the link manually"))}}return}
-    if(e.target.closest("[data-shsave]")){if(!blob){toast(L2("Poster belum siap","Poster not ready yet"));return}
-      if(S.downloads){try{await S.downloads.save({filename:`${p.slug}-${fmt}.png`,data:blob})}catch(x){if(x&&x.code&&x.code!=="declined")toast(L2("Tekan lama pada poster untuk simpan","Long-press the poster to save"))}}
-      else toast(L2("Tekan lama pada poster untuk simpan","Long-press the poster to save"));return}
-    if(e.target.closest("[data-shnative]")){const data={title:p.name,text:txt,url};
-      try{if(blob){const file=new File([blob],`${p.slug}.png`,{type:"image/png"});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({...data,files:[file]});return}}await navigator.share(data)}
-      catch(x){if(x&&x.name==="AbortError")return;try{await navigator.share(data)}catch(y){if(!(y&&y.name==="AbortError"))toast(L2("Guna butang di bawah untuk kongsi","Use the buttons below to share"))}}}
+    if(e.target.closest("[data-shnative]")){try{await navigator.share({title:p.name,text:txt,url})}catch(x){if(!(x&&x.name==="AbortError"))toast(L2("Guna butang di bawah untuk kongsi","Use the buttons below to share"))}}
   };
-  render();
 }
 function openSiteShare(){
   let dlg=$("#siteShareDlg");if(!dlg){dlg=document.createElement("dialog");dlg.id="siteShareDlg";dlg.className="shd site";document.body.appendChild(dlg)}
@@ -2978,6 +2963,7 @@ let SKY=null;
 /* ============ ROUTER & RENDER ============ */
 function route(){const h=curHash().replace(/^#\/?/,"");const [a,b]=h.split("/");return {a:a||"",b:decodeURIComponent(b||"")}}
 function render(){
+  {const s=document.getElementById("ld-ssr");if(s)s.remove()} // server-rendered structured data is replaced by the live page's own
   siteLd();const {a,b}=route(),app=$("#app"),reBud=!!$("#budDlg")?.open;if($("#cmpDlg").open)$("#cmpDlg").close();
   document.documentElement.lang=S.lang==="ms"?"ms":"en";document.body.classList.toggle("adm",a==="admin");
   if(a==="p"){const rs=resolveSlug(projects(true),b,S.isAdmin);if(rs.status===301){navTo("#/p/"+rs.p.slug,true);return}app.innerHTML=viewDetail(b);if(rs.status===200)app.insertAdjacentHTML("beforeend",relatedPostsHtml(rs.p.slug));const p=rs.status===200?rs.p:null;if(p){const s=seoFor(p);setHead({title:s.title,desc:s.desc,canonical:s.url,ld:s.ld,image:p.image,robots:p.noindex||p.published===false?"noindex, follow":""})}else setHead({title:"Projek tidak dijumpai | Rezeki Hartanah",desc:"Projek ini tiada atau telah dikeluarkan.",canonical:SITE+"/",ld:null,robots:"noindex, follow"});initCalc();initPElig();initLoc();initEnq();window.scrollTo(0,0)}
@@ -3885,6 +3871,19 @@ function makeJsAssets(sb){
 async function rhSyncSitemap(){if(!S.jsSb||!S.isAdmin)return;const sm=sitemap(),files=Object.entries(sm.files);if(!files.length)return;
   let r=await S.jsSb.from("sitemap_files").upsert(files.map(([name,xml])=>({name,xml:String(xml),updated_at:new Date().toISOString()})));if(r.error)return;
   await S.jsSb.from("sitemap_files").delete().not("name","in",`(${files.map(f=>'"'+f[0]+'"').join(",")})`)}
+function makeJsSample(sb){
+  const call=async(texts,target)=>{const r=await sb.functions.invoke("translate",{body:{texts,target}});if(r.error||!r.data||!Array.isArray(r.data.translations))throw {code:"bad",message:r.error&&r.error.message};return r.data};
+  const s=async()=>{throw {code:"bad"}};
+  s.json=async prompt=>{prompt=String(prompt);
+    const i=prompt.lastIndexOf("\nINPUT:\n");
+    if(i>=0){const inp=JSON.parse(prompt.slice(i+8));const hl=(inp.hl||[]).map(String),fac=(inp.fac||[]).map(String),texts=[String(inp.summary||""),...hl,...fac];
+      const [ms,en]=await Promise.all([call(texts,"ms"),call(texts,"en")]);
+      const cut=a=>({summary:a[0]||"",hl:a.slice(1,1+hl.length),fac:a.slice(1+hl.length,1+hl.length+fac.length)});
+      return {ms:cut(ms.translations),en:cut(en.translations)}}
+    const j=prompt.lastIndexOf("\nTEXT:\n"),txt=j>=0?prompt.slice(j+7):prompt;
+    const [ms,en]=await Promise.all([call([txt],"ms"),call([txt],"en")]);
+    const d=String(en.detected[0]||"");return {lang:/^en/i.test(d)?"en":"ms",ms:ms.translations[0]||txt,en:en.translations[0]||txt}};
+  return s}
 const rhDownloads={async save({filename,data}){const b=data instanceof Blob?data:new Blob([data]);const u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}};
 async function rhCmsBoot(startSubs){
   if(!window.supabase||!window.supabase.createClient){S.cms.state="out";S.cms.msg="Couldn’t load the sign-in library. Check your connection and reload.";render();return}
@@ -3895,7 +3894,7 @@ async function rhCmsBoot(startSubs){
     S.cms.email=session.user.email||"";
     const r=await sb.rpc("is_admin");S.isAdmin=!r.error&&r.data===true;
     if(!S.isAdmin){S.cms.state="denied";render();return}
-    S.cms.state="in";S.db=makeJsDb(sb);S.assets=makeJsAssets(sb);sbSetState("ok");
+    S.cms.state="in";S.db=makeJsDb(sb);S.assets=makeJsAssets(sb);S.sample=makeJsSample(sb);sbSetState("ok");
     {const b=$("#admBtn");if(b)b.hidden=false}
     if(!started){started=true;startSubs(S.db);setTimeout(()=>rhSyncSitemap().catch(()=>{}),5000)}
     render()};
