@@ -1,0 +1,6 @@
+# Rezeki Hartanah — Netlify configuration
+# seo.js sits in the repository root and runs on Netlify's servers before every page is delivered
+# (it adds each page's title, description, structured data and visible content for Google, WhatsApp and Facebook).
+[build]
+  publish = "."
+  edge_functions = "."
