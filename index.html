@@ -1298,6 +1298,7 @@ pre.code{background:var(--surface-2);border-radius:var(--r-sm);padding:12px;over
 </style>
 </head>
 <body>
+<form name="enquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden><input name="bot-field"><input name="name"><input name="phone"><input name="email"><input name="budget"><input name="project"><textarea name="message"></textarea><input name="lang"><input name="source"></form>
 <button type="button" class="skip" id="skipBtn" onclick="var m=document.getElementById('app');m.focus();m.scrollIntoView()">Langkau ke kandungan</button>
 <a class="ann" id="annBar" hidden></a>
 <header class="top">
@@ -1663,10 +1664,10 @@ function normalize(d){
 const bySlug = s => {const ps=projects(S.isAdmin);return ps.find(p=>p.slug===s)||ps.find(p=>pubSlug(p)===s)};
 function pubSlug(p){const s=slugify(String(p.name||"").replace(/@/g," "))||p.slug;const clash=projects(true).some(o=>o.slug!==p.slug&&(o.slug===s||slugify(String(o.name||"").replace(/@/g," "))===s));return clash?p.slug:s}
 
-function photosOf(p){const ok=v=>/^\/_blob\/[a-f0-9]{32}$/.test(v||"");const a=(Array.isArray(p.photos)?p.photos:[]).filter(ok);if(!a.length&&ok(p.image))a.push(p.image);return a}
+function photosOf(p){const ok=v=>/^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(v||"");const a=(Array.isArray(p.photos)?p.photos:[]).filter(ok);if(!a.length&&ok(p.image))a.push(p.image);return a}
 /* ============ ART (placeholder skyline; replaced by uploaded photo when set) ============ */
 function art(p){
-  if(p.image && /^\/_blob\/[a-f0-9]{32}$/.test(p.image)) return `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" decoding="async">`;
+  if(p.image && /^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(p.image)) return `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" decoding="async">`;
   const R=rnd(hash(p.slug)),hue=218+Math.floor(R()*24)-12,W=400,H=250;
   const sky1=`hsl(${hue} 60% 9%)`,sky2=`hsl(${hue} 52% ${26+R()*8}%)`,sun=`#F6F1E2`;
   let b="";const ground=H-28;
@@ -1993,7 +1994,7 @@ function enquiryForm(pre){
 }
 
 function layoutCards(p,lay){
-  const cards=lay.map(l=>{const [name,sz,bed,bath,pr,mf,cp,plan]=l,okPlan=/^\/_blob\/[a-f0-9]{32}$/.test(plan||""),sq=num(String(sz).replace(/[^\d.]/g,""));
+  const cards=lay.map(l=>{const [name,sz,bed,bath,pr,mf,cp,plan]=l,okPlan=/^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(plan||""),sq=num(String(sz).replace(/[^\d.]/g,""));
     const given=num(String(pr||"").replace(/[^\d.]/g,""));let price=given,est=false;
     if(!price&&p.pmin&&p.smin&&sq){price=Math.round(p.pmin*(sq/p.smin)/1000)*1000;est=sq!==p.smin}
     else if(!price&&p.pmin&&lay.length===1)price=p.pmin;
@@ -2199,7 +2200,7 @@ function seoIndexPanel(){
    <li>New projects don't need to be submitted one by one: they enter the sitemap and directory as soon as they are published. Re-upload the sitemap files to the server if the server doesn't generate them live.</li></ol></section>`;
 }
 /* Site media: replaceable photos on public pages. Add more slots here. */
-const MEDIA_SLOTS={sv:{label:"Property management / co-living photo",where:"Home page, section \"Property management, after you get the keys\"",src:"/_blob/6a561a286afcf33d3e1119b1ea536a33",alt:"Keluarga tersenyum menerima kunci rumah, pakar perkhidmatan co-living",altEn:"Smiling couple handing over house keys, co-living services experts",size:"Portrait, about 1100×1440"}};
+const MEDIA_SLOTS={sv:{label:"Property management / co-living photo",where:"Home page, section \"Property management, after you get the keys\"",src:"/images/uploads/6a561a286afcf33d3e1119b1ea536a33.webp",alt:"Keluarga tersenyum menerima kunci rumah, pakar perkhidmatan co-living",altEn:"Smiling couple handing over house keys, co-living services experts",size:"Portrait, about 1100×1440"}};
 function mediaSrc(k){const s=S.settings||{};return s["m_"+k]||MEDIA_SLOTS[k].src}
 function mediaAlt(k){const s=S.settings||{},d=MEDIA_SLOTS[k];return L2(s["m_"+k+"Alt"]||d.alt,s["m_"+k+"AltEn"]||d.altEn)}
 function mediaSettingsHtml(s){return `<section class="panel" style="grid-column:1/-1"><h3>Site media</h3><p class="fine" style="margin-bottom:12px">Replace photos used on the public site. Upload, then press Save settings. Project photos are managed in Projects.</p>${Object.entries(MEDIA_SLOTS).map(([k,d])=>{const cur=s["m_"+k]||"";return `<div class="media-slot" data-mslot="${k}" style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;margin-bottom:12px"><div class="pop-thumb" data-mthumb style="width:96px;aspect-ratio:3/4"><img src="${esc(cur||d.src)}" alt=""></div><div style="flex:1;min-width:220px"><b style="font-size:14px">${esc(d.label)}</b><p class="fine">${esc(d.where)}. ${esc(d.size)}, JPG/PNG/WebP max 5MB.</p><input type="hidden" name="m_${k}" value="${esc(cur)}"><div style="margin:8px 0"><label class="btn btn-ghost btn-sm" ${S.assets?"":"aria-disabled=\"true\""}>📷 Upload photo<input type="file" class="m-file" accept="image/jpeg,image/png,image/webp" hidden ${S.assets?"":"disabled"}></label> <button type="button" class="btn btn-ghost btn-sm" data-mreset ${cur?"":"hidden"}>Use original photo</button> <span class="fine" data-mnote></span></div><div class="edgrid" style="grid-template-columns:1fr 1fr"><div class="field"><label for="m_${k}Alt">Alt text BM (for Google Images)</label><input id="m_${k}Alt" name="m_${k}Alt" maxlength="160" value="${esc(s["m_"+k+"Alt"]||"")}" placeholder="${esc(d.alt)}"></div><div class="field"><label for="m_${k}AltEn">Alt text EN</label><input id="m_${k}AltEn" name="m_${k}AltEn" maxlength="160" value="${esc(s["m_"+k+"AltEn"]||"")}" placeholder="${esc(d.altEn)}"></div></div></div></div>`}).join("")}</section>`}
@@ -2272,7 +2273,7 @@ function editorView(){
   </form>`;
 }
 const LAYF=[["Type","Type A","text"],["Size (sqft)","850","number"],["Bedrooms","3","text"],["Bathrooms","2","text"],["Price RM","","number"],["Fee/mo","","fee"],["Parking","1","text"]];
-const okBlob=v=>/^\/_blob\/[a-f0-9]{32}$/.test(v||"");
+const okBlob=v=>/^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(v||"");
 function layThumb(plan){return okBlob(plan)?`<img src="${esc(plan)}" alt="Floor plan">`:`<span>+ Upload plan</span>`}
 function layFee(sz,psf){const sq=num(String(sz||"").replace(/[^\d.]/g,"")),r=num(psf);return sq&&r?rmFull(Math.round(sq*r)):"–"}
 function layRow(str){const v=String(str||"").split("|").map(x=>x.trim()),plan=okBlob(v[7])?v[7]:"";
@@ -2404,7 +2405,7 @@ async function saveSettings(fm){
    const bs=mins.map((m,i)=>({min:i===0?0:m,dsr:dsrs[i]}));o.bands=JSON.stringify(bs);
    o.inc1="";o.inc2="";o.dsr1="";o.dsr2="";o.dsr3=""}
   o.stress=num(o.stress);if(!(o.stress>=0&&o.stress<=3)){out.textContent="Stress test must be between 0 and 3%.";return}
-  for(const k of Object.keys(MEDIA_SLOTS)){const v=o["m_"+k]||"";o["m_"+k]=/^\/_blob\/[0-9a-f]{32}$/.test(v)?v:"";o["m_"+k+"Alt"]=(o["m_"+k+"Alt"]||"").slice(0,160);o["m_"+k+"AltEn"]=(o["m_"+k+"AltEn"]||"").slice(0,160)}
+  for(const k of Object.keys(MEDIA_SLOTS)){const v=o["m_"+k]||"";o["m_"+k]=/^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(v)?v:"";o["m_"+k+"Alt"]=(o["m_"+k+"Alt"]||"").slice(0,160);o["m_"+k+"AltEn"]=(o["m_"+k+"AltEn"]||"").slice(0,160)}
   o.ann=o.ann.slice(0,140);o.annEn=o.annEn.slice(0,140);if(o.annLink&&!bySlugAll(o.annLink))o.annLink="";
   const po=popReadForm(fm);for(const k of Object.keys(po))delete o[k];delete o.popOn;delete o.popHome;delete o.popProj;
   if(po.popAct==="url"&&po.popUrl&&!/^https?:\/\//.test(po.popUrl)){out.textContent="Pop-up URL must start with https://";return}
@@ -2498,7 +2499,7 @@ async function drawPoster(p,fmt){
   // photo
   const imgH=fmt==="story"?1080:720;
   let img=null;
-  if(p.image&&/^\/_blob\/[a-f0-9]{32}$/.test(p.image))img=await loadImg(p.image);
+  if(p.image&&/^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(p.image))img=await loadImg(p.image);
   if(!img){let svg=art(p);if(!/xmlns=/.test(svg))svg=svg.replace("<svg ",'<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" ');img=await loadImg("data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg))}
   if(img){const s=Math.max(W/img.width,imgH/img.height),iw=img.width*s,ih=img.height*s;c.drawImage(img,(W-iw)/2,(imgH-ih)/2,iw,ih)}
   let g=c.createLinearGradient(0,0,0,imgH);g.addColorStop(0,"rgba(14,26,58,.55)");g.addColorStop(.25,"rgba(14,26,58,0)");g.addColorStop(.5,"rgba(14,26,58,.3)");g.addColorStop(.78,"rgba(14,26,58,.85)");g.addColorStop(1,NAVY);c.fillStyle=g;c.fillRect(0,0,W,imgH);
@@ -2637,7 +2638,7 @@ function popCta(c){
 }
 function showPop(c,preview){
   closePop(true);
-  const ttl=(S.lang==="en"&&c.popTitleEn)||c.popTitle,msg=(S.lang==="en"&&c.popMsgEn)||c.popMsg,img=/^\/_blob\/[a-f0-9]{32}$/.test(c.popImg||"")?c.popImg:"";
+  const ttl=(S.lang==="en"&&c.popTitleEn)||c.popTitle,msg=(S.lang==="en"&&c.popMsgEn)||c.popMsg,img=/^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(c.popImg||"")?c.popImg:"";
   const style=["modal","sheet","corner","image"].includes(c.popStyle)?c.popStyle:"modal";
   if(style==="image"&&!img&&!preview)return;
   const root=document.createElement("div");root.id="popRoot";root.className=`pop pop-${style}`;root.dataset.preview=preview?"1":"";
@@ -2705,7 +2706,7 @@ addEventListener("hashchange",()=>{closeSpot(true);scheduleSpot()});
 function popSettingsHtml(s){
   const c={...POPDEF,...s},o=(v,l,cur)=>`<option value="${v}" ${String(cur)===String(v)?"selected":""}>${l}</option>`;
   const projOptsAll=projects(true).map(p=>[p.slug,p.name]);
-  const img=/^\/_blob\/[a-f0-9]{32}$/.test(c.popImg||"")?c.popImg:"";
+  const img=/^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(c.popImg||"")?c.popImg:"";
   return `<section class="panel pop-set" style="grid-column:1/-1"><div class="pop-set-h"><h3>Message pop-up</h3><label class="pop-sw"><input type="checkbox" name="popOn" ${c.popOn?"checked":""}><span></span><b>${c.popOn?"Active":"Inactive"}</b></label></div>
    <p class="fine" style="margin-top:0">Show promotions, launches or offers to visitors. Visitor counts reset every time you save changes to the pop-up.</p>
    <div class="pop-set-g">
@@ -2779,7 +2780,7 @@ function nearbyProjects(p,ps){
   return others.map(x=>{const h=geoAny(x);return {p:x,km:h?kmBetween(g,h):null}}).filter(s=>s.km!=null&&s.km<=NEAR_KM).sort((a,b)=>a.km-b.km).slice(0,3);
 }
 function locP(p){
-  if(!p||!p.tr||p.tr.h!==trHash(trSrc(p)))return p;const v=p.tr[S.lang];if(!v)return p;const o={...p};
+  if(!p||!p.tr||(S.static?S.lang!=="en":p.tr.h!==trHash(trSrc(p))))return p;const v=p.tr[S.lang];if(!v)return p;const o={...p};
   if(typeof v.summary==="string"&&v.summary.trim())o.summary=v.summary;
   if(Array.isArray(v.hl)&&v.hl.length===(p.hl||[]).length)o.hl=v.hl.map(String);
   if(Array.isArray(v.fac)&&v.fac.length===(p.fac||[]).length)o.fac=v.fac.map(String);
@@ -3243,7 +3244,7 @@ function initEnq(){
     store.set("lastEnq",Date.now());
     const lead={name:name.slice(0,80),phone:phone.slice(0,20),email:email.slice(0,120),budget:$("#qBudget").value,project:$("#qProj").value,msg:$("#qMsg").value.trim().slice(0,1000),lang:S.lang,at:Date.now(),consent:true};
     lead.src=leadSource();
-    if(S.db){try{await saveLead(lead)}catch(e){console.error("lead save failed",e);track("lead_save_error",{})}}
+    if(S.db){try{await saveLead(lead)}catch(e){console.error("lead save failed",e);track("lead_save_error",{})}}else if(S.static){try{const fd=new URLSearchParams({"form-name":"enquiry",name:lead.name,phone:lead.phone,email:lead.email,budget:lead.budget,project:lead.project,message:lead.msg,lang:lead.lang,source:typeof lead.src==="string"?lead.src:JSON.stringify(lead.src||"")});await fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:fd.toString()})}catch(e){console.error("lead post failed",e);track("lead_save_error",{})}}
     track("generate_lead",{form:"enquiry",project:lead.project||"",budget:lead.budget});
     const p=bySlug(lead.project);
     window.open(waLink(`${p?t("wa_proj").replace("{p}",p.name):t("wa_gen")}\n\nNama: ${lead.name}\nTel: ${lead.phone}\nBajet: ${lead.budget}${lead.msg?"\nMesej: "+lead.msg:""}`),"_blank","noopener");
@@ -3365,7 +3366,7 @@ function mdHtml(src){
   for(const raw of lines){const l=raw.trim();let m;
     if(!l){fp();fl();continue}
     if((m=l.match(/^(#{1,3})\s+(.+)/))){fp();fl();const h=m[1].length===3?3:2;out.push(`<h${h} id="${esc(slugify(m[2]))}">${inlineMd(esc(m[2]))}</h${h}>`);continue}
-    if((m=l.match(/^!\[([^\]]*)\]\((\/_blob\/[a-f0-9]{32})\)$/))){fp();fl();out.push(`<figure><img src="${m[2]}" alt="${esc(m[1])}" loading="lazy" decoding="async"></figure>`);continue}
+    if((m=l.match(/^!\[([^\]]*)\]\(((?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+))\)$/))){fp();fl();out.push(`<figure><img src="${m[2]}" alt="${esc(m[1])}" loading="lazy" decoding="async"></figure>`);continue}
     if((m=l.match(/^>\s?(.*)/))){fp();fl();out.push(`<blockquote>${inlineMd(esc(m[1]))}</blockquote>`);continue}
     if((m=l.match(/^[-*]\s+(.+)/))||(m=l.match(/^\d+[.)]\s+(.+)/))){fp();const tp=/^\d/.test(l)?"ol":"ul";if(list&&list.t!==tp)fl();list=list||{t:tp,items:[]};list.items.push(m[1]);continue}
     fl();para.push(l)}
@@ -3673,7 +3674,17 @@ async function fillCap(){const box=$("#capBox");if(!box||!S.assets||box.dataset.
 
 /* ============ BOOT ============ */
 (function(){const th=store.get("theme",null);if(th)document.documentElement.dataset.theme=th})();
-siteLd();render();schedulePop();scheduleSpot();
+S.static=!(window.claude&&window.claude.use);
+async function hkvLoad(){
+  const get=async u=>{try{const r=await fetch(u,{cache:"no-cache"});return r.ok?await r.json():null}catch(e){return null}};
+  const [pr,po,st]=await Promise.all([get("/content/projects.json"),get("/content/posts.json"),get("/content/settings.json")]);
+  const ts=v=>typeof v==="string"&&v?(Date.parse(v)||0):num(v);
+  if(pr&&Array.isArray(pr.items))S.remote=new Map(pr.items.filter(x=>x&&x.slug).map(x=>[x.slug,{...x,published:x.published!==false}]));
+  if(po&&Array.isArray(po.items))S.posts=new Map(po.items.filter(x=>x&&x.slug).map(x=>{const a={...x,publishAt:ts(x.publishAt),createdAt:ts(x.createdAt)||ts(x.publishAt)};if(!a.updatedAt)a.updatedAt=a.publishAt;if(!a.contentAt)a.contentAt=a.publishAt;return [a.slug,a]}));
+  if(st&&typeof st==="object"){S.settings=st;applySettings()}
+}
+function hkvAdminLinks(){document.querySelectorAll('a[href="#/admin"]').forEach(a=>{a.href="/admin/";a.removeAttribute("data-route")});if(route().a==="admin")location.replace("/admin/")}
+if(S.static){window.addEventListener("hashchange",hkvAdminLinks);hkvLoad().finally(()=>{hkvAdminLinks();siteLd();render();schedulePop();scheduleSpot();})}else{siteLd();render();schedulePop();scheduleSpot();}
 new MutationObserver(()=>{fillCap();const f=$("#setForm");if(f&&!f.dataset.popsync){f.dataset.popsync="1";popSyncForm();bandSync()}}).observe($("#app"),{childList:true});
 (async()=>{
   if(!window.claude||!window.claude.use)return;
