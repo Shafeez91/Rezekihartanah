@@ -3,4 +3,3 @@
 # (it adds each page's title, description, structured data and visible content for Google, WhatsApp and Facebook).
 [build]
   publish = "."
-  edge_functions = "."
