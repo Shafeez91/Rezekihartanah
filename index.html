@@ -241,6 +241,8 @@ nav.main a:hover{background:var(--surface-2)}
 .field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--paper)}
 .field textarea{min-height:90px;resize:vertical}
 .sgrid{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+.enq-grid{grid-template-columns:1fr 1fr;gap:12px}.enq-grid .field{min-width:0}.enq-grid select,.enq-grid input{width:100%;min-width:0;max-width:100%}
+@media(max-width:560px){.enq-grid{grid-template-columns:1fr}}
 .sgrid .full{grid-column:1/-1}
 .sgrid .go{grid-column:1/-1}
 .split>*,.dgrid>*,.hero-grid>*{min-width:0}
@@ -951,7 +953,7 @@ footer a{text-decoration:none}footer a:hover{text-decoration:underline}
 header.top .icon-btn#siteShareBtn{color:#F2B54F;border-color:rgba(242,181,79,.5)}
 .shd.site{max-width:min(460px,96vw)}.shd.site .shd-body{grid-template-columns:1fr}
 .shd-card{display:flex;gap:12px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2)}.shd-card img{width:72px;height:54px;object-fit:cover;border-radius:9px;flex:none}.shd-card b{display:block;font-size:14px}.shd-card small{display:block;font-size:12px;color:var(--muted);word-break:break-all}
-@media(max-width:480px){.bar{gap:6px;height:58px}.logo{gap:8px}.logo b{font-size:17px}.logo small{display:none}.logo-mark{width:32px;height:32px;border-radius:9px}.seg button{padding:4px 8px;font-size:12px}header.top .icon-btn{width:34px;height:34px}header.top .icon-btn svg{width:16px;height:16px}}
+@media(max-width:480px){.bar{gap:6px;height:58px}.logo{gap:8px;min-width:0;flex:0 1 auto}.logo b{font-size:clamp(13px,4.4vw,17px);white-space:nowrap}.logo small{display:none}.logo-mark{width:32px;height:32px;border-radius:9px}.seg button{padding:4px 8px;font-size:12px}header.top .icon-btn{width:34px;height:34px}header.top .icon-btn svg{width:16px;height:16px}}
 @media(max-width:360px){.logo b{font-size:15px}.bar{gap:4px}}
 #admBtn[hidden],#siteShareBtn[hidden]{display:none!important}
 .shd-link{display:flex;gap:8px;align-items:center;padding:6px 6px 6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--paper)}
@@ -2015,7 +2017,7 @@ function enquiryForm(pre){
   return `<div class="enq">
     <div><h2>${t("q_title")}</h2><p class="sub">${t("q_sub")}</p><a class="wa-card" target="_blank" rel="noopener noreferrer" href="${esc(waLink(t("wa_gen")))}"><span class="wa-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.1Z"/></svg></span><span class="wa-tx"><b>${t("q_or")}</b><small><i class="wa-dot"></i>${L2("Biasanya dibalas dalam beberapa minit","Usually replies within minutes")}</small></span><span class="wa-go">${t("q_wa")}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a></div>
     <form id="enqForm" novalidate>
-      <div class="sgrid" style="grid-template-columns:1fr 1fr">
+      <div class="sgrid enq-grid">
         <div class="field full" style="grid-column:1/-1"><label for="qName">${t("q_name")} *</label><input id="qName" maxlength="80" autocomplete="name" required></div>
         <div class="field"><label for="qPhone">${t("q_phone")} *</label><input id="qPhone" type="tel" maxlength="20" autocomplete="tel" inputmode="tel" required placeholder="012-345 6789"></div>
         <div class="field"><label for="qEmail">${t("q_email")}</label><input id="qEmail" type="email" maxlength="120" autocomplete="email"></div>
@@ -3863,13 +3865,31 @@ function makeJsDb(sb){
   window.addEventListener("focus",()=>subs.forEach(s=>s.forEach(f=>f())));
   return {collection:c=>query(c),doc:p=>{const [c,id]=String(p).split("/");return docRef(c,id)}};
 }
+/* photo optimisation: big uploads are resized (max 1800px) and every photo gets a 1200×630 share image (<id>-og) under 280 KB so WhatsApp/Facebook previews show it */
+async function rhImg(blob){const url=URL.createObjectURL(blob);try{const img=new Image();img.decoding="async";await new Promise((ok,no)=>{img.onload=ok;img.onerror=no;img.src=url});return img}finally{setTimeout(()=>URL.revokeObjectURL(url),2000)}}
+function rhCanvas(img,w,h,cover,bg){const c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d");x.fillStyle=bg;x.fillRect(0,0,w,h);if(cover){const s=Math.max(w/img.naturalWidth,h/img.naturalHeight),dw=img.naturalWidth*s,dh=img.naturalHeight*s;x.drawImage(img,(w-dw)/2,(h-dh)/2,dw,dh)}else x.drawImage(img,0,0,w,h);return c}
+async function rhJpeg(c,maxBytes){let q=.86,b=null;for(let i=0;i<5;i++){b=await new Promise(r=>c.toBlob(r,"image/jpeg",q));if(!b||b.size<=maxBytes)break;q-=.12}return b}
+async function rhVariants(blob){if(!/^image\/(jpeg|png|webp)$/.test(blob.type)||blob.size<20000)return {main:blob,og:null};
+  try{const img=await rhImg(blob),W=img.naturalWidth,H=img.naturalHeight;if(!W||!H)return {main:blob,og:null};
+    let main=blob;const s=Math.min(1,1800/Math.max(W,H));
+    if(blob.type!=="image/png"&&(s<1||blob.size>700000)){const m=await rhJpeg(rhCanvas(img,Math.round(W*s),Math.round(H*s),false,"#ffffff"),650000);if(m&&m.size<blob.size)main=m}
+    const og=await rhJpeg(rhCanvas(img,1200,630,true,"#0A1226"),280000);return {main,og}}catch(e){return {main:blob,og:null}}}
+async function rhOptimizeMedia(sb){try{const r=await sb.storage.from("media").list("",{limit:1000});if(r.error)return;const names=new Set((r.data||[]).map(x=>x.name));let n=0;
+  for(const o of r.data||[]){if(n>=8)break;const id=o.name;if(!/^[a-f0-9]{32}$/.test(id)||names.has(id+"-og"))continue;const ty=(o.metadata&&o.metadata.mimetype)||"";if(!/^image\/(jpeg|png|webp)$/.test(ty))continue;
+    try{const res=await fetch("/_blob/"+id,{cache:"no-store"});if(!res.ok)continue;const blob=await res.blob();const v=await rhVariants(blob);
+      if(v.og){await sb.storage.from("media").upload(id+"-og",v.og,{contentType:"image/jpeg",cacheControl:"31536000",upsert:true})}
+      if(v.main!==blob&&v.main.size<blob.size*0.7){await sb.storage.from("media").upload(id,v.main,{contentType:v.main.type,cacheControl:"31536000",upsert:true})}
+      n++}catch(e){}}
+  if(n)toast(`${n} photo${n>1?"s":""} optimised for sharing`)}catch(e){}}
 function makeJsAssets(sb){
   const rid=()=>[...crypto.getRandomValues(new Uint8Array(16))].map(b=>b.toString(16).padStart(2,"0")).join("");
   return {
     async upload(blob){if(!blob||!blob.size)throw new Error("Empty file");if(blob.size>20*1024*1024)throw new Error("File is larger than 20 MB");const id=rid();
-      const r=await sb.storage.from("media").upload(id,blob,{contentType:blob.type||"application/octet-stream",cacheControl:"31536000",upsert:false});if(r.error)throw new Error(r.error.message);
-      return {id,url:"/_blob/"+id,sizeBytes:blob.size,contentType:blob.type}},
-    async list(){const r=await sb.storage.from("media").list("",{limit:1000});if(r.error)throw new Error(r.error.message);const a=(r.data||[]).filter(x=>x.id);
+      const v=await rhVariants(blob),main=v.main;
+      const r=await sb.storage.from("media").upload(id,main,{contentType:main.type||blob.type||"application/octet-stream",cacheControl:"31536000",upsert:false});if(r.error)throw new Error(r.error.message);
+      if(v.og){try{await sb.storage.from("media").upload(id+"-og",v.og,{contentType:"image/jpeg",cacheControl:"31536000",upsert:true})}catch(e){}}
+      return {id,url:"/_blob/"+id,sizeBytes:main.size,contentType:main.type}},
+    async list(){const r=await sb.storage.from("media").list("",{limit:1000});if(r.error)throw new Error(r.error.message);const a=(r.data||[]).filter(x=>x.id&&/^[a-f0-9]{32}$/.test(x.name));
       return {assets:a.map(x=>({id:x.name,url:"/_blob/"+x.name,sizeBytes:(x.metadata&&x.metadata.size)||0,contentType:x.metadata&&x.metadata.mimetype})),usage:{files:a.length,bytes:a.reduce((s,x)=>s+((x.metadata&&x.metadata.size)||0),0),maxFiles:20000,maxBytes:1024*1024*1024}}},
     async delete(id){const r=await sb.storage.from("media").remove([String(id).replace(/^\/_blob\//,"")]);if(r.error)throw new Error(r.error.message)}}}
 async function rhSyncSitemap(){if(!S.jsSb||!S.isAdmin)return;const sm=sitemap(),files=Object.entries(sm.files);if(!files.length)return;
@@ -3900,7 +3920,7 @@ async function rhCmsBoot(startSubs){
     if(!S.isAdmin){S.cms.state="denied";render();return}
     S.cms.state="in";S.db=makeJsDb(sb);S.assets=makeJsAssets(sb);S.sample=makeJsSample(sb);sbSetState("ok");
     {const b=$("#admBtn");if(b)b.hidden=false}
-    if(!started){started=true;startSubs(S.db);setTimeout(()=>rhSyncSitemap().catch(()=>{}),5000)}
+    if(!started){started=true;startSubs(S.db);setTimeout(()=>rhSyncSitemap().catch(()=>{}),5000);setTimeout(()=>rhOptimizeMedia(sb),9000)}
     render()};
   sb.auth.onAuthStateChange((ev,session)=>{if(ev==="SIGNED_OUT"){location.reload();return}if(ev==="PASSWORD_RECOVERY"){const np=prompt("Choose a new password (at least 8 characters):");if(np&&np.length>=8)sb.auth.updateUser({password:np}).then(x=>toast(x.error?x.error.message:"Password updated"))}if(ev==="SIGNED_IN"&&!started)apply(session)});
   const {data}=await sb.auth.getSession();await apply(data&&data.session);
