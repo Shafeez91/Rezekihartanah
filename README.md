@@ -1,7 +1,9 @@
-# Rezeki Hartanah — public website (rezekihartanah.com)
+# Rezeki Hartanah — website + CMS (rezekihartanah.com)
 
-Upload every file in this folder to the root of a GitHub repository, then connect that repository to a Netlify site
-(Netlify › Add new site › Import an existing project › GitHub). No build command, publish directory: `/` (the repo root).
+One repository, one Netlify site.
 
-All content (projects, articles, settings, photos, sitemaps) is read live from Supabase, so you do not need to
-re-upload when you add or edit projects in the CMS. Re-upload only when the site design changes.
+- Website: https://rezekihartanah.com
+- CMS admin dashboard: https://rezekihartanah.com/admin (sign in with your admin email and password)
+
+All content is stored in Supabase. Anything you add or change in the CMS shows on the website immediately,
+gets its own crawlable page and joins the live sitemap at /sitemap.xml. Re-upload these files only when the design changes.

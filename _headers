@@ -6,6 +6,20 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains
 /index.html
   Cache-Control: public, max-age=0, must-revalidate
+/admin
+  X-Robots-Tag: noindex, nofollow, noarchive
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  Cache-Control: no-store
+/admin/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+  X-Frame-Options: DENY
+  Cache-Control: no-store
+/admin.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  Cache-Control: no-store
 /*.png
   Cache-Control: public, max-age=604800
 /og-image.jpg

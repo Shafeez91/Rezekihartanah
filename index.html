@@ -3830,7 +3830,7 @@ async function sbSyncSitemap(){if(!S.sbDb)return;const sm=sitemap(),files=Object
   await S.sbDb.run(`delete from public.sitemap_files where name not in (${files.map(f=>sbLit(f[0])).join(",")})`)}
 /* production domain: always show the latest content from Supabase, and send enquiries there */
 async function sbLead(lead){try{await fetch(SB_URL+"/rest/v1/leads",{method:"POST",headers:{apikey:SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({data:{...lead,source:"website"}})})}catch(e){console.error("lead save failed",e)}}
-if(PATHMODE)(async()=>{try{
+if(PATHMODE&&!window.RH_CMS)(async()=>{try{
   const r=await fetch(SB_URL+"/rest/v1/rpc/public_seed",{method:"POST",headers:{apikey:SB_KEY,"Content-Type":"application/json"},body:"{}",cache:"no-store"});if(!r.ok)return;const d=await r.json();if(!d||!Array.isArray(d.projects)||(!d.projects.length&&!Object.keys(d.settings||{}).length))return; // empty database: keep the pre-rendered content
   const sig=()=>stableStr([[...S.remote.values()].sort((a,b)=>String(a.slug).localeCompare(String(b.slug))),[...S.posts.values()].sort((a,b)=>String(a.slug).localeCompare(String(b.slug))),S.settings||{}]);
   const before=sig();applySeed(d);if(sig()===before)return;siteLd();
@@ -3904,7 +3904,7 @@ async function rhCmsBoot(startSubs){
   document.addEventListener("submit",async e=>{if(e.target.id!=="cmsLogin")return;e.preventDefault();const f=e.target,email=f.email.value.trim().toLowerCase(),password=f.password.value,msg=$("#cmsMsg");
     S.cms.email=email;msg.className="msg";
     if(e.submitter&&e.submitter.dataset.mode==="up"){if(password.length<8){msg.className="msg err";msg.textContent="Use a password of at least 8 characters.";return}msg.textContent="Creating account…";
-      const u=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.origin+"/"}});
+      const u=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}});
       if(u.error){msg.className="msg err";msg.textContent=u.error.message;return}
       if(u.data&&u.data.session){await apply(u.data.session);return}
       msg.className="msg ok";msg.textContent="Account created. Open the confirmation email we just sent, then come back and sign in.";return}
@@ -3914,7 +3914,7 @@ async function rhCmsBoot(startSubs){
     S.cms.msg="";await apply(r.data.session)});
   document.addEventListener("click",async e=>{
     if(e.target.closest("[data-cmsout]")){e.preventDefault();await sb.auth.signOut();location.reload();return}
-    if(e.target.closest("[data-cmsreset]")){e.preventDefault();const email=($("#cmsEmail")||{}).value||"";if(!email){toast("Type your email first");return}const r=await sb.auth.resetPasswordForEmail(email.trim(),{redirectTo:location.origin+"/"});const m=$("#cmsMsg");if(m){m.className="msg "+(r.error?"err":"ok");m.textContent=r.error?r.error.message:"Check your email for a reset link."}}});
+    if(e.target.closest("[data-cmsreset]")){e.preventDefault();const email=($("#cmsEmail")||{}).value||"";if(!email){toast("Type your email first");return}const r=await sb.auth.resetPasswordForEmail(email.trim(),{redirectTo:location.origin+location.pathname});const m=$("#cmsMsg");if(m){m.className="msg "+(r.error?"err":"ok");m.textContent=r.error?r.error.message:"Check your email for a reset link."}}});
 }
 /* ============ BOOT ============ */
 if(!PATHMODE&&!window.RH_SITE&&(!location.hash||location.hash==="#"||location.hash==="#/")){try{history.replaceState(null,"","#/admin")}catch(e){}} // CMS edition: open on the dashboard

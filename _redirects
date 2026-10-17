@@ -1,3 +1,6 @@
+# CMS admin dashboard: rezekihartanah.com/admin
+/admin                   /admin.html                         200
+/admin/*                 /admin.html                         200
 # Photos uploaded in the CMS, served from Supabase on your own domain
 /_blob/*                 https://dttxithovvlmgeyahllk.supabase.co/functions/v1/media/:splat                     200
 # Live sitemaps, always up to date with the CMS
@@ -8,8 +11,5 @@
 /sitemap-projects-1.xml  https://dttxithovvlmgeyahllk.supabase.co/functions/v1/sitemap/sitemap-projects-1.xml   200!
 /sitemap-projects-2.xml  https://dttxithovvlmgeyahllk.supabase.co/functions/v1/sitemap/sitemap-projects-2.xml   200!
 /sitemap-projects-3.xml  https://dttxithovvlmgeyahllk.supabase.co/functions/v1/sitemap/sitemap-projects-3.xml   200!
-# The dashboard is not on the public site
-/admin                   /                                   301
-/admin/*                 /                                   301
-# Every page (/listings/..., /hartanah/..., /blog/..., new projects too) is rendered live from Supabase with status 200
+# Every public page (projects, areas, articles, new ones too) renders live from Supabase with status 200
 /*                       /index.html                         200
