@@ -1,0 +1,1102 @@
+{
+  "items": [
+    {
+      "area": "Dengkil",
+      "bmax": 3,
+      "bmin": 1,
+      "contentAt": 1792207314302,
+      "dev": "",
+      "fac": [
+        "Kolam renang",
+        "Gimnasium",
+        "Surau",
+        "Ruang serbaguna"
+      ],
+      "featured": false,
+      "furn": "",
+      "hl": [
+        "Dekat Putrajaya",
+        "SOHO & serviced apartment",
+        "Keselamatan 3 peringkat"
+      ],
+      "layouts": [],
+      "mon": 1000,
+      "name": "Residensi Armani Putra @ Dengkil",
+      "pmax": 548000,
+      "pmin": 230000,
+      "purpose": "sale",
+      "sig": 1348923982,
+      "slug": "armani-putra",
+      "smax": 1000,
+      "smin": 450,
+      "state": "Selangor",
+      "status": "new",
+      "summary": "Residensi Armani Putra ialah pembangunan Serviced Apartment & SOHO 32 tingkat di Dengkil berhampiran Putrajaya, dengan unit 450 hingga 1,000 kaki persegi.",
+      "tenure": "",
+      "tmax": 2,
+      "tmin": 1,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [
+            "Swimming pool",
+            "Gym",
+            "Prayer room",
+            "Multipurpose hall"
+          ],
+          "hl": [
+            "Near Putrajaya",
+            "SOHO & serviced apartment",
+            "3-tier security"
+          ],
+          "summary": "Residensi Armani Putra is a 32-storey Serviced Apartment & SOHO development in Dengkil near Putrajaya, with units from 450 to 1,000 sq ft."
+        },
+        "h": "4082383224"
+      },
+      "type": "serviced",
+      "units": 0,
+      "updatedAt": 1792207314302
+    },
+    {
+      "addr": "",
+      "area": "Shah Alam",
+      "bmax": 4,
+      "bmin": 1,
+      "completion": "2027",
+      "contentAt": 1792132706135,
+      "createdAt": 1792075713053,
+      "dev": "OSK Property",
+      "fac": [
+        "Kolam renang",
+        "Gimnasium",
+        "Bilik bacaan",
+        "Wellness Dome",
+        "Taman kesejahteraan",
+        "Laluan jogging",
+        "Taman permainan"
+      ],
+      "featured": true,
+      "furn": "",
+      "geo": "",
+      "hl": [
+        "~700m ke LRT3 Stadium Shah Alam",
+        "Lebih 32 kemudahan",
+        "Susun atur 550–958 sqft",
+        "Retail gaya hidup dalam pembangunan"
+      ],
+      "image": "",
+      "keyword": "",
+      "layouts": [
+        "Type A | 550 | 1+1 | 1 | 500000 |  |  | /images/uploads/3de805859276da67272efd5af5c7b2fc.jpg",
+        "Type B | 829 | 3 | 2 | 600000 |  |  | /images/uploads/2df05ad9e1bcc67e5f60cef8466b2527.jpg",
+        "Type C | 958 | 3 | 2 | 700000 |  |  | /images/uploads/2d52a8f8468bcf78c137aa295b1fcd7b.jpg"
+      ],
+      "maint": "0.45",
+      "mapUrl": "https://maps.app.goo.gl/NgdZXZxtQayF74nK6?g_st=ipc",
+      "metaDesc": "",
+      "metaTitle": "",
+      "mon": 964,
+      "name": "Bayu @ Mori Park",
+      "near": [],
+      "noindex": false,
+      "photos": [],
+      "pmax": 560000,
+      "pmin": 230000,
+      "published": true,
+      "purpose": "sale",
+      "redirectTo": "",
+      "sig": 957781049,
+      "slug": "bayu-moripark",
+      "smax": 958,
+      "smin": 550,
+      "state": "Selangor",
+      "status": "new",
+      "summary": "Bayu @ OSK Mori Park di Seksyen 13, Shah Alam ialah pembangunan berorientasikan transit kira-kira 700 meter berjalan kaki ke stesen LRT3 Stadium Shah Alam, dengan lebih 32 kemudahan gaya hidup dan kesejahteraan serta akses ke ELITE, Guthrie, NKVE dan Lebuhraya Persekutuan.",
+      "tenure": "freehold",
+      "tmax": 2,
+      "tmin": 1,
+      "tod": true,
+      "towers": [
+        "A | 500 | A, B, C",
+        "B | 500 | A,B,C"
+      ],
+      "tr": {
+        "en": {
+          "fac": [
+            "Swimming pool",
+            "Gymnasium",
+            "Reading room",
+            "Wellness Dome",
+            "Wellness garden",
+            "Jogging track",
+            "Playground"
+          ],
+          "hl": [
+            "~700m to LRT3 Stadium Shah Alam",
+            "Over 32 facilities",
+            "550–958 sqft layouts",
+            "Lifestyle retail within the development"
+          ],
+          "summary": "Bayu @ OSK Mori Park in Seksyen 13, Shah Alam is a transit-oriented development about 700 metres' walk from Stadium Shah Alam LRT3 station, with over 32 lifestyle and wellness facilities and access to ELITE, Guthrie, NKVE and Persekutuan Highway."
+        },
+        "h": "3847104803"
+      },
+      "type": "condo",
+      "units": 1000,
+      "updatedAt": 1792132706135
+    },
+    {
+      "area": "Cheras Cochrane",
+      "bmax": 3,
+      "bmin": 2,
+      "contentAt": 1792207329649,
+      "dev": "Binastra",
+      "fac": [],
+      "featured": false,
+      "furn": "",
+      "hl": [
+        "Pegangan bebas",
+        "Sebelah MyTown",
+        "Kelas mewah"
+      ],
+      "layouts": [
+        "A|649|2|2",
+        "B|763|2|2",
+        "C|1008|3|2",
+        "D|1026|3|3"
+      ],
+      "mon": 2900,
+      "name": "Binastra Cochrane @ Cheras",
+      "pmax": 1030000,
+      "pmin": 670000,
+      "purpose": "sale",
+      "sig": 94582709,
+      "slug": "binastra-cochrane",
+      "smax": 1026,
+      "smin": 649,
+      "state": "Kuala Lumpur",
+      "status": "new",
+      "summary": "Binastra Cochrane ialah kondominium mewah pegangan bebas bersebelahan MyTown Cheras, dengan saiz 649 hingga 1,026 kaki persegi.",
+      "tenure": "freehold",
+      "tmax": 3,
+      "tmin": 2,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [],
+          "hl": [
+            "Freehold",
+            "Next to MyTown",
+            "Luxury class"
+          ],
+          "summary": "Binastra Cochrane is a luxury freehold condominium next to MyTown Cheras, with sizes from 649 to 1,026 sqft."
+        },
+        "h": "2030934520"
+      },
+      "type": "serviced",
+      "units": 0,
+      "updatedAt": 1792207329649
+    },
+    {
+      "area": "Setapak",
+      "bmax": 5,
+      "bmin": 3,
+      "contentAt": 1792207342220,
+      "dev": "SkyWorld",
+      "fac": [],
+      "featured": false,
+      "furn": "",
+      "hl": [
+        "Telah siap",
+        "Kepadatan rendah, 830 unit",
+        "Sehingga 4+1 bilik"
+      ],
+      "layouts": [
+        "A|952|3|2",
+        "B|1110|4|2",
+        "C|1345|4+1|3"
+      ],
+      "mon": 2370,
+      "name": "Curvo @ Setapak",
+      "pmax": 718000,
+      "pmin": 565000,
+      "purpose": "sale",
+      "sig": 3599351541,
+      "slug": "curvo-setapak",
+      "smax": 1345,
+      "smin": 952,
+      "state": "Kuala Lumpur",
+      "status": "completed",
+      "summary": "Curvo oleh SkyWorld ialah kondominium berkepadatan rendah yang telah siap di Setapak dengan 830 unit, saiz 952 hingga 1,345 kaki persegi.",
+      "tenure": "",
+      "tmax": 3,
+      "tmin": 2,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [],
+          "hl": [
+            "Completed",
+            "Low density, 830 units",
+            "Up to 4+1 bedrooms"
+          ],
+          "summary": "Curvo by SkyWorld is a completed low-density condominium in Setapak with 830 units, sized 952 to 1,345 sq ft."
+        },
+        "h": "685034771"
+      },
+      "type": "condo",
+      "units": 830,
+      "updatedAt": 1792207342220
+    },
+    {
+      "area": "Setapak",
+      "bmax": 3,
+      "bmin": 2,
+      "completion": "Q1 2028",
+      "contentAt": 1792207321025,
+      "dev": "",
+      "fac": [
+        "Kolam infiniti",
+        "Gimnasium",
+        "Taman langit",
+        "Perkhidmatan shuttle"
+      ],
+      "featured": false,
+      "furn": "",
+      "hl": [
+        "Pegangan bebas",
+        "Kolam infiniti pemandangan KL",
+        "Freebies early bird",
+        "Siap Q1 2028"
+      ],
+      "layouts": [],
+      "maint": "0.30",
+      "mon": 1500,
+      "name": "EkoTitiwangsa @ Jalan Pahang",
+      "pmax": 631000,
+      "pmin": 350000,
+      "purpose": "sale",
+      "sig": 3572446731,
+      "slug": "ekotitiwangsa",
+      "smax": 1120,
+      "smin": 690,
+      "state": "Kuala Lumpur",
+      "status": "construction",
+      "summary": "EkoTitiwangsa ialah serviced apartment pegangan bebas di Jalan Pahang dengan 500 unit, kolam infiniti berpemandangan bandar KL dan sasaran siap Q1 2028.",
+      "tenure": "freehold",
+      "tmax": 2,
+      "tmin": 1,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [
+            "Infinity pool",
+            "Gymnasium",
+            "Sky garden",
+            "Shuttle service"
+          ],
+          "hl": [
+            "Freehold",
+            "Infinity pool with KL view",
+            "Early bird freebies",
+            "Completion in Q1 2028"
+          ],
+          "summary": "EkoTitiwangsa is a freehold serviced apartment on Jalan Pahang with 500 units, an infinity pool with a view of the KL city skyline, and a target completion of Q1 2028."
+        },
+        "h": "838150856"
+      },
+      "type": "serviced",
+      "units": 500,
+      "updatedAt": 1792207321025
+    },
+    {
+      "area": "Serendah",
+      "bmax": 0,
+      "bmin": 0,
+      "contentAt": 1792207345971,
+      "dev": "",
+      "fac": [],
+      "featured": false,
+      "furn": "",
+      "hl": [
+        "Pegangan bebas",
+        "Lot 75'×200' & 85'×200'",
+        "~9km ke ECRL Serendah",
+        "Kawasan muat & punggah"
+      ],
+      "layouts": [],
+      "mon": 25200,
+      "name": "Kilang 3 Tingkat Semi-D @ Serendah Technology Park",
+      "pmax": 7070000,
+      "pmin": 4890000,
+      "purpose": "sale",
+      "sig": 6507371,
+      "slug": "factory-serendah",
+      "smax": 9790,
+      "smin": 9790,
+      "state": "Selangor",
+      "status": "new",
+      "summary": "Kilang 3 tingkat berkembar pegangan bebas di Serendah Technology Park, Rawang Utara, sesuai untuk pejabat, gudang, bilik pameran dan kegunaan industri. Kira-kira 9km ke stesen ECRL Serendah.",
+      "tenure": "freehold",
+      "tmax": 0,
+      "tmin": 0,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [],
+          "hl": [
+            "Freehold",
+            "Lot 75'×200' & 85'×200'",
+            "~9km to ECRL Serendah",
+            "Loading and unloading area"
+          ],
+          "summary": "Three-storey semi-detached freehold factory in Serendah Technology Park, Rawang Utara, suitable for offices, warehouses, showrooms and industrial use. Approximately 9km to Serendah ECRL station."
+        },
+        "h": "1340874609"
+      },
+      "type": "factory",
+      "units": 0,
+      "updatedAt": 1792207345971
+    },
+    {
+      "area": "Bangi",
+      "bmax": 3,
+      "bmin": 3,
+      "contentAt": 1792207324266,
+      "dev": "",
+      "fac": [],
+      "featured": false,
+      "furn": "",
+      "hl": [
+        "Pegangan bebas",
+        "Dekat UKM",
+        "Unit 1,000 sqft"
+      ],
+      "layouts": [],
+      "mon": 1500,
+      "name": "Residensi Kirana @ Bangi",
+      "pmax": 0,
+      "pmin": 355000,
+      "purpose": "sale",
+      "sig": 1244999943,
+      "slug": "kirana-bangi",
+      "smax": 1000,
+      "smin": 1000,
+      "state": "Selangor",
+      "status": "new",
+      "summary": "Residensi Kirana ialah kondominium pegangan bebas berhampiran UKM Bangi dengan unit 1,000 kaki persegi, 3 bilik dan 2 bilik air.",
+      "tenure": "freehold",
+      "tmax": 2,
+      "tmin": 2,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [],
+          "hl": [
+            "Freehold",
+            "Near UKM",
+            "1,000 sqft units"
+          ],
+          "summary": "Residensi Kirana is a freehold condominium near UKM Bangi with 1,000 sqft units, 3 bedrooms and 2 bathrooms."
+        },
+        "h": "1989382553"
+      },
+      "type": "condo",
+      "units": 0,
+      "updatedAt": 1792207324266
+    },
+    {
+      "area": "Ampang",
+      "bmax": 4,
+      "bmin": 2,
+      "contentAt": 1792207335798,
+      "dev": "Mah Sing",
+      "fac": [],
+      "featured": false,
+      "furn": "",
+      "hl": [
+        "Akan datang",
+        "Pemaju Mah Sing",
+        "Dari RM399,000"
+      ],
+      "layouts": [],
+      "mon": 1700,
+      "name": "M Araya @ Ampang",
+      "pmax": 0,
+      "pmin": 399000,
+      "purpose": "sale",
+      "sig": 1858195831,
+      "slug": "m-araya",
+      "smax": 1000,
+      "smin": 700,
+      "state": "Selangor",
+      "status": "upcoming",
+      "summary": "M Araya ialah projek akan datang oleh Mah Sing di Ampang dengan unit 700 hingga 1,000 kaki persegi. Daftar minat awal untuk harga pelancaran.",
+      "tenure": "",
+      "tmax": 2,
+      "tmin": 2,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [],
+          "hl": [
+            "Upcoming",
+            "Developer Mah Sing",
+            "From RM399,000"
+          ],
+          "summary": "M Araya is an upcoming project by Mah Sing in Ampang with units from 700 to 1,000 square feet. Register your early interest for launch pricing."
+        },
+        "h": "3673820302"
+      },
+      "type": "serviced",
+      "units": 0,
+      "updatedAt": 1792207335798
+    },
+    {
+      "area": "Sentul",
+      "bmax": 4,
+      "bmin": 3,
+      "contentAt": 1792207327022,
+      "dev": "Mah Sing",
+      "fac": [],
+      "featured": false,
+      "furn": "",
+      "hl": [
+        "Hakmilik kediaman",
+        "Kepadatan rendah",
+        "Pemaju Mah Sing"
+      ],
+      "layouts": [
+        "A|800|3|2",
+        "B|840|3|2",
+        "C|950|4|2"
+      ],
+      "mon": 2000,
+      "name": "M Aria @ Sentul",
+      "pmax": 550000,
+      "pmin": 460000,
+      "purpose": "sale",
+      "sig": 1510532368,
+      "slug": "m-aria-sentul",
+      "smax": 950,
+      "smin": 800,
+      "state": "Kuala Lumpur",
+      "status": "new",
+      "summary": "M Aria oleh Mah Sing ialah kediaman berkepadatan rendah dengan hakmilik kediaman pegangan bebas di Sentul, dengan unit 800, 840 dan 950 kaki persegi.",
+      "tenure": "freehold",
+      "tmax": 2,
+      "tmin": 2,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [],
+          "hl": [
+            "Residential title",
+            "Low density",
+            "Developer Mah Sing"
+          ],
+          "summary": "M Aria by Mah Sing is a low-density residential development with freehold residential title in Sentul, with units of 800, 840 and 950 sqft."
+        },
+        "h": "1978779999"
+      },
+      "type": "condo",
+      "units": 0,
+      "updatedAt": 1792207327022
+    },
+    {
+      "area": "Wangsa Maju",
+      "bmax": 5,
+      "bmin": 2,
+      "contentAt": 1792207338945,
+      "dev": "Mah Sing",
+      "fac": [],
+      "featured": false,
+      "furn": "",
+      "hl": [
+        "Akan datang",
+        "Pemaju Mah Sing",
+        "2–5 bilik"
+      ],
+      "layouts": [],
+      "mon": 2000,
+      "name": "M Mira @ Wangsa Maju",
+      "pmax": 580000,
+      "pmin": 460000,
+      "purpose": "sale",
+      "sig": 3816427797,
+      "slug": "m-mira",
+      "smax": 1050,
+      "smin": 800,
+      "state": "Kuala Lumpur",
+      "status": "upcoming",
+      "summary": "M Mira ialah projek akan datang oleh Mah Sing di Wangsa Maju dengan unit 800, 900 dan 1,050 kaki persegi.",
+      "tenure": "",
+      "tmax": 3,
+      "tmin": 2,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [],
+          "hl": [
+            "Upcoming",
+            "Developer Mah Sing",
+            "2–5 bedrooms"
+          ],
+          "summary": "M Mira is an upcoming project by Mah Sing in Wangsa Maju with units of 800, 900 and 1,050 sqft."
+        },
+        "h": "2328871659"
+      },
+      "type": "serviced",
+      "units": 0,
+      "updatedAt": 1792207338945
+    },
+    {
+      "area": "KLCC",
+      "bmax": 3,
+      "bmin": 0,
+      "contentAt": 1792207309434,
+      "dev": "Oxley Rising",
+      "fac": [
+        "Kolam renang bumbung",
+        "Jakuzi",
+        "Gimnasium",
+        "Sauna",
+        "Taman langit",
+        "Bilik tayangan"
+      ],
+      "featured": false,
+      "furn": "partial",
+      "hl": [
+        "Siap & sedia dihuni",
+        "Pegangan bebas di Segi Tiga Emas",
+        "Concierge 24 jam"
+      ],
+      "layouts": [
+        "A2|566|Studio|1",
+        "C1|711|1+1|1",
+        "D1|903|2|2",
+        "D3 Dual Key|956|2|2",
+        "D1 Jewel Dual Key|1227|2+1|2"
+      ],
+      "mon": 5200,
+      "name": "Oxley @ KLCC",
+      "pmax": 2560000,
+      "pmin": 1210000,
+      "purpose": "sale",
+      "sig": 886166473,
+      "slug": "oxley-klcc",
+      "smax": 1227,
+      "smin": 566,
+      "state": "Kuala Lumpur",
+      "status": "completed",
+      "summary": "Oxley @ KLCC ialah kediaman mewah pegangan bebas yang telah siap di Segi Tiga Emas Kuala Lumpur, dengan SO Tower (78 tingkat) dan Jewel Tower (49 tingkat), separa berperabot dan sedia untuk dihuni.",
+      "tenure": "freehold",
+      "tmax": 2,
+      "tmin": 1,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [
+            "Rooftop swimming pool",
+            "Jacuzzi",
+            "Gymnasium",
+            "Sauna",
+            "Sky garden",
+            "Screening room"
+          ],
+          "hl": [
+            "Completed & move-in ready",
+            "Freehold in the Golden Triangle",
+            "24-hour concierge"
+          ],
+          "summary": "Oxley @ KLCC is a completed freehold luxury residence in the Golden Triangle of Kuala Lumpur, with SO Tower (78 storeys) and Jewel Tower (49 storeys), partially furnished and ready for occupation."
+        },
+        "h": "2125957619"
+      },
+      "type": "serviced",
+      "units": 857,
+      "updatedAt": 1792207309434
+    },
+    {
+      "area": "Bandar Tasik Selatan",
+      "bmax": 5,
+      "bmin": 3,
+      "contentAt": 1792207297866,
+      "dev": "Pembinaan Serta Hebat",
+      "fac": [
+        "Kemudahan bumbung",
+        "Podium kemudahan"
+      ],
+      "featured": false,
+      "furn": "",
+      "hl": [
+        "Tapak 6.33 ekar",
+        "3–5 bilik & dual key",
+        "Keselamatan 3 peringkat"
+      ],
+      "layouts": [],
+      "mon": 2000,
+      "name": "PSV2 Residences @ Bandar Tasik Selatan",
+      "pmax": 587000,
+      "pmin": 440000,
+      "purpose": "sale",
+      "sig": 3736091966,
+      "slug": "psv2",
+      "smax": 2034,
+      "smin": 947,
+      "state": "Kuala Lumpur",
+      "status": "new",
+      "summary": "PSV2 Residences ialah pembangunan kediaman tinggi di atas tapak 6.33 ekar di Bandar Tasik Selatan, dengan 1,500 unit dalam 2 blok, susun atur keluarga 3 hingga 5 bilik dan pilihan dual-key.",
+      "tenure": "",
+      "tmax": 4,
+      "tmin": 2,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [
+            "Rooftop facilities",
+            "Podium amenities"
+          ],
+          "hl": [
+            "6.33-acre site",
+            "3–5 bedrooms & dual key",
+            "3-tier security"
+          ],
+          "summary": "PSV2 Residences is a high-rise residential development on a 6.33-acre site in Bandar Tasik Selatan, with 1,500 units across 2 blocks, family layouts of 3 to 5 bedrooms, and dual-key options."
+        },
+        "h": "307249589"
+      },
+      "type": "condo",
+      "units": 1500,
+      "updatedAt": 1792207297866
+    },
+    {
+      "area": "Setapak",
+      "bmax": 3,
+      "bmin": 1,
+      "contentAt": 1792207286308,
+      "dev": "Platinum Victory",
+      "fac": [],
+      "featured": true,
+      "furn": "",
+      "hl": [
+        "Lokasi Setapak, dekat pusat bandar KL",
+        "Pilihan 1–3 bilik",
+        "Harga dari RM373,000"
+      ],
+      "layouts": [],
+      "mon": 1600,
+      "name": "PV22 Residences @ Setapak",
+      "pmax": 0,
+      "pmin": 373000,
+      "purpose": "sale",
+      "sig": 3624913418,
+      "slug": "pv22-residences",
+      "smax": 1300,
+      "smin": 490,
+      "state": "Kuala Lumpur",
+      "status": "new",
+      "summary": "PV22 Residences ialah projek serviced residence oleh Platinum Victory di Setapak, Kuala Lumpur, dengan pilihan 1 hingga 3 bilik dari 490 hingga 1,300 kaki persegi. Sesuai untuk pembeli rumah pertama, keluarga muda dan pelabur yang mahu lokasi dekat pusat bandar.",
+      "tenure": "",
+      "tmax": 3,
+      "tmin": 1,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [],
+          "hl": [
+            "Setapak location, near KL city centre",
+            "1–3 bedroom options",
+            "Prices from RM373,000"
+          ],
+          "summary": "PV22 Residences is a serviced residence project by Platinum Victory in Setapak, Kuala Lumpur, with 1 to 3 bedroom options from 490 to 1,300 sqft. Suitable for first-time homebuyers, young families and investors who want a location close to the city centre."
+        },
+        "h": "678358488"
+      },
+      "type": "serviced",
+      "units": 0,
+      "updatedAt": 1792207286308
+    },
+    {
+      "area": "Sungai Buloh",
+      "bmax": 0,
+      "bmin": 0,
+      "contentAt": 1792207349952,
+      "dev": "",
+      "fac": [],
+      "featured": false,
+      "furn": "",
+      "hl": [
+        "Hanya 55 unit",
+        "Lot 20'×70'",
+        "Fasa 3 dibuka",
+        "Rebat & yuran guaman terpilih"
+      ],
+      "layouts": [],
+      "mon": 5600,
+      "name": "QAYA @ Saujana Perdana",
+      "pmax": 1590000,
+      "pmin": 1130000,
+      "purpose": "sale",
+      "sig": 1597846339,
+      "slug": "qaya-saujana-perdana",
+      "smax": 2800,
+      "smin": 2800,
+      "state": "Selangor",
+      "status": "new",
+      "summary": "QAYA @ Saujana Perdana ialah lot kedai 2 tingkat dengan hanya 55 unit, setiap satu kira-kira 2,800 kaki persegi (20'×70'). Fasa 3 kini dibuka untuk tempahan. Anggaran sewaan adalah unjuran pemasaran.",
+      "tenure": "",
+      "tmax": 0,
+      "tmin": 0,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [],
+          "hl": [
+            "Only 55 units",
+            "Lot 20'×70'",
+            "Phase 3 now open",
+            "Selected rebates & legal fees"
+          ],
+          "summary": "QAYA @ Saujana Perdana is a 2-storey shop lot project with only 55 units, each approximately 2,800 sqft (20'×70'). Phase 3 is now open for booking. Rental estimates are marketing projections."
+        },
+        "h": "2136945938"
+      },
+      "type": "shop",
+      "units": 55,
+      "updatedAt": 1792207349952
+    },
+    {
+      "area": "Old Klang Road",
+      "bmax": 3,
+      "bmin": 2,
+      "contentAt": 1792207302361,
+      "dev": "Radium Development",
+      "fac": [
+        "Kolam renang",
+        "Gimnasium",
+        "Studio yoga",
+        "Simulator golf",
+        "Bilik pawagam",
+        "Ruang kerja bersama",
+        "Pertanian bandar di bumbung"
+      ],
+      "featured": false,
+      "furn": "full",
+      "hl": [
+        "Pegangan bebas",
+        "Pakej lengkap berperabot",
+        "Yuran guaman SPA & pinjaman ditanggung pemaju",
+        "KTM Petaling ~0.65km"
+      ],
+      "layouts": [],
+      "maint": "0.42",
+      "mon": 1765,
+      "name": "Radium Arena @ Old Klang Road",
+      "pmax": 561000,
+      "pmin": 401000,
+      "purpose": "sale",
+      "sig": 1255137835,
+      "slug": "radium-arena",
+      "smax": 920,
+      "smin": 658,
+      "state": "Kuala Lumpur",
+      "status": "new",
+      "summary": "Radium Arena ialah pembangunan pegangan bebas di atas 3.04 ekar di Jalan Klang Lama dengan 988 unit dalam dua menara, lebih 30 kemudahan dan pakej lengkap berperabot. KTM Petaling hanya kira-kira 0.65km.",
+      "tenure": "freehold",
+      "tmax": 3,
+      "tmin": 2,
+      "tod": true,
+      "tr": {
+        "en": {
+          "fac": [
+            "Swimming pool",
+            "Gymnasium",
+            "Yoga studio",
+            "Golf simulator",
+            "Cinema room",
+            "Co-working space",
+            "Urban farming on rooftop"
+          ],
+          "hl": [
+            "Freehold",
+            "Fully furnished package",
+            "SPA legal fees & loan borne by developer",
+            "KTM Petaling ~0.65km"
+          ],
+          "summary": "Radium Arena is a freehold development on over 3.04 acres along Jalan Klang Lama, with 988 units across two towers, more than 30 facilities and a fully furnished package. KTM Petaling is only about 0.65km away."
+        },
+        "h": "3336047165"
+      },
+      "type": "serviced",
+      "units": 988,
+      "updatedAt": 1792207302361
+    },
+    {
+      "area": "Taman Melati",
+      "bmax": 3,
+      "bmin": 3,
+      "contentAt": 1792207332732,
+      "dev": "",
+      "fac": [],
+      "featured": false,
+      "furn": "",
+      "hl": [
+        "Rumah mampu milik",
+        "Layak LPPSA",
+        "Pembiayaan sehingga 100%"
+      ],
+      "layouts": [],
+      "mon": 1400,
+      "name": "RUMAWIP Taman Melati",
+      "pmax": 0,
+      "pmin": 300000,
+      "purpose": "sale",
+      "sig": 2535611256,
+      "slug": "rumawip-melati",
+      "smax": 800,
+      "smin": 800,
+      "state": "Kuala Lumpur",
+      "status": "new",
+      "summary": "RUMAWIP Taman Melati (Residensi Wilayah) ialah rumah mampu milik untuk pembeli rumah pertama di Kuala Lumpur. Layak memohon pembiayaan LPPSA dan bank, dengan pembiayaan sehingga 100%.",
+      "tenure": "",
+      "tmax": 2,
+      "tmin": 2,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [],
+          "hl": [
+            "Affordable home",
+            "LPPSA eligible",
+            "Financing up to 100%"
+          ],
+          "summary": "RUMAWIP Taman Melati (Residensi Wilayah) is an affordable home for first-time home buyers in Kuala Lumpur. Eligible to apply for LPPSA and bank financing, with financing up to 100%."
+        },
+        "h": "1728282692"
+      },
+      "type": "affordable",
+      "units": 0,
+      "updatedAt": 1792207332732
+    },
+    {
+      "area": "Setapak",
+      "bmax": 4,
+      "bmin": 3,
+      "contentAt": 1792207289357,
+      "dev": "SkyWorld",
+      "fac": [],
+      "featured": true,
+      "furn": "",
+      "hl": [
+        "Unit luas 1,200–1,405 sqft",
+        "3–4 bilik",
+        "Pemaju SkyWorld"
+      ],
+      "layouts": [],
+      "mon": 2400,
+      "name": "Silverlake @ Setapak",
+      "pmax": 750000,
+      "pmin": 570000,
+      "purpose": "sale",
+      "sig": 2185480516,
+      "slug": "silver-lake",
+      "smax": 1405,
+      "smin": 1200,
+      "state": "Kuala Lumpur",
+      "status": "new",
+      "summary": "Silverlake oleh SkyWorld menawarkan kondominium luas 1,200 hingga 1,405 kaki persegi di Setapak dengan 3 hingga 4 bilik — pilihan untuk keluarga yang perlukan ruang.",
+      "tenure": "",
+      "tmax": 3,
+      "tmin": 2,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [],
+          "hl": [
+            "Spacious 1,200–1,405 sqft units",
+            "3–4 bedrooms",
+            "Developer: SkyWorld"
+          ],
+          "summary": "Silverlake by SkyWorld offers spacious condominium units of 1,200 to 1,405 sq ft in Setapak, with 3 to 4 bedrooms, making it an option for families who need space."
+        },
+        "h": "3897628990"
+      },
+      "type": "condo",
+      "units": 0,
+      "updatedAt": 1792207289357
+    },
+    {
+      "area": "KLCC",
+      "bmax": 3,
+      "bmin": 1,
+      "contentAt": 1792207305595,
+      "dev": "Berjaya",
+      "fac": [
+        "Urban Deck",
+        "Sky Deck"
+      ],
+      "featured": false,
+      "furn": "",
+      "hl": [
+        "Pegangan bebas",
+        "Sambungan ke Monorel Imbi",
+        "1–3 bilik & dual key"
+      ],
+      "layouts": [],
+      "mon": 2500,
+      "name": "Times Square 2 @ Imbi",
+      "pmax": 2510000,
+      "pmin": 583000,
+      "purpose": "sale",
+      "sig": 3986368630,
+      "slug": "times-square2",
+      "smax": 1356,
+      "smin": 488,
+      "state": "Kuala Lumpur",
+      "status": "new",
+      "summary": "Times Square 2 oleh Berjaya ialah menara 41 tingkat pegangan bebas di Imbi dengan 629 unit, sambungan ke LaLaport dan Monorel Imbi, serta kira-kira 1.5km ke TRX dan 2.2km ke KLCC.",
+      "tenure": "freehold",
+      "tmax": 3,
+      "tmin": 1,
+      "tod": true,
+      "tr": {
+        "en": {
+          "fac": [
+            "Urban Deck",
+            "Sky Deck"
+          ],
+          "hl": [
+            "Freehold",
+            "Connection to Imbi Monorail",
+            "1–3 bedrooms & dual key"
+          ],
+          "summary": "Times Square 2 by Berjaya is a 41-storey freehold tower in Imbi with 629 units, connected to LaLaport and Imbi Monorail, and about 1.5km to TRX and 2.2km to KLCC."
+        },
+        "h": "1405225488"
+      },
+      "type": "serviced",
+      "units": 629,
+      "updatedAt": 1792207305595
+    },
+    {
+      "addr": "Jalan 11, Kampung Baru Salak Selatan, Desa Petaling, 57100 Kuala Lumpur, Federal Territory of Kuala Lumpur",
+      "area": "Desa Petaling",
+      "bmax": 3,
+      "bmin": 3,
+      "completion": "",
+      "contentAt": 1792172251507,
+      "createdAt": 1792144216594,
+      "dev": "",
+      "fac": [],
+      "featured": true,
+      "furn": "full",
+      "geo": "",
+      "hl": [
+        "Lengkap berperabot",
+        "3 bilik, 2 bilik air",
+        "Dari RM480,000"
+      ],
+      "image": "/images/uploads/f681455606ad71e4b85b697225719c3c.jpg",
+      "keyword": "Tuan Straits Residency, Fully Furnished",
+      "layouts": [
+        "Type A | 800 | 3 | 2 | 480000 |  | 2 | /images/uploads/4100a24a535c75846c8163097b7682c8.jpg"
+      ],
+      "maint": "0.37",
+      "mapUrl": "https://maps.app.goo.gl/kV8nZgriZxGnpCBa8?g_st=ic",
+      "metaDesc": "",
+      "metaTitle": "Tuan Straits Layout, Price & Monthly",
+      "mon": 2050,
+      "name": "Tuan Straits Residency @ Desa Petaling",
+      "near": [],
+      "noindex": false,
+      "photos": [
+        "/images/uploads/f681455606ad71e4b85b697225719c3c.jpg",
+        "/images/uploads/3475ca9b815ee01117a03d4fe4a872ea.jpg"
+      ],
+      "pmax": 0,
+      "pmin": 480000,
+      "published": true,
+      "purpose": "sale",
+      "redirectTo": "",
+      "sig": 1892343957,
+      "slug": "tuan-straits",
+      "smax": 840,
+      "smin": 840,
+      "state": "Kuala Lumpur",
+      "status": "new",
+      "summary": "Tuan Straits Residency di Desa Petaling menawarkan unit kediaman 840 kaki persegi dengan 3 bilik dan 2 bilik air, dilengkapi perabot sepenuhnya.",
+      "tenure": "",
+      "tmax": 2,
+      "tmin": 2,
+      "tod": false,
+      "towers": [],
+      "tr": {
+        "en": {
+          "fac": [],
+          "hl": [
+            "Fully furnished",
+            "3 bedrooms, 2 bathrooms",
+            "From RM480,000"
+          ],
+          "summary": "Tuan Straits Residency in Desa Petaling offers 840 sqft residential units with 3 bedrooms and 2 bathrooms, fully furnished."
+        },
+        "h": "3567597051"
+      },
+      "type": "condo",
+      "units": 0,
+      "updatedAt": 1792206081558
+    },
+    {
+      "area": "Sentul",
+      "bmax": 3,
+      "bmin": 2,
+      "contentAt": 1792207317510,
+      "dev": "",
+      "fac": [],
+      "featured": false,
+      "furn": "partial",
+      "hl": [
+        "Pegangan bebas",
+        "80% berperabot",
+        "3 tingkat kemudahan"
+      ],
+      "layouts": [
+        "2B|667|2|2",
+        "3B|839|3|2",
+        "3B Large|947|3|2"
+      ],
+      "mon": 1445,
+      "name": "VOX Residence @ Sentul",
+      "pmax": 643000,
+      "pmin": 443000,
+      "purpose": "sale",
+      "sig": 908623911,
+      "slug": "vox-sent",
+      "smax": 947,
+      "smin": 667,
+      "state": "Kuala Lumpur",
+      "status": "new",
+      "summary": "VOX Residence ialah kondominium pegangan bebas di Sentul, 80% berperabot, dengan tiga tingkat kemudahan gaya kelab dan akses mudah ke LRT Sentul Timur serta pusat bandar.",
+      "tenure": "freehold",
+      "tmax": 2,
+      "tmin": 2,
+      "tod": false,
+      "tr": {
+        "en": {
+          "fac": [],
+          "hl": [
+            "Freehold",
+            "80% furnished",
+            "3 levels of facilities"
+          ],
+          "summary": "VOX Residence is a freehold condominium in Sentul, 80% furnished, with three levels of club-style facilities and easy access to LRT Sentul Timur and the city centre."
+        },
+        "h": "321250044"
+      },
+      "type": "condo",
+      "units": 0,
+      "updatedAt": 1792207317510
+    }
+  ]
+}
