@@ -1317,6 +1317,7 @@ pre.code{background:var(--surface-2);border-radius:var(--r-sm);padding:12px;over
 <link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
+<script>window.RH_SITE=true</script>
 </head>
 <body>
 <button type="button" class="skip" id="skipBtn" onclick="var m=document.getElementById('app');m.focus();m.scrollIntoView()">Langkau ke kandungan</button>
@@ -1669,10 +1670,10 @@ function seoSelfTest(){
 }
 /* ===== SEO-CORE:END ===== */
 
-const PATHMODE=(()=>{try{return location.hostname.replace(/^www\./,"")===new URL(SITE).hostname}catch(e){return false}})(); // real crawlable paths on the production domain; hash routes in previews
+const PATHMODE=(()=>{try{if(window.RH_SITE)return true;return location.hostname.replace(/^www\./,"")===new URL(SITE).hostname}catch(e){return false}})(); // real crawlable paths on the production domain; hash routes in previews
 let CMS_HOME=false; // CMS edition: the dashboard is the start page until the user navigates to a site page
 window.addEventListener("hashchange",()=>{if(/^#\/.+/.test(location.hash)||location.hash==="#/")CMS_HOME=true});
-function curHash(){if(PATHMODE)return pathToHash(location.pathname);const h=location.hash||"#/";if(!CMS_HOME&&(h==="#/"||!/^#\//.test(h)))return "#/admin";return h}
+function curHash(){if(PATHMODE)return pathToHash(location.pathname);const h=location.hash||"#/";if(!CMS_HOME&&!window.RH_SITE&&(h==="#/"||!/^#\//.test(h)))return "#/admin";return h}
 function navTo(h,replace){if(!PATHMODE){if(replace)location.replace(h);else location.hash=h;return}const p=hashToPath(h);if(p!==location.pathname)history[replace?"replaceState":"pushState"](null,"",p);dispatchEvent(new HashChangeEvent("hashchange"))}
 
 /* ============ DATA MERGE ============ */
@@ -3916,7 +3917,7 @@ async function rhCmsBoot(startSubs){
     if(e.target.closest("[data-cmsreset]")){e.preventDefault();const email=($("#cmsEmail")||{}).value||"";if(!email){toast("Type your email first");return}const r=await sb.auth.resetPasswordForEmail(email.trim(),{redirectTo:location.origin+"/"});const m=$("#cmsMsg");if(m){m.className="msg "+(r.error?"err":"ok");m.textContent=r.error?r.error.message:"Check your email for a reset link."}}});
 }
 /* ============ BOOT ============ */
-if(!PATHMODE&&(!location.hash||location.hash==="#"||location.hash==="#/")){try{history.replaceState(null,"","#/admin")}catch(e){}} // CMS edition: open on the dashboard
+if(!PATHMODE&&!window.RH_SITE&&(!location.hash||location.hash==="#"||location.hash==="#/")){try{history.replaceState(null,"","#/admin")}catch(e){}} // CMS edition: open on the dashboard
 (function(){const th=store.get("theme",null);if(th)document.documentElement.dataset.theme=th})();
 siteLd();render();schedulePop();scheduleSpot();
 new MutationObserver(()=>{fillCap();const f=$("#setForm");if(f&&!f.dataset.popsync){f.dataset.popsync="1";popSyncForm();bandSync()}}).observe($("#app"),{childList:true});
