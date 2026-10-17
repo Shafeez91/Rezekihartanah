@@ -60,7 +60,7 @@ function projectPage(p, d) {
   if (!auto) auto = head[head.length - 1];
   for (const add of [" Semak unit & pembiayaan LPPSA.", " WhatsApp kami untuk lawatan."]) if (auto.length < 110 && auto.length + add.length <= 160) auto += add;
   const desc = clip(String(p.metaDesc || "").trim() || auto, 160);
-  const url = SITE + "/listings/" + p.slug, imgs = photos(p);
+  const url = SITE + "/listings/" + p.slug, imgs = photos(p), share = imgs.length ? imgs[0] + "-og" : undefined;
   const hl = (p.hl || []).map(String).filter(Boolean), fac = (p.fac || []).map(String).filter(Boolean);
   const faqs = [];
   if (p.pmin) faqs.push([`Berapa harga ${name}?`, `Harga ${name} bermula dari ${rm(p.pmin)}${p.pmax && p.pmax > p.pmin ? " hingga " + rm(p.pmax) : ""}. Harga tertakluk kepada perubahan dan unit tersedia.`]);
@@ -86,7 +86,7 @@ ${hl.length ? `<h2>Kenapa projek ini</h2><ul>${hl.map((h) => `<li>${esc(h)}</li>
 ${fac.length ? `<h2>Kemudahan</h2><ul>${fac.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}
 <h2>Soalan lazim</h2>${faqs.map(([q, a]) => `<h3>${esc(q)}</h3><p>${esc(a)}</p>`).join("")}
 <p><a href="https://wa.me/${WA}?text=${encodeURIComponent("Hi, saya berminat dengan " + name + ".")}">WhatsApp kami tentang ${esc(name)}</a></p></article>`;
-  return { title, desc, url, image: imgs[0], graph, body, robots: p.noindex ? "noindex, follow" : "" };
+  return { title, desc, url, image: share, graph, body, robots: p.noindex ? "noindex, follow" : "" };
 }
 
 function listBody(h1, intro, list, d) {
@@ -157,7 +157,7 @@ export default async (request, context) => {
   set(/<meta name="description"[^>]*>/, `<meta name="description" content="${esc(page.desc)}">`);
   set(/<meta name="robots"[^>]*>/, `<meta name="robots" content="${esc(robots)}">`);
   set(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${esc(page.url)}">`);
-  for (const [k, v] of [["og:title", page.title], ["og:description", page.desc], ["og:url", page.url], ["og:image", image], ["og:image:alt", page.title]]) set(new RegExp(`<meta property="${k}"[^>]*>`), `<meta property="${k}" content="${esc(v)}">`);
+  for (const [k, v] of [["og:title", page.title], ["og:description", page.desc], ["og:url", page.url], ["og:image", image], ["og:image:secure_url", image], ["og:image:type", "image/jpeg"], ["og:image:width", "1200"], ["og:image:height", "630"], ["og:image:alt", page.title]]) set(new RegExp(`<meta property="${k}"[^>]*>`), `<meta property="${k}" content="${esc(v)}">`);
   for (const [k, v] of [["twitter:title", page.title], ["twitter:description", page.desc], ["twitter:image", image]]) set(new RegExp(`<meta name="${k}"[^>]*>`), `<meta name="${k}" content="${esc(v)}">`);
   const graph = page.graph && page.graph.length ? ld({ "@context": "https://schema.org", "@graph": page.graph }) : "";
   const seedJs = `<script>window.__HKV_SEED=${JSON.stringify(d).replace(/</g, "\\u003c")};</script>`;
