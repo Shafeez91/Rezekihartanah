@@ -768,6 +768,15 @@ footer a{text-decoration:none}footer a:hover{text-decoration:underline}
 .f-cta p{margin:0;opacity:.82;font-size:14px}
 .f-cta .btn{flex-shrink:0}.f-cta a.btn:hover{text-decoration:none;filter:brightness(1.06)}
 .f-brand{display:flex;align-items:center;gap:12px;margin:0 0 12px;text-decoration:none;color:var(--ink)}
+.f-contact{display:grid;gap:8px}
+.f-ch{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none!important;transition:transform .15s,border-color .15s,box-shadow .15s}
+.f-ch:hover{transform:translateY(-2px);border-color:var(--gold);box-shadow:0 8px 22px rgba(10,20,50,.1)}
+.f-ci{display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:var(--surface-2);color:var(--ink);flex:none}.f-ci svg{width:19px;height:19px}
+.f-ch.wa .f-ci{background:#1FAF5A;color:#fff}
+.f-ct{display:grid;gap:2px;min-width:0}.f-ct b{font-size:14px;line-height:1.1}.f-ct small{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.f-ca{margin-left:auto;color:var(--muted);transition:transform .15s}.f-ch:hover .f-ca{transform:translateX(3px);color:var(--gold)}
+.f-hrs{margin:2px 0 0;font-size:12.5px;color:var(--muted)}
+.f-bottom a{color:var(--muted)}
 .f-brand:hover{text-decoration:none!important}
 .f-brand b{display:block;font-family:"Fraunces","Playfair Display",Georgia,"Times New Roman",serif;font-weight:700;font-size:21px;line-height:1;font-optical-sizing:auto;font-variation-settings:"SOFT" 50;letter-spacing:-.015em;white-space:nowrap;color:var(--ink)}
 .f-brand b em{font-style:normal;background:linear-gradient(100deg,#FFD58A 0%,#F2B54F 55%,#D9922E 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -933,6 +942,14 @@ footer a{text-decoration:none}footer a:hover{text-decoration:underline}
 .shd-b span{width:44px;height:44px;border-radius:50%;color:#fff}.shd-b svg{width:22px;height:22px}
 .shd-b.wa span{background:#1FAF5A}.shd-b.fb span{background:#1877F2}.shd-b.tg span{background:#229ED9}.shd-b.xx span{background:#111}.shd-b.ml span{background:var(--muted)}.shd-b.dl span{background:var(--gold)}
 .shd-lbl{font-size:13px;font-weight:700;margin-top:4px}
+.devpick{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.devpick button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 11px;font:600 12.5px/1.2 inherit;font-family:inherit;cursor:pointer}.devpick button:hover{border-color:var(--ink)}.devpick button[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#0A1226}
+.sbchkw{margin:0 0 14px;border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:10px 14px}.sbchkw summary{cursor:pointer;font-weight:700;font-size:14px}.sbchkw #sbChk{margin-top:10px}
+.sbchk{list-style:none;margin:0;padding:0;display:grid;gap:8px}.sbchk li{display:grid;gap:2px;padding:9px 12px;border-radius:10px;background:var(--surface-2);font-size:13.5px}.sbchk li span{color:var(--muted);font-size:12.5px}.sbchk li.pass b{color:#1FAF5A}.sbchk li.fail b{color:#E5484D}.sbchk li.warn b{color:#C98A1B}
+.sbstat{display:flex;align-items:center;gap:10px;margin:0 0 12px;padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:var(--surface);font-size:13.5px;font-weight:600}
+.sbstat i{width:9px;height:9px;border-radius:50%;flex:none;background:#9AA5C0}.sbstat.ok i{background:#1FAF5A;box-shadow:0 0 0 4px rgba(31,175,90,.18)}.sbstat.sync i,.sbstat.connecting i{background:#F2B54F;animation:shp 1.2s ease-in-out infinite}.sbstat.error{border-color:#E5484D;color:#E5484D}.sbstat.error i{background:#E5484D}
+header.top .icon-btn#siteShareBtn{color:#F2B54F;border-color:rgba(242,181,79,.5)}
+.shd.site{max-width:min(460px,96vw)}.shd.site .shd-body{grid-template-columns:1fr}
+@media(max-width:420px){.bar{gap:8px}.logo b{font-size:18px}}
 .shd-link{display:flex;gap:8px;align-items:center;padding:6px 6px 6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--paper)}
 .shd-link input{flex:1;min-width:0;border:0;background:none;font-size:13px;color:var(--muted);padding:0;outline:none}
 @media(max-width:720px){
@@ -1296,9 +1313,12 @@ pre.code{background:var(--surface-2);border-radius:var(--r-sm);padding:12px;over
 :root[data-theme="dark"] .pe-serp b{color:#8ab4f8}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pe-serp b{color:#8ab4f8}}
 </style>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 </head>
 <body>
-<form name="enquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden><input name="bot-field"><input name="name"><input name="phone"><input name="email"><input name="budget"><input name="project"><textarea name="message"></textarea><input name="lang"><input name="source"></form>
 <button type="button" class="skip" id="skipBtn" onclick="var m=document.getElementById('app');m.focus();m.scrollIntoView()">Langkau ke kandungan</button>
 <a class="ann" id="annBar" hidden></a>
 <header class="top">
@@ -1318,6 +1338,8 @@ pre.code{background:var(--surface-2);border-radius:var(--r-sm);padding:12px;over
     <div class="seg" role="group" aria-label="Bahasa">
       <button data-lang="ms" aria-pressed="true">BM</button><button data-lang="en" aria-pressed="false">EN</button>
     </div>
+    <a class="icon-btn" id="admBtn" href="#/admin" hidden aria-label="Dashboard" title="Dashboard" style="color:#F2B54F;border-color:rgba(242,181,79,.5)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></a>
+    <button type="button" class="icon-btn" id="siteShareBtn" data-siteshare aria-label="Kongsi laman web ini" title="Kongsi laman web ini"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg></button>
     <button class="icon-btn" id="themeBtn" aria-label="Tukar tema"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
   </div>
 </header>
@@ -1338,8 +1360,12 @@ pre.code{background:var(--surface-2);border-radius:var(--r-sm);padding:12px;over
       <p class="fine" data-i="foot_disc" style="margin-top:12px">Harga, saiz, ketersediaan dan tarikh siap adalah anggaran dan tertakluk kepada perubahan. Sila sahkan dengan pemaju atau pasukan kami sebelum membuat keputusan.</p>
     </div>
     <div><h4 data-i="foot_links">Pautan</h4><ul id="footLinks"></ul></div>
-    <div><h4 data-i="foot_contact">Hubungi</h4><ul><li><a id="footWa" target="_blank" rel="noopener noreferrer">WhatsApp +60 17-952 6848</a></li><li><a href="tel:+60179526848">Telefon +60 17-952 6848</a></li><li><a href="#/privasi" data-i="foot_priv">Notis privasi</a></li><li><a href="#/admin" data-i="foot_admin" rel="nofollow">Papan pemuka pemilik</a></li></ul></div>
-    <div class="f-bottom"><span>© 2026 Rezeki Hartanah · <span id="fRights">Hak cipta terpelihara.</span></span><a href="#" class="to-top" aria-label="Kembali ke atas"><span class="tt-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span><span id="fTop">Kembali ke atas</span></a></div>
+    <div><h4 data-i="foot_contact">Hubungi</h4><div class="f-contact">
+      <a id="footWa" class="f-ch wa" target="_blank" rel="noopener noreferrer"><span class="f-ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.2.1.6-.1 1.1z"/></svg></span><span class="f-ct"><b>WhatsApp</b><small>+60 17-952 6848</small></span><span class="f-ca" aria-hidden="true">→</span></a>
+      <a href="tel:+60179526848" class="f-ch"><span class="f-ci" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6.2 6.2l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><span class="f-ct"><b id="fTelL">Telefon</b><small>+60 17-952 6848</small></span><span class="f-ca" aria-hidden="true">→</span></a>
+      <p class="f-hrs" id="fHrs">Balas dalam masa sehari · Isnin–Ahad</p>
+    </div></div>
+    <div class="f-bottom"><span>© 2026 Rezeki Hartanah · <span id="fRights">Hak cipta terpelihara.</span> · <a href="#/privasi" data-i="foot_priv">Notis privasi</a></span><a href="#" class="to-top" aria-label="Kembali ke atas"><span class="tt-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span><span id="fTop">Kembali ke atas</span></a></div>
   </div>
 </footer>
 
@@ -1587,7 +1613,7 @@ function buildSitemaps(list,opt){
   files[SM_FILES.index]=sitemapIndexXml(index);
   return {files,index,projects:ps,urls:[...pg,...pe,...ae,...(be.length?[{loc:SITE+"/blog"},...be]:[])]};
 }
-function robotsTxt(){return `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /simpanan\nDisallow: /api/\n\nSitemap: ${SITE}/${SM_FILES.index}\n`}
+function robotsTxt(){return `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /simpanan\nDisallow: /api/\n\nSitemap: ${SITE}/${SM_FILES.index}\nSitemap: https://dttxithovvlmgeyahllk.supabase.co/functions/v1/sitemap/${SM_FILES.index}\n`}
 /* route <-> crawlable path mapping (#/p/x ↔ /listings/x, #/kawasan/x ↔ /hartanah/x) */
 function hashToPath(h){const [a="",b=""]=String(h||"").replace(/^#\/?/,"").split(/[?#]/)[0].split("/");if(a==="p"&&b)return "/listings/"+b;if(a==="kawasan"&&b)return "/hartanah/"+b;return a?"/"+a+(b?"/"+b:""):"/"}
 function pathToHash(path){const [a="",b=""]=String(path||"/").split(/[?#]/)[0].replace(/^\/+|\/+$/g,"").split("/");if(a==="listings"&&b)return "#/p/"+b;if(a==="hartanah"&&b)return "#/kawasan/"+b;return a?"#/"+a+(b?"/"+b:""):"#/"}
@@ -1644,7 +1670,9 @@ function seoSelfTest(){
 /* ===== SEO-CORE:END ===== */
 
 const PATHMODE=(()=>{try{return location.hostname.replace(/^www\./,"")===new URL(SITE).hostname}catch(e){return false}})(); // real crawlable paths on the production domain; hash routes in previews
-function curHash(){return PATHMODE?pathToHash(location.pathname):(location.hash||"#/")}
+let CMS_HOME=false; // CMS edition: the dashboard is the start page until the user navigates to a site page
+window.addEventListener("hashchange",()=>{if(/^#\/.+/.test(location.hash)||location.hash==="#/")CMS_HOME=true});
+function curHash(){if(PATHMODE)return pathToHash(location.pathname);const h=location.hash||"#/";if(!CMS_HOME&&(h==="#/"||!/^#\//.test(h)))return "#/admin";return h}
 function navTo(h,replace){if(!PATHMODE){if(replace)location.replace(h);else location.hash=h;return}const p=hashToPath(h);if(p!==location.pathname)history[replace?"replaceState":"pushState"](null,"",p);dispatchEvent(new HashChangeEvent("hashchange"))}
 
 /* ============ DATA MERGE ============ */
@@ -1664,10 +1692,10 @@ function normalize(d){
 const bySlug = s => {const ps=projects(S.isAdmin);return ps.find(p=>p.slug===s)||ps.find(p=>pubSlug(p)===s)};
 function pubSlug(p){const s=slugify(String(p.name||"").replace(/@/g," "))||p.slug;const clash=projects(true).some(o=>o.slug!==p.slug&&(o.slug===s||slugify(String(o.name||"").replace(/@/g," "))===s));return clash?p.slug:s}
 
-function photosOf(p){const ok=v=>/^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(v||"");const a=(Array.isArray(p.photos)?p.photos:[]).filter(ok);if(!a.length&&ok(p.image))a.push(p.image);return a}
+function photosOf(p){const ok=v=>/^\/_blob\/[a-f0-9]{32}$/.test(v||"");const a=(Array.isArray(p.photos)?p.photos:[]).filter(ok);if(!a.length&&ok(p.image))a.push(p.image);return a}
 /* ============ ART (placeholder skyline; replaced by uploaded photo when set) ============ */
 function art(p){
-  if(p.image && /^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(p.image)) return `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" decoding="async">`;
+  if(p.image && /^\/_blob\/[a-f0-9]{32}$/.test(p.image)) return `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" decoding="async">`;
   const R=rnd(hash(p.slug)),hue=218+Math.floor(R()*24)-12,W=400,H=250;
   const sky1=`hsl(${hue} 60% 9%)`,sky2=`hsl(${hue} 52% ${26+R()*8}%)`,sun=`#F6F1E2`;
   let b="";const ground=H-28;
@@ -1858,7 +1886,7 @@ function viewHome(){
           <div class="field"><label for="fSt">${t("f_status")}</label><select id="fSt"><option value="">${t("any")}</option>${STATUSES.map(s=>`<option value="${s}" ${f.status===s?"selected":""}>${t("st_"+s)}</option>`).join("")}</select></div>
           <div class="field"><label for="fDev">${t("f_dev")}</label><select id="fDev"><option value="">${t("any")}</option>${devs.map(d=>`<option ${f.dev===d?"selected":""}>${esc(d)}</option>`).join("")}</select></div>
           <div class="field"><label for="fTen">${t("f_ten")}</label><select id="fTen"><option value="">${t("any")}</option>${["freehold","leasehold","malay"].map(k=>`<option value="${k}" ${f.tenure===k?"selected":""}>${t(k)}</option>`).join("")}</select></div>
-          <div class="field"><label for="fFurn">${t("f_furn")}</label><select id="fFurn"><option value="">${t("any")}</option>${["full","partial"].map(k=>`<option value="${k}" ${f.furn===k?"selected":""}>${t(k)}</option>`).join("")}</select></div>
+          <div class="field"><label for="fFurn">${t("f_furn")}</label><select id="fFurn"><option value="">${t("any")}</option>${["full","partial",...uniq(ps.map(p=>String(p.furn||"").trim()).filter(x=>x&&x!=="full"&&x!=="partial"))].map(k=>`<option value="${esc(k)}" ${f.furn===k?"selected":""}>${esc(t(k))}</option>`).join("")}</select></div>
         </div>
         <div class="sb-pop"><span>${t("pop")}</span>${areas.map(a=>[a,ps.filter(p=>p.area===a).length]).sort((x,y)=>y[1]-x[1]).slice(0,5).map(([a])=>`<button type="button" data-pop="${esc(a)}">${esc(a)}</button>`).join("")}<button type="button" class="sb-cl" data-gocl>🏢 ${L2("Co-Living & Pengurusan Hartanah","Co-Living & Property Management")}</button></div>
       </form>
@@ -1994,7 +2022,7 @@ function enquiryForm(pre){
 }
 
 function layoutCards(p,lay){
-  const cards=lay.map(l=>{const [name,sz,bed,bath,pr,mf,cp,plan]=l,okPlan=/^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(plan||""),sq=num(String(sz).replace(/[^\d.]/g,""));
+  const cards=lay.map(l=>{const [name,sz,bed,bath,pr,mf,cp,plan]=l,okPlan=/^\/_blob\/[a-f0-9]{32}$/.test(plan||""),sq=num(String(sz).replace(/[^\d.]/g,""));
     const given=num(String(pr||"").replace(/[^\d.]/g,""));let price=given,est=false;
     if(!price&&p.pmin&&p.smin&&sq){price=Math.round(p.pmin*(sq/p.smin)/1000)*1000;est=sq!==p.smin}
     else if(!price&&p.pmin&&lay.length===1)price=p.pmin;
@@ -2087,8 +2115,10 @@ function pendingChanges(){const st=S.settings||{},last=num(st.lastExportAt),ch=[
   for(const [slug,d] of S.remote){const at=Math.max(num(d.updatedAt),num(d.contentAt),num(d.createdAt));if(at>last)ch.push((d.deleted?"Deleted: ":"Project: ")+(d.name||d.slug||slug))}
   for(const a of S.posts.values()){const at=Math.max(num(a.updatedAt),num(a.contentAt),num(a.createdAt));if(at>last)ch.push("Article: "+(a.title||a.slug))}
   if(num(st.updatedAt)>last)ch.push("Settings");if(num(st.contentChangedAt)>last)ch.push("Deleted article");return {last,ch}}
-function pendingBanner(){if(!S.db)return "";const {last,ch}=pendingChanges();if(!ch.length)return "";
-  return `<div class="pend" role="status"><b>${ch.length} change${ch.length>1?"s are":" is"} not on your live website yet</b><span>${esc(ch.slice(0,4).join(" · "))}${ch.length>4?` · +${ch.length-4} more`:""}${last?` · last upload package ${esc(ago(last))}`:" · never exported"}</span>${S.static?`<button class="btn btn-brand btn-sm" data-hkvdeploy>Update live site</button>`:`<button class="btn btn-brand btn-sm" data-tab="seo">Update live site</button>`}</div>`}
+function pendingBanner(){if(S.sb.state!=="off"){const st=S.settings||{},last=num(st.lastExportAt),nw=[];for(const [slug,d] of S.remote){if(num(d.createdAt)>last||(d.deleted&&num(d.updatedAt)>last))nw.push((d.deleted?"Removed: ":"New: ")+(d.name||d.slug||slug))}for(const a of S.posts.values())if(num(a.createdAt)>last)nw.push("New article: "+(a.title||a.slug));
+    return sbStatusHtml()+(S.sbDb&&admTab==="overview"?`<details class="sbchkw" ${S.sbChkOpen?"open":""}><summary>Live sync check</summary><div id="sbChk"><button type="button" class="btn btn-brand btn-sm" data-sbcheck>Run check</button></div></details>`:"")+(nw.length&&S.sb.state==="ok"?`<div class="pend" role="status"><b>${nw.length} new or removed page${nw.length>1?"s":""}</b><span>Visitors and Google already see ${nw.length>1?"them":"it"} live. Upload the site package when convenient to add the pre-rendered copy (faster first load): ${esc(nw.slice(0,3).join(" · "))}${nw.length>3?` · +${nw.length-3} more`:""}</span><button class="btn btn-brand btn-sm" data-tab="seo">Site package</button></div>`:"")}
+  if(!S.db)return "";const {last,ch}=pendingChanges();if(!ch.length)return "";
+  return `<div class="pend" role="status"><b>${ch.length} change${ch.length>1?"s are":" is"} not on your live website yet</b><span>${esc(ch.slice(0,4).join(" · "))}${ch.length>4?` · +${ch.length-4} more`:""}${last?` · last upload package ${esc(ago(last))}`:" · never exported"}</span><button class="btn btn-brand btn-sm" data-tab="seo">Update live site</button></div>`}
 function admShell(title,actions,body){
   const nNew=S.leads.filter(l=>leadSt(l)==="new").length,cur=admTab==="editor"?"projects":admTab==="post"?"blog":admTab;
   const nav=[["overview","Overview"],["projects","Projects"],["blog","Blog"],["leads","Enquiries",nNew],["seo","SEO"],["settings","Settings"]];
@@ -2101,7 +2131,8 @@ function admShell(title,actions,body){
   </div>`;
 }
 function viewAdmin(){
-  if(!S.isAdmin) return `<div class="cms-lock"><div class="panel"><span class="logo-mark" style="margin:0 auto 14px;background:#F2B54F" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A1226" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><h1 style="font-size:1.6rem">RH CMS</h1><p class="sub" style="margin:10px auto 18px">This area is only for the site owner and editors. Sign in with the owner account to manage projects, enquiries and SEO.</p>${S.static?`<button class="btn btn-brand" data-ghlogin>Sign in with GitHub</button> <a class="btn btn-ghost" href="#/">Back to site</a><p class="msg" id="ghMsg" role="status" style="margin-top:12px"></p>`:`<a class="btn btn-brand" href="#/">Back to site</a>`}</div></div>`;
+  if(!S.isAdmin&&window.RH_CMS) return rhLoginView();
+  if(!S.isAdmin) return `<div class="cms-lock"><div class="panel"><span class="logo-mark" style="margin:0 auto 14px;background:#F2B54F" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A1226" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><h1 style="font-size:1.6rem">RH CMS</h1><p class="sub" style="margin:10px auto 18px">This area is only for the site owner and editors. Sign in with the owner account to manage projects, enquiries and SEO.</p><a class="btn btn-brand" href="#/">Back to site</a></div></div>`;
   if(admTab==="editor") return admShell(edIsNew?"New project":"Edit project",`<button class="btn btn-ghost btn-sm" data-cancel>Cancel</button>`,editorView());
   if(admTab==="projects") return admShell("Projects",`${S.sample?`<button class="btn btn-ghost btn-sm" data-trproj title="Translate descriptions, highlights & facilities of all projects into BM and English">🌐 Translate all</button> `:""}<button class="btn btn-brand btn-sm" data-new>+ New project</button>`,admProjects());
   if(admTab==="leads") return admShell("Enquiries",`<button class="btn btn-ghost btn-sm" data-addlead>${S.addLead?"Close form":"+ Add"}</button><button class="btn btn-ghost btn-sm" data-csv>Download CSV</button>`,admLeads());
@@ -2200,13 +2231,13 @@ function seoIndexPanel(){
    <li>New projects don't need to be submitted one by one: they enter the sitemap and directory as soon as they are published. Re-upload the sitemap files to the server if the server doesn't generate them live.</li></ol></section>`;
 }
 /* Site media: replaceable photos on public pages. Add more slots here. */
-const MEDIA_SLOTS={sv:{label:"Property management / co-living photo",where:"Home page, section \"Property management, after you get the keys\"",src:"/images/uploads/6a561a286afcf33d3e1119b1ea536a33.webp",alt:"Keluarga tersenyum menerima kunci rumah, pakar perkhidmatan co-living",altEn:"Smiling couple handing over house keys, co-living services experts",size:"Portrait, about 1100×1440"}};
+const MEDIA_SLOTS={sv:{label:"Property management / co-living photo",where:"Home page, section \"Property management, after you get the keys\"",src:"/_blob/f4b77ddfabda507642bf77e368d0e7f6",alt:"Keluarga tersenyum menerima kunci rumah, pakar perkhidmatan co-living",altEn:"Smiling couple handing over house keys, co-living services experts",size:"Portrait, about 1100×1440"}};
 function mediaSrc(k){const s=S.settings||{};return s["m_"+k]||MEDIA_SLOTS[k].src}
 function mediaAlt(k){const s=S.settings||{},d=MEDIA_SLOTS[k];return L2(s["m_"+k+"Alt"]||d.alt,s["m_"+k+"AltEn"]||d.altEn)}
 function mediaSettingsHtml(s){return `<section class="panel" style="grid-column:1/-1"><h3>Site media</h3><p class="fine" style="margin-bottom:12px">Replace photos used on the public site. Upload, then press Save settings. Project photos are managed in Projects.</p>${Object.entries(MEDIA_SLOTS).map(([k,d])=>{const cur=s["m_"+k]||"";return `<div class="media-slot" data-mslot="${k}" style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;margin-bottom:12px"><div class="pop-thumb" data-mthumb style="width:96px;aspect-ratio:3/4"><img src="${esc(cur||d.src)}" alt=""></div><div style="flex:1;min-width:220px"><b style="font-size:14px">${esc(d.label)}</b><p class="fine">${esc(d.where)}. ${esc(d.size)}, JPG/PNG/WebP max 5MB.</p><input type="hidden" name="m_${k}" value="${esc(cur)}"><div style="margin:8px 0"><label class="btn btn-ghost btn-sm" ${S.assets?"":"aria-disabled=\"true\""}>📷 Upload photo<input type="file" class="m-file" accept="image/jpeg,image/png,image/webp" hidden ${S.assets?"":"disabled"}></label> <button type="button" class="btn btn-ghost btn-sm" data-mreset ${cur?"":"hidden"}>Use original photo</button> <span class="fine" data-mnote></span></div><div class="edgrid" style="grid-template-columns:1fr 1fr"><div class="field"><label for="m_${k}Alt">Alt text BM (for Google Images)</label><input id="m_${k}Alt" name="m_${k}Alt" maxlength="160" value="${esc(s["m_"+k+"Alt"]||"")}" placeholder="${esc(d.alt)}"></div><div class="field"><label for="m_${k}AltEn">Alt text EN</label><input id="m_${k}AltEn" name="m_${k}AltEn" maxlength="160" value="${esc(s["m_"+k+"AltEn"]||"")}" placeholder="${esc(d.altEn)}"></div></div></div></div>`}).join("")}</section>`}
 document.addEventListener("change",async e=>{if(!e.target.classList||!e.target.classList.contains("m-file"))return;const slot=e.target.closest("[data-mslot]"),f=e.target.files[0],note=slot.querySelector("[data-mnote]");if(!f||!S.assets)return;
   if(!/^image\/(jpeg|png|webp)$/.test(f.type)||f.size>5*1024*1024){note.textContent="Choose a JPG, PNG or WebP under 5MB.";return}
-  note.textContent="Uploading…";try{const r=await S.assets.upload(f),u=(r.url||"/_blob/"+r.id);slot.querySelector("input[type=hidden]").value=u;slot.querySelector("[data-mthumb]").innerHTML=`<img src="${u}" alt="">`;slot.querySelector("[data-mreset]").hidden=false;note.textContent="Uploaded. Save settings to use it."}catch(x){note.textContent="Upload failed. Try again."}});
+  note.textContent="Uploading…";try{const r=await S.assets.upload(f),u="/_blob/"+r.id;slot.querySelector("input[type=hidden]").value=u;slot.querySelector("[data-mthumb]").innerHTML=`<img src="${u}" alt="">`;slot.querySelector("[data-mreset]").hidden=false;note.textContent="Uploaded. Save settings to use it."}catch(x){note.textContent="Upload failed. Try again."}});
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-mreset]");if(!b)return;const slot=b.closest("[data-mslot]"),k=slot.dataset.mslot;slot.querySelector("input[type=hidden]").value="";slot.querySelector("[data-mthumb]").innerHTML=`<img src="${esc(MEDIA_SLOTS[k].src)}" alt="">`;b.hidden=true;slot.querySelector("[data-mnote]").textContent="Original photo will be used after you save."});
 function admSettings(){const s=S.settings||{};return `<form id="setForm" novalidate><div class="cms-grid" style="margin-top:0">
  <section class="panel"><h3>Contact</h3><div class="field"><label for="st_wa">WhatsApp number (starting with 60)</label><input id="st_wa" name="wa" inputmode="tel" value="${esc(WA)}"></div><p class="fine">Used for every WhatsApp button on the site.</p></section>
@@ -2226,11 +2257,13 @@ function editorView(){
     <section class="panel"><h3>Basic information</h3><div class="edgrid">
      ${inp("name","Project name *",p.name,"text","w2")}
      <div class="field"><label for="ed_slug">URL slug</label><input id="ed_slug" name="slug" value="${esc(p.slug)}" ${edIsNew?"":"readonly"} pattern="[a-z0-9-]+"></div>
-     ${inp("dev","Developer",p.dev)}${inp("area","Area *",p.area)}${inp("state","State",p.state)}
+     ${(()=>{const cnt=new Map();for(const q of projects(true)){const d=String(q.dev||"").trim();if(d)cnt.set(d,(cnt.get(d)||0)+1)}const devs=[...cnt.keys()].sort((a,b)=>cnt.get(b)-cnt.get(a)||a.localeCompare(b));
+       return `<div class="field"><label for="ed_dev">Developer</label><input id="ed_dev" name="dev" type="text" value="${esc(p.dev)}" list="devList" autocomplete="off" placeholder="${devs.length?"Type or pick a previous developer":""}"><datalist id="devList">${devs.map(d=>`<option value="${esc(d)}"></option>`).join("")}</datalist>${devs.length?`<div class="devpick" role="group" aria-label="Previous developers">${devs.slice(0,12).map(d=>`<button type="button" data-devpick="${esc(d)}" aria-pressed="${d===String(p.dev||"").trim()}">${esc(d)}</button>`).join("")}</div>`:""}</div>`})()}${inp("area","Area *",p.area)}${inp("state","State",p.state)}
      <div class="field"><label for="ed_type">Type</label><select id="ed_type" name="type">${[...TYPES.res,...TYPES.com].map(k=>`<option value="${k}" ${p.type===k?"selected":""}>${tE("t_"+k)}</option>`).join("")}</select></div>
      ${sel("status","Status",STATUSES.map(s=>[s,tE("st_"+s)]),p.status)}
      ${sel("tenure","Tenure",[["","–"],["freehold",tE("freehold")],["leasehold",tE("leasehold")],["malay",tE("malay")]],p.tenure)}
-     ${sel("furn","Furnishing",[["","–"],["full",tE("full")],["partial",tE("partial")]],p.furn)}
+     ${(()=>{const cur=String(p.furn||"").trim(),lab=k=>k==="full"||k==="partial"?tE(k):k,cnt=new Map([["full",0],["partial",0]]);for(const q of projects(true)){const v=String(q.furn||"").trim();if(v)cnt.set(v,(cnt.get(v)||0)+1)}const opts=["full","partial",...[...cnt.keys()].filter(k=>k!=="full"&&k!=="partial").sort((a,b)=>cnt.get(b)-cnt.get(a)||a.localeCompare(b))];
+       return `<div class="field"><label for="ed_furn">Furnishing</label><input id="ed_furn" name="furn" type="text" value="${esc(lab(cur))}" list="furnList" autocomplete="off" maxlength="60" placeholder="Type or pick, e.g. Kitchen cabinet & aircond"><datalist id="furnList">${opts.map(k=>`<option value="${esc(lab(k))}"></option>`).join("")}</datalist><div class="devpick" role="group" aria-label="Furnishing options">${opts.slice(0,10).map(k=>`<button type="button" data-furnpick="${esc(lab(k))}" aria-pressed="${lab(k)===lab(cur)}">${esc(lab(k))}</button>`).join("")}</div></div>`})()}
      <label class="consent"><input type="checkbox" name="tod" ${p.tod?"checked":""}> Near transit (TOD)</label>
      <label class="consent"><input type="checkbox" name="featured" ${p.featured?"checked":""}> Featured project</label>
      <label class="consent"><input type="checkbox" name="indexable" ${p.noindex?"":"checked"}> Allow Google to index this page</label>
@@ -2273,7 +2306,7 @@ function editorView(){
   </form>`;
 }
 const LAYF=[["Type","Type A","text"],["Size (sqft)","850","number"],["Bedrooms","3","text"],["Bathrooms","2","text"],["Price RM","","number"],["Fee/mo","","fee"],["Parking","1","text"]];
-const okBlob=v=>/^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(v||"");
+const okBlob=v=>/^\/_blob\/[a-f0-9]{32}$/.test(v||"");
 function layThumb(plan){return okBlob(plan)?`<img src="${esc(plan)}" alt="Floor plan">`:`<span>+ Upload plan</span>`}
 function layFee(sz,psf){const sq=num(String(sz||"").replace(/[^\d.]/g,"")),r=num(psf);return sq&&r?rmFull(Math.round(sq*r)):"–"}
 function layRow(str){const v=String(str||"").split("|").map(x=>x.trim()),plan=okBlob(v[7])?v[7]:"";
@@ -2288,7 +2321,7 @@ function syncLay(){const box=$("#layRows"),ta=$("#ed_layouts");if(!box||!ta)retu
 async function uploadPlan(inp){const row=inp.closest(".lay-row"),th=row.querySelector(".lr-thumb"),file=inp.files[0];if(!file||!S.assets)return;
   if(!/^image\/(jpeg|png|webp)$/.test(file.type)||file.size>5*1024*1024){toast("Choose a JPG, PNG or WebP under 5MB.");inp.value="";return}
   const keep=th.querySelector("img,span");if(keep)keep.outerHTML="<span>Uploading…</span>";
-  try{const r=await S.assets.upload(file);row.dataset.plan=(r.url||"/_blob/"+r.id);toast("Plan uploaded")}catch(x){toast("Plan upload failed. Try again.")}
+  try{const r=await S.assets.upload(file);row.dataset.plan="/_blob/"+r.id;toast("Plan uploaded")}catch(x){toast("Plan upload failed. Try again.")}
   th.querySelector("span,img").outerHTML=layThumb(row.dataset.plan);row.querySelector("[data-lay-unplan]").hidden=!row.dataset.plan;inp.value="";edDirty=true;updateSeoPanel()}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-lay-add],[data-lay-del],[data-lay-unplan]");if(!b||!b.closest("#edForm"))return;
   if(b.hasAttribute("data-lay-add")){$("#layRows").insertAdjacentHTML("beforeend",layRow(""));$("#layRows .lay-row:last-child .lr-i").focus()}
@@ -2312,6 +2345,7 @@ function readEditor(){
   const fm=$("#edForm");if(!fm)return null;syncLay();syncTw();const fd=new FormData(fm),o={...(editing||blank())};
   for(const [k,v] of fd.entries()) if(typeof v==="string") o[k]=v.trim();
   for(const k of ["pmin","pmax","mon","bmin","bmax","tmin","tmax","smin","smax","units"]) o[k]=num(o[k]);
+  {const fv=String(o.furn||"").trim().toLowerCase();o.furn=String(o.furn||"").trim().slice(0,60);for(const k of ["full","partial"])if([k,T.en[k],T.ms[k]].some(x=>String(x||"").toLowerCase()===fv))o.furn=k}
   o.tod=!!fm.elements.tod.checked;o.featured=!!fm.elements.featured.checked;o.published=!!fm.elements.published.checked;o.noindex=!fm.elements.indexable.checked;delete o.indexable;o.redirectTo=String(o.redirectTo||"");
   for(const k of ["hl","fac","layouts","towers","near","photos"]) o[k]=String(fd.get(k)||"").split("\n").map(s=>s.trim()).filter(Boolean).slice(0,40);
   o.image=o.photos[0]||"";
@@ -2365,7 +2399,7 @@ async function uploadImages(files){
   let ok=0,bad=0;
   for(let k=0;k<list.length;k++){const f=list[k];if(!/^image\/(jpeg|png|webp)$/.test(f.type)||f.size>5*1024*1024){bad++;continue}
     note.textContent=`Uploading ${k+1}/${list.length}…`;
-    try{const r=await S.assets.upload(f);const a=galGet();a.push((r.url||"/_blob/"+r.id));galSet(a);ok++}catch(x){bad++}}
+    try{const r=await S.assets.upload(f);const a=galGet();a.push("/_blob/"+r.id);galSet(a);ok++}catch(x){bad++}}
   inp.value="";note.textContent=`${ok} photo(s) uploaded${bad?`, ${bad} failed (choose JPG/PNG/WebP under 5MB)`:""}. The first photo is the cover; tap ★ to change.`+(all.length>list.length?" 20-photo limit reached.":"");
 }
 async function saveLead(lead){if(!S.user)throw new Error("no user");const id=await S.user.id();const ref=S.db.collection("leads").doc(id);let old=null;try{const d=await ref.get();if(d&&d.exists)old=d.data()}catch(e){}if(old){const{prev,...o}=old;lead.prev=[o,...(Array.isArray(prev)?prev:[])].slice(0,10)}await ref.set(lead)}
@@ -2405,7 +2439,7 @@ async function saveSettings(fm){
    const bs=mins.map((m,i)=>({min:i===0?0:m,dsr:dsrs[i]}));o.bands=JSON.stringify(bs);
    o.inc1="";o.inc2="";o.dsr1="";o.dsr2="";o.dsr3=""}
   o.stress=num(o.stress);if(!(o.stress>=0&&o.stress<=3)){out.textContent="Stress test must be between 0 and 3%.";return}
-  for(const k of Object.keys(MEDIA_SLOTS)){const v=o["m_"+k]||"";o["m_"+k]=/^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(v)?v:"";o["m_"+k+"Alt"]=(o["m_"+k+"Alt"]||"").slice(0,160);o["m_"+k+"AltEn"]=(o["m_"+k+"AltEn"]||"").slice(0,160)}
+  for(const k of Object.keys(MEDIA_SLOTS)){const v=o["m_"+k]||"";o["m_"+k]=/^\/_blob\/[0-9a-f]{32}$/.test(v)?v:"";o["m_"+k+"Alt"]=(o["m_"+k+"Alt"]||"").slice(0,160);o["m_"+k+"AltEn"]=(o["m_"+k+"AltEn"]||"").slice(0,160)}
   o.ann=o.ann.slice(0,140);o.annEn=o.annEn.slice(0,140);if(o.annLink&&!bySlugAll(o.annLink))o.annLink="";
   const po=popReadForm(fm);for(const k of Object.keys(po))delete o[k];delete o.popOn;delete o.popHome;delete o.popProj;
   if(po.popAct==="url"&&po.popUrl&&!/^https?:\/\//.test(po.popUrl)){out.textContent="Pop-up URL must start with https://";return}
@@ -2499,7 +2533,7 @@ async function drawPoster(p,fmt){
   // photo
   const imgH=fmt==="story"?1080:720;
   let img=null;
-  if(p.image&&/^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(p.image))img=await loadImg(p.image);
+  if(p.image&&/^\/_blob\/[a-f0-9]{32}$/.test(p.image))img=await loadImg(p.image);
   if(!img){let svg=art(p);if(!/xmlns=/.test(svg))svg=svg.replace("<svg ",'<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" ');img=await loadImg("data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg))}
   if(img){const s=Math.max(W/img.width,imgH/img.height),iw=img.width*s,ih=img.height*s;c.drawImage(img,(W-iw)/2,(imgH-ih)/2,iw,ih)}
   let g=c.createLinearGradient(0,0,0,imgH);g.addColorStop(0,"rgba(14,26,58,.55)");g.addColorStop(.25,"rgba(14,26,58,0)");g.addColorStop(.5,"rgba(14,26,58,.3)");g.addColorStop(.78,"rgba(14,26,58,.85)");g.addColorStop(1,NAVY);c.fillStyle=g;c.fillRect(0,0,W,imgH);
@@ -2593,7 +2627,30 @@ async function openShare(slug){
   };
   render();
 }
+function openSiteShare(){
+  let dlg=$("#siteShareDlg");if(!dlg){dlg=document.createElement("dialog");dlg.id="siteShareDlg";dlg.className="shd site";document.body.appendChild(dlg)}
+  const url=SITE+"/",txt=L2("🏙️ Rezeki Hartanah — projek hartanah baharu & siap di Lembah Klang, dengan kalkulator kelayakan pembiayaan.","🏙️ Rezeki Hartanah — new & completed property projects in the Klang Valley, with financing eligibility calculators."),enc=encodeURIComponent,native=!!navigator.share;
+  const links={wa:"https://wa.me/?text="+enc(txt+"\n"+url),fb:"https://www.facebook.com/sharer/sharer.php?u="+enc(url),tg:"https://t.me/share/url?url="+enc(url)+"&text="+enc(txt),x:"https://twitter.com/intent/tweet?text="+enc(txt)+"&url="+enc(url),mail:"mailto:?subject="+enc("Rezeki Hartanah")+"&body="+enc(txt+"\n\n"+url)};
+  const a=(k,l,cls)=>`<a class="shd-b ${cls}" href="${esc(links[k])}" target="_blank" rel="noopener noreferrer"><span>${SHI[k]}</span>${l}</a>`;
+  dlg.innerHTML=`<div class="shd-in"><div class="shd-h"><div><b>${L2("Kongsi laman web ini","Share this website")}</b><small>Rezeki Hartanah · Klang Valley</small></div><button type="button" class="dbtn x" data-shclose aria-label="${L2("Tutup","Close")}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+   <div class="shd-body"><div class="shd-act">
+    ${native?`<button type="button" class="shd-main" data-shnative><span>${SHI.more}</span>${L2("Kongsi pautan","Share link")}</button>`:""}
+    <div class="shd-grid">${a("wa","WhatsApp","wa")}${a("fb","Facebook","fb")}${a("tg","Telegram","tg")}${a("x","X","xx")}${a("mail",L2("E-mel","Email"),"ml")}</div>
+    <label class="shd-lbl" for="siteLink">${L2("Pautan laman web","Website link")}</label>
+    <div class="shd-link"><input id="siteLink" readonly value="${esc(url)}"><button type="button" class="btn btn-brand btn-sm" data-shcopy>${L2("Salin","Copy")}</button></div>
+   </div></div></div>`;
+  if(!dlg.open)dlg.showModal();
+  dlg.onclick=async e=>{
+    if(e.target===dlg||e.target.closest("[data-shclose]")){dlg.close();return}
+    if(e.target.closest("[data-shcopy]")){const i=$("#siteLink");try{await navigator.clipboard.writeText(url);toast(L2("Pautan disalin","Link copied"))}catch(x){i.select();try{document.execCommand("copy");toast(L2("Pautan disalin","Link copied"))}catch(y){toast(L2("Salin pautan secara manual","Copy the link manually"))}}return}
+    if(e.target.closest("[data-shnative]")){try{await navigator.share({title:"Rezeki Hartanah",text:txt,url})}catch(x){if(!(x&&x.name==="AbortError"))toast(L2("Guna butang di bawah untuk kongsi","Use the buttons below to share"))}}
+  };
+}
+window.addEventListener("hashchange",()=>{const d=$("#siteShareDlg");if(d&&d.open)d.close()});
 document.addEventListener("click",e=>{
+  const fp=e.target.closest("[data-furnpick]");if(fp){e.preventDefault();const i=$("#ed_furn");if(i){i.value=fp.dataset.furnpick;i.dispatchEvent(new Event("input",{bubbles:true}));i.dispatchEvent(new Event("change",{bubbles:true}));fp.parentNode.querySelectorAll("[data-furnpick]").forEach(b=>b.setAttribute("aria-pressed",b===fp))}return}
+  const dp=e.target.closest("[data-devpick]");if(dp){e.preventDefault();const i=$("#ed_dev");if(i){i.value=dp.dataset.devpick;i.dispatchEvent(new Event("input",{bubbles:true}));i.dispatchEvent(new Event("change",{bubbles:true}));dp.parentNode.querySelectorAll("[data-devpick]").forEach(b=>b.setAttribute("aria-pressed",b===dp))}return}
+  if(e.target.closest("[data-siteshare]")){e.preventDefault();openSiteShare();return}
   const s=e.target.closest("[data-share]");if(s){e.preventDefault();openShare(s.dataset.share);return}
   if(e.target.closest("[data-dclose]")){e.preventDefault();navTo(lastList&&lastList!==curHash()?lastList:"#/")}
 });
@@ -2638,7 +2695,7 @@ function popCta(c){
 }
 function showPop(c,preview){
   closePop(true);
-  const ttl=(S.lang==="en"&&c.popTitleEn)||c.popTitle,msg=(S.lang==="en"&&c.popMsgEn)||c.popMsg,img=/^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(c.popImg||"")?c.popImg:"";
+  const ttl=(S.lang==="en"&&c.popTitleEn)||c.popTitle,msg=(S.lang==="en"&&c.popMsgEn)||c.popMsg,img=/^\/_blob\/[a-f0-9]{32}$/.test(c.popImg||"")?c.popImg:"";
   const style=["modal","sheet","corner","image"].includes(c.popStyle)?c.popStyle:"modal";
   if(style==="image"&&!img&&!preview)return;
   const root=document.createElement("div");root.id="popRoot";root.className=`pop pop-${style}`;root.dataset.preview=preview?"1":"";
@@ -2706,7 +2763,7 @@ addEventListener("hashchange",()=>{closeSpot(true);scheduleSpot()});
 function popSettingsHtml(s){
   const c={...POPDEF,...s},o=(v,l,cur)=>`<option value="${v}" ${String(cur)===String(v)?"selected":""}>${l}</option>`;
   const projOptsAll=projects(true).map(p=>[p.slug,p.name]);
-  const img=/^(?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+)$/.test(c.popImg||"")?c.popImg:"";
+  const img=/^\/_blob\/[a-f0-9]{32}$/.test(c.popImg||"")?c.popImg:"";
   return `<section class="panel pop-set" style="grid-column:1/-1"><div class="pop-set-h"><h3>Message pop-up</h3><label class="pop-sw"><input type="checkbox" name="popOn" ${c.popOn?"checked":""}><span></span><b>${c.popOn?"Active":"Inactive"}</b></label></div>
    <p class="fine" style="margin-top:0">Show promotions, launches or offers to visitors. Visitor counts reset every time you save changes to the pop-up.</p>
    <div class="pop-set-g">
@@ -2759,7 +2816,7 @@ document.addEventListener("change",async e=>{
   if(e.target.closest&&e.target.closest("#setForm"))popSyncForm();
   if(e.target.id==="popFile"){const f=e.target.files[0],note=$("#popImgNote");if(!f||!S.assets)return;
     if(!/^image\/(jpeg|png|webp)$/.test(f.type)||f.size>5*1024*1024){note.textContent="Choose a JPG, PNG or WebP under 5MB.";return}
-    note.textContent="Uploading…";try{const r=await S.assets.upload(f),u=(r.url||"/_blob/"+r.id);$("#setForm [name=popImg]").value=u;$("#popThumb").innerHTML=`<img src="${u}" alt="">`;$("[data-popimgdel]").hidden=false;note.textContent="Image uploaded. Save settings to use it."}catch(x){note.textContent="Upload failed. Try again."}}
+    note.textContent="Uploading…";try{const r=await S.assets.upload(f),u="/_blob/"+r.id;$("#setForm [name=popImg]").value=u;$("#popThumb").innerHTML=`<img src="${u}" alt="">`;$("[data-popimgdel]").hidden=false;note.textContent="Image uploaded. Save settings to use it."}catch(x){note.textContent="Upload failed. Try again."}}
 });
 document.addEventListener("click",e=>{
   if(e.target.closest("[data-poppreview]")){const fm=$("#setForm");if(fm)showPop({...POPDEF,...popReadForm(fm)},true)}
@@ -2931,7 +2988,8 @@ function render(){
   else if(a==="projek"){const g=directoryModel(projects(true)),n=g.reduce((x,y)=>x+y.projects.length,0);app.innerHTML=viewDirectory(g,n);setHead({title:`Semua ${n} Projek Hartanah di Klang Valley | Direktori`,desc:`Direktori ${n} projek hartanah baharu dan siap di ${g.length} kawasan Klang Valley, disusun mengikut kawasan dengan harga dan jenis.`,canonical:SITE+"/projek",ld:{"@context":"https://schema.org","@type":"CollectionPage","name":"Semua projek hartanah","url":SITE+"/projek","mainEntity":{"@type":"ItemList","itemListElement":g.flatMap(x=>x.projects).map((p,i)=>({"@type":"ListItem","position":i+1,"url":projUrl(p),"name":p.name}))}}});window.scrollTo(0,0)}
   else if(a==="co-living"){app.innerHTML=viewColiving();const c=colivingSeo();setHead(c);initEnq();window.scrollTo(0,0)}
   else if(a==="privasi"){app.innerHTML=viewPrivacy();setHead({title:L2("Notis privasi","Privacy notice")+" | Rezeki Hartanah",desc:L2("Cara Rezeki Hartanah mengumpul, menggunakan dan melindungi data peribadi anda di bawah PDPA 2010.","How Rezeki Hartanah collects, uses and protects your personal data under the PDPA 2010."),canonical:SITE+"/privasi",ld:null});window.scrollTo(0,0)}
-  else if(a==="admin"){app.innerHTML=viewAdmin();setHead({title:"Dashboard | Rezeki Hartanah",desc:"",canonical:SITE+"/admin",ld:null,robots:"noindex, nofollow"});if($("#edForm"))updateSeoPanel()}
+  else if(a==="admin"&&PATHMODE&&!window.RH_CMS){location.replace("/");return}
+  else if(a==="admin"){app.innerHTML=viewAdmin();setHead({title:"Rezeki Hartanah CMS | Admin Dashboard",desc:"",canonical:SITE+"/admin",ld:null,robots:"noindex, nofollow"});if($("#edForm"))updateSeoPanel()}
   else if(PATHMODE&&a&&!/^[?#&]/.test(a)){app.innerHTML=`<div class="wrap" style="padding:80px 18px"><h1>404</h1><p class="sub">${L2("Halaman ini tidak dijumpai.","This page could not be found.")}</p><p><a class="btn btn-brand" href="#/">${t("home")}</a> <a class="btn btn-ghost" href="#/projek">${L2("Semua projek","All projects")}</a></p></div>`;setHead({title:"Halaman tidak dijumpai | Rezeki Hartanah",desc:"Halaman ini tiada atau telah dikeluarkan.",canonical:SITE+"/",ld:null,robots:"noindex, follow"});window.scrollTo(0,0)}
   else{app.innerHTML=viewHome();setHead({title:"Rezeki Hartanah | Projek Hartanah Baharu & Siap",desc:"Bandingkan projek hartanah baharu, siap & komersial di Klang Valley: harga, saiz, ansuran bulanan, susun atur serta pembiayaan bank & LPPSA.",canonical:SITE+"/",ld:null});const sk=$("#skyline");if(sk){SKY=SKY||skylineSVG(11);sk.innerHTML=SKY}renderGrid();updateDial();initCalc();initElig();initEnq();if(reBud&&!$("#budDlg").open)$("#budDlg").showModal()}
   staticI18n();renderCmpBar();
@@ -2959,9 +3017,10 @@ function staticI18n(){
   {const ab=$("#annBar"),st=S.settings||{},tx=(S.lang==="en"&&st.annEn)||st.ann||"";if(ab){ab.hidden=!tx||route().a==="admin";ab.textContent=tx;ab.href=st.annLink?"#/p/"+encodeURIComponent(st.annLink):"#/"}}
   document.querySelectorAll("[data-i]").forEach(el=>el.textContent=t(el.dataset.i));
   document.querySelectorAll("[data-lang]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===S.lang));
+  {const sb=$("#siteShareBtn");if(sb){const l=L2("Kongsi laman web ini","Share this website");sb.setAttribute("aria-label",l);sb.title=l}}
   $("#footLinks").innerHTML=[["#/","nav_props"],["#/simpanan","nav_saved"]].map(([h,k])=>`<li><a href="${h}"${h==="#/simpanan"?' rel="nofollow"':""}>${t(k)}</a></li>`).join("")+`<li><a href="#/projek">${L2("Semua projek (direktori)","All projects (directory)")}</a></li><li><a href="#/co-living">${L2("Pengurusan co-living","Co-living management")}</a></li><li><a href="#/blog">${L2("Blog & panduan","Blog & guides")}</a></li>`;
   $("#footWa").href=waLink(t("wa_gen"));$("#fabWa").href=waLink(t("wa_gen"));
-  {const s=(id,v)=>{const e=$(id);if(e)e.textContent=v};s("#fCtaH",L2("Sedia jumpa hartanah seterusnya?","Ready to find your next property?"));s("#fCtaP",L2("Ceritakan bajet & kawasan pilihan — kami balas dengan senarai pendek dalam masa sehari.","Tell us your budget & preferred area — we'll reply with a shortlist within a day."));s("#fCtaWa",L2("WhatsApp kami","WhatsApp us"));s("#fRights",L2("Hak cipta terpelihara.","All rights reserved."));s("#fTop",L2("Kembali ke atas","Back to top"));const w=$("#fCtaWa");if(w)w.href=waLink(t("wa_gen"));const tp=document.querySelector(".to-top");if(tp){tp.setAttribute("aria-label",L2("Kembali ke atas","Back to top"));if(!tp.dataset.b){tp.dataset.b=1;const rm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;tp.addEventListener("click",e=>{e.preventDefault();window.scrollTo({top:0,behavior:rm?"auto":"smooth"})});let q=0;const up=()=>{q=0;const h=document.documentElement,m=h.scrollHeight-h.clientHeight;tp.style.setProperty("--p",m>0?Math.min(1,h.scrollTop/m).toFixed(3):0)};window.addEventListener("scroll",()=>{if(!q){q=1;requestAnimationFrame(up)}},{passive:true});up()}}}
+  {const s=(id,v)=>{const e=$(id);if(e)e.textContent=v};s("#fCtaH",L2("Sedia jumpa hartanah seterusnya?","Ready to find your next property?"));s("#fCtaP",L2("Ceritakan bajet & kawasan pilihan — kami balas dengan senarai pendek dalam masa sehari.","Tell us your budget & preferred area — we'll reply with a shortlist within a day."));s("#fCtaWa",L2("WhatsApp kami","WhatsApp us"));s("#fRights",L2("Hak cipta terpelihara.","All rights reserved."));s("#fTop",L2("Kembali ke atas","Back to top"));s("#fTelL",L2("Telefon","Call us"));s("#fHrs",L2("Balas dalam masa sehari · Isnin–Ahad","We reply within a day · Mon–Sun"));const w=$("#fCtaWa");if(w)w.href=waLink(t("wa_gen"));const tp=document.querySelector(".to-top");if(tp){tp.setAttribute("aria-label",L2("Kembali ke atas","Back to top"));if(!tp.dataset.b){tp.dataset.b=1;const rm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;tp.addEventListener("click",e=>{e.preventDefault();window.scrollTo({top:0,behavior:rm?"auto":"smooth"})});let q=0;const up=()=>{q=0;const h=document.documentElement,m=h.scrollHeight-h.clientHeight;tp.style.setProperty("--p",m>0?Math.min(1,h.scrollTop/m).toFixed(3):0)};window.addEventListener("scroll",()=>{if(!q){q=1;requestAnimationFrame(up)}},{passive:true});up()}}}
 }
 function renderCmpBar(){const b=$("#cmpBar");b.classList.toggle("show",S.cmp.size>0);b.textContent=`${t("cmp_btn")} (${S.cmp.size})`}
 function openCompare(){
@@ -3244,7 +3303,7 @@ function initEnq(){
     store.set("lastEnq",Date.now());
     const lead={name:name.slice(0,80),phone:phone.slice(0,20),email:email.slice(0,120),budget:$("#qBudget").value,project:$("#qProj").value,msg:$("#qMsg").value.trim().slice(0,1000),lang:S.lang,at:Date.now(),consent:true};
     lead.src=leadSource();
-    if(S.db&&!S.static){try{await saveLead(lead)}catch(e){console.error("lead save failed",e);track("lead_save_error",{})}}else if(S.static){try{const fd=new URLSearchParams({"form-name":"enquiry",name:lead.name,phone:lead.phone,email:lead.email,budget:lead.budget,project:lead.project,message:lead.msg,lang:lead.lang,source:typeof lead.src==="string"?lead.src:JSON.stringify(lead.src||"")});await fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:fd.toString()})}catch(e){console.error("lead post failed",e);track("lead_save_error",{})}}
+    if(S.db){try{await saveLead(lead)}catch(e){console.error("lead save failed",e);track("lead_save_error",{})}}else if(PATHMODE)await sbLead(lead);
     track("generate_lead",{form:"enquiry",project:lead.project||"",budget:lead.budget});
     const p=bySlug(lead.project);
     window.open(waLink(`${p?t("wa_proj").replace("{p}",p.name):t("wa_gen")}\n\nNama: ${lead.name}\nTel: ${lead.phone}\nBajet: ${lead.budget}${lead.msg?"\nMesej: "+lead.msg:""}`),"_blank","noopener");
@@ -3366,7 +3425,7 @@ function mdHtml(src){
   for(const raw of lines){const l=raw.trim();let m;
     if(!l){fp();fl();continue}
     if((m=l.match(/^(#{1,3})\s+(.+)/))){fp();fl();const h=m[1].length===3?3:2;out.push(`<h${h} id="${esc(slugify(m[2]))}">${inlineMd(esc(m[2]))}</h${h}>`);continue}
-    if((m=l.match(/^!\[([^\]]*)\]\(((?:\/_blob\/[a-f0-9]{32}|\/images\/uploads\/[\w.\-]+))\)$/))){fp();fl();out.push(`<figure><img src="${m[2]}" alt="${esc(m[1])}" loading="lazy" decoding="async"></figure>`);continue}
+    if((m=l.match(/^!\[([^\]]*)\]\((\/_blob\/[a-f0-9]{32})\)$/))){fp();fl();out.push(`<figure><img src="${m[2]}" alt="${esc(m[1])}" loading="lazy" decoding="async"></figure>`);continue}
     if((m=l.match(/^>\s?(.*)/))){fp();fl();out.push(`<blockquote>${inlineMd(esc(m[1]))}</blockquote>`);continue}
     if((m=l.match(/^[-*]\s+(.+)/))||(m=l.match(/^\d+[.)]\s+(.+)/))){fp();const tp=/^\d/.test(l)?"ol":"ul";if(list&&list.t!==tp)fl();list=list||{t:tp,items:[]};list.items.push(m[1]);continue}
     fl();para.push(l)}
@@ -3488,7 +3547,7 @@ async function uploadPostImage(file){
   const note=$("#peImgNote");if(!S.assets||!file)return "";
   if(!/^image\/(jpeg|png|webp)$/.test(file.type)||file.size>5*1024*1024){toast("Choose a JPG, PNG or WebP image under 5MB");return ""}
   if(note){note.className="msg";note.textContent="Uploading…"}
-  try{const r=await S.assets.upload(file);if(note)note.textContent="";return (r.url||"/_blob/"+r.id)}catch(e){if(note){note.className="msg err";note.textContent="Upload failed. Try again."}return ""}
+  try{const r=await S.assets.upload(file);if(note)note.textContent="";return "/_blob/"+r.id}catch(e){if(note){note.className="msg err";note.textContent="Upload failed. Try again."}return ""}
 }
 document.addEventListener("click",e=>{ // capture: guard unsaved article edits before the main tab handler runs
   const el=e.target.closest&&e.target.closest("[data-tab]");if(!el||admTab!=="post")return;
@@ -3605,7 +3664,7 @@ async function buildStaticSite(onProg){
   const keep={isAdmin:S.isAdmin,lang:S.lang,f:S.f,bmore:S.bmore,bcat:S.bcat,cmp:S.cmp,tab:admTab,cur:curHash,y:window.scrollY};
   const mainEl=[...document.querySelectorAll("script:not([src])")].find(x=>x.textContent.includes("/* ============ CONFIG ============ */")),cssTxt=[...document.querySelectorAll("head style")].map(x=>x.textContent)[0]||"",jsTxt=mainEl?mainEl.textContent:"";
   const hx=t=>crc32(enc.encode(t)).toString(16).padStart(8,"0"),seedJs=`window.__HKV_SEED=${seedJson};`,assets={css:`/assets/app-${hx(cssTxt)}.css`,js:`/assets/app-${hx(jsTxt)}.js`,seed:`/assets/data-${hx(seedJs)}.js`};
-  const routes=[["#/","index.html"],["#/projek","projek.html"],["#/co-living","co-living.html"],["#/privasi","privasi.html"],["#/blog","blog.html"],["#/p/__tiada__","404.html"]];
+  const routes=[["#/","index.html"],["#/projek","projek.html"],["#/co-living","co-living.html"],["#/privasi","privasi.html"],["#/blog","blog.html"]]; // no 404.html on purpose: Cloudflare Pages then serves index.html (status 200) for any new /listings/... URL, and the page renders it from Supabase so Google can crawl projects added after this upload
   S.isAdmin=false;
   const pub=projects().filter(p=>SLUG_RE.test(String(p.slug||"")));
   for(const p of pub)routes.push(["#/p/"+p.slug,`listings/${p.slug}.html`]);
@@ -3623,7 +3682,7 @@ async function buildStaticSite(onProg){
   files.push({name:"robots.txt",data:enc.encode(robotsTxt())});
   files.push({name:assets.css.slice(1),data:enc.encode(cssTxt)},{name:assets.js.slice(1),data:enc.encode(jsTxt)},{name:assets.seed.slice(1),data:enc.encode(seedJs)});
   try{files.push(...await brandFiles())}catch(e){console.error(e)}
-  files.push({name:"_redirects",data:enc.encode(red.map(([f,t])=>`${f} ${t} 301`).join("\n")+"\n")});
+  files.push({name:"_redirects",data:enc.encode([...red.map(([f,t])=>`${f} ${t} 301`),(store.get("host","netlify")==="netlify"?"/_blob/* https://dttxithovvlmgeyahllk.supabase.co/functions/v1/media/:splat 200":"/_blob/* https://dttxithovvlmgeyahllk.supabase.co/functions/v1/media/:splat 302"),...(store.get("host","netlify")==="netlify"?["/*  /index.html  200"]:[])].join("\n")+"\n")}); // Netlify: the last rule serves index.html (status 200) for any URL without a file, so projects added later get a live, crawlable page; Cloudflare Pages does the same by itself when there is no 404.html
   // uploaded photos referenced by public pages/data, served at the same /_blob/<id> paths
   const ids=new Set();for(const f of files.slice(0,routes.length))for(const m of new TextDecoder().decode(f.data).matchAll(/\/_blob\/([a-f0-9]{32})/g))ids.add(m[1]);for(const m of seedJson.matchAll(/\/_blob\/([a-f0-9]{32})/g))ids.add(m[1]);
   let miss=0,k=0;const blobTypes=[];for(const id of ids){k++;if(onProg)onProg(routes.length,routes.length,`Copying photos ${k}/${ids.size}…`);try{const r=await fetch("/_blob/"+id);if(!r.ok)throw 0;const ty=(r.headers.get("content-type")||"").split(";")[0].trim();if(/^(image|video|font|application\/pdf|text)\//.test(ty)||ty==="application/pdf")blobTypes.push([id,ty]);files.push({name:"_blob/"+id,data:new Uint8Array(await r.arrayBuffer())})}catch(e){miss++}}
@@ -3638,7 +3697,7 @@ HOW TO DEPLOY (Cloudflare Pages recommended; Netlify also works)
 2. Every public URL is a real HTML file with its title, description, canonical, JSON-LD and visible content already inside:
    /  /projek  /co-living  /blog  /blog/<slug>  /listings/<slug>  /hartanah/<area>  /privasi
    Files are named <page>.html so the host serves them at the clean URL without a trailing slash, matching the canonical.
-3. Cloudflare Pages and Netlify automatically: serve 404.html with status 404, apply the 301s in _redirects, and apply the cache and image content-type rules in _headers.
+3. Cloudflare Pages and Netlify automatically: apply the 301s in _redirects, and apply the cache and image content-type rules in _headers. There is deliberately no 404.html: without it, Cloudflare Pages serves index.html with status 200 for any URL that has no file, and the page then renders that project, area or article live from Supabase. This is what lets projects added after this upload be crawled and indexed by Google straight away.
 4. Check after upload: open ${SITE}/listings/<any slug> and ${SITE}/co-living — the address must stay without a trailing slash and the page must load.
 5. Google Search Console: submit ${SITE}/sitemap.xml once.
 6. Re-export and re-upload this package after you add or change projects, articles or settings.
@@ -3656,9 +3715,9 @@ async function exportStaticSite(btn){
   catch(e){console.error(e);say("Export failed. Try again.","err")}finally{const b=$("[data-staticzip]");if(b)b.disabled=false}
 }
 function staticPanel(){return `<section class="panel" style="margin-top:14px"><h3>Static site package (for ${esc(SITE.replace("https://",""))})</h3>
-  <p class="fine" style="margin:0 0 10px">Builds a .zip with a separate, pre-rendered HTML file for every public URL — home, directory, each project, each area and each article — plus the sitemaps, robots.txt, 301 redirects, a 404 page and all photos as separate files. Google gets the full content in the HTML without running JavaScript, and the site is no longer one big file.</p>
+  <p class="fine" style="margin:0 0 10px">Builds a .zip with a separate, pre-rendered HTML file for every public URL — home, directory, each project, each area and each article — plus the sitemaps, robots.txt, 301 redirects and all photos as separate files. Google gets the full content in the HTML without running JavaScript, and the site is no longer one big file. Projects, areas and articles you add after the upload still get a live page with status 200, rendered from Supabase, so Google can crawl them immediately; the next upload adds their pre-rendered copy.</p>
   <p class="fine" style="margin:0 0 12px">Re-export after publishing new projects or articles, then upload the contents to your hosting. Instructions are in README.txt inside the zip.</p>
-  <ol class="gsc" style="margin:0 0 12px"><li>Tap <b>Download static site (.zip)</b> and unzip it.</li><li>Cloudflare › Workers & Pages › your project › <b>Create deployment</b> › upload the folder.</li><li>Done: edited projects update, deleted projects disappear (Google drops them as 404), new projects get their page, Google data and sitemap entry.</li></ol>
+  <ol class="gsc" style="margin:0 0 12px"><li>Choose your host: <select id="hostSel" style="margin:0 4px"><option value="netlify" ${store.get("host","netlify")==="netlify"?"selected":""}>Netlify</option><option value="cloudflare" ${store.get("host","netlify")==="cloudflare"?"selected":""}>Cloudflare Pages</option></select></li><li>Tap <b>Download static site (.zip)</b> and unzip it.</li><li>${store.get("host","netlify")==="netlify"?"Netlify › your site › <b>Deploys</b> › drag the unzipped folder onto the deploy area.":"Cloudflare › Workers & Pages › your project › <b>Create deployment</b> › upload the folder."}</li><li>Done: edited projects update, deleted projects disappear, new projects get their page, Google data and sitemap entry.</li></ol>
   <button class="btn btn-brand btn-sm" data-staticzip>Download static site (.zip)</button><p class="msg" id="zipMsg" role="status"></p></section>
   <section class="panel" style="margin-top:14px"><h3>Capacity</h3><div id="capBox" class="fine">${capHtml(null)}</div></section>`}
 function capHtml(u){const n=projects(true).filter(p=>!p.deleted).length,mb=b=>(b/1048576).toFixed(b>1e8?0:1)+" MB";
@@ -3667,141 +3726,217 @@ function capHtml(u){const n=projects(true).filter(p=>!p.deleted).length,mb=b=>(b
 async function fillCap(){const box=$("#capBox");if(!box||!S.assets||box.dataset.done)return;box.dataset.done="1";try{const r=await S.assets.list();if(r&&r.usage&&$("#capBox"))$("#capBox").innerHTML=capHtml(r.usage)}catch(e){if($("#capBox"))$("#capBox").innerHTML=capHtml(null).replace("Photo storage: checking…","Photo storage usage is not available in this view.")}}
 
 /* seed: pre-rendered pages carry their data so the production domain shows the same projects & articles without the claude.ai runtime */
-(function loadSeed(){try{const el=document.getElementById("hkv-seed");const d=window.__HKV_SEED&&typeof window.__HKV_SEED==="object"?window.__HKV_SEED:el?JSON.parse(el.textContent||"{}"):null;if(!d)return;
+function applySeed(d){
   if(Array.isArray(d.projects))S.remote=new Map(d.projects.filter(x=>x&&x.slug).map(x=>[x.slug,x]));
   if(Array.isArray(d.posts))S.posts=new Map(d.posts.filter(x=>x&&x.slug).map(x=>[x.slug,x]));
-  if(d.settings&&typeof d.settings==="object"){S.settings=d.settings;applySettings()}}catch(e){}})();
+  if(d.settings&&typeof d.settings==="object"){S.settings=d.settings;applySettings()}}
+(function loadSeed(){try{const el=document.getElementById("hkv-seed");const d=window.__HKV_SEED&&typeof window.__HKV_SEED==="object"?window.__HKV_SEED:el?JSON.parse(el.textContent||"{}"):null;if(d)applySeed(d)}catch(e){}})();
+/* ============ SUPABASE (live data for rezekihartanah.com) ============ */
+const SB_REF="dttxithovvlmgeyahllk",SB_URL="https://"+SB_REF+".supabase.co",SB_KEY="sb_publishable_tfu0vwZQBNcTTTtc19Yv4g_VLDNNrw1",SB_FN=SB_URL+"/functions/v1";
+const SB_TABLE={projects:"projects",posts:"posts",leads:"leads",settings:"settings"};
+S.sb={state:"off",msg:""};
+function sbLit(v){const s=String(v);let t="rh";while(s.includes("$"+t+"$"))t+="x";return "$"+t+"$"+s+"$"+t+"$"}
+function sbJson(o){return sbLit(JSON.stringify(o===undefined?{}:o))+"::jsonb"}
+function sbParse(p){if(Array.isArray(p))return p;
+  const txt=typeof p==="string"?p:p&&typeof p.result==="string"?p.result:"";
+  const m=txt.match(/<untrusted-data-[^>]*>([\s\S]*?)<\/untrusted-data-/),body=(m?m[1]:txt).trim();
+  try{const r=JSON.parse(body);return Array.isArray(r)?r:[]}catch(e){return []}}
+function sbErrText(e){const c=e&&e.code;
+  if(c==="needs_reauth")return "Your Supabase sign-in expired. Reconnect Supabase in Claude › Settings › Connectors, then reload.";
+  if(c==="server_not_connected"||c==="server_not_found")return "Supabase isn’t connected. Add the Supabase connector in Claude › Settings › Connectors, then reload.";
+  if(c==="not_granted"||c==="approval_required"||c==="consent_required")return "This dashboard needs permission to use Supabase. Allow it from the artifact’s Permissions menu, then reload.";
+  if(c==="tool_error")return "Supabase refused the change: "+String((e.message||"")).slice(0,160);
+  return "Supabase is not reachable right now. Your last change may not be saved — reload to check.";}
+function sbSetState(state,msg){const ch=S.sb.state!==state||S.sb.msg!==(msg||"");S.sb={state,msg:msg||""};const el=$("#sbStat");if(el)el.outerHTML=sbStatusHtml();else if(ch&&route().a==="admin"&&state==="error")toast(S.sb.msg)}
+function sbStatusHtml(){const s=S.sb;if(s.state==="off")return "";
+  const tx=s.state==="ok"?"Live: changes go straight to rezekihartanah.com via Supabase":s.state==="sync"?"Syncing with Supabase… "+esc(s.msg):s.state==="connecting"?"Connecting to Supabase…":esc(s.msg);
+  return `<div id="sbStat" class="sbstat ${s.state}" role="status"><i aria-hidden="true"></i><span>${tx}</span></div>`}
+function stableStr(v){if(Array.isArray(v))return "["+v.map(stableStr).join(",")+"]";if(v&&typeof v==="object")return "{"+Object.keys(v).sort().filter(k=>v[k]!==undefined).map(k=>JSON.stringify(k)+":"+stableStr(v[k])).join(",")+"}";return JSON.stringify(v===undefined?null:v)}
+function makeSupaDb(mcp){
+  const subs=new Map();let chain=Promise.resolve(),wTimer=0;
+  const run=sql=>{const job=chain.then(()=>mcp.callTool("Supabase","execute_sql",{project_id:SB_REF,query:sql},{cache:false})).then(r=>{if(S.sb.state!=="sync")sbSetState("ok");return sbParse(r&&r.payload!==undefined?r.payload:r)},e=>{sbSetState("error",sbErrText(e));throw e});chain=job.catch(()=>{});return job};
+  const tbl=c=>{if(!SB_TABLE[c])throw new Error("Unknown collection "+c);return SB_TABLE[c]};
+  const snap=(id,d)=>({id,exists:d!=null,data:()=>d==null?undefined:d});
+  const notify=t=>{(subs.get(t)||new Set()).forEach(f=>f());clearTimeout(wTimer);wTimer=setTimeout(()=>{sbSyncSitemap().catch(()=>{});sbSyncMedia().catch(()=>{})},4000)};
+  const listen=(t,load)=>{if(!subs.has(t))subs.set(t,new Set());subs.get(t).add(load);load();const iv=setInterval(()=>{if(!document.hidden)load()},60000);return()=>{clearInterval(iv);subs.get(t).delete(load)}};
+  const docRef=(c,id)=>{const t=tbl(c),w=sbLit(id);return {id,
+    async get(){const r=await run(`select data from public.${t} where id=${w}`);return snap(id,r[0]?r[0].data:null)},
+    async set(o){await run(`insert into public.${t}(id,data) values (${w},${sbJson(o)}) on conflict (id) do update set data=excluded.data, updated_at=now()`);notify(t)},
+    async update(o){const r=await run(`update public.${t} set data=data||${sbJson(o)}, updated_at=now() where id=${w} returning id`);if(!r.length)throw new Error("not-found");notify(t)},
+    async delete(){await run(`delete from public.${t} where id=${w}`);notify(t)},
+    onSnapshot(cb,err){return listen(t,async()=>{try{const r=await run(`select data from public.${t} where id=${w}`);cb(snap(id,r[0]?r[0].data:null))}catch(e){err&&err(e)}})}}};
+  const query=(c,ord,lim)=>{const t=tbl(c);const sql=()=>`select id,data from public.${t}${ord?` order by nullif(data->>${sbLit(ord[0])},'')::numeric ${ord[1]==="desc"?"desc":"asc"} nulls last`:""}${lim?` limit ${Math.max(1,Math.min(5000,lim|0))}`:""}`;
+    const q={doc:id=>docRef(c,id),
+      async add(o){const r=await run(`insert into public.${t}(data) values (${sbJson(o)}) returning id`);notify(t);return docRef(c,r[0]&&r[0].id)},
+      orderBy:(f,dir)=>query(c,[String(f),dir],lim),limit:n=>query(c,ord,n),
+      async get(){const r=await run(sql());return {docs:r.map(x=>snap(x.id,x.data)),size:r.length,empty:!r.length}},
+      onSnapshot(cb,err){return listen(t,async()=>{try{const r=await run(sql());cb({docs:r.map(x=>snap(x.id,x.data)),size:r.length,empty:!r.length})}catch(e){err&&err(e)}})}};return q};
+  window.addEventListener("focus",()=>subs.forEach(s=>s.forEach(f=>f())));
+  return {run,collection:c=>query(c),doc:p=>{const [c,id]=String(p).split("/");return docRef(c,id)}};
+}
+/* first run: copy everything from the dashboard's own storage into an empty Supabase project */
+async function sbMigrate(sdb,adb){
+  const r=await sdb.run("select (select count(*) from public.projects)::int p,(select count(*) from public.posts)::int a,(select count(*) from public.settings)::int s,(select count(*) from public.leads)::int l");
+  const c=r[0]||{};if(!adb||c.p||c.a||c.s||c.l)return;
+  sbSetState("sync","copying your content");
+  const put=async(t,rows)=>{for(let i=0;i<rows.length;i+=8){const part=rows.slice(i,i+8);await sdb.run(`insert into public.${t}(id,data) values ${part.map(([id,d])=>`(${sbLit(id)},${sbJson(d)})`).join(",")} on conflict (id) do nothing`)}};
+  for(const col of ["projects","posts","leads"]){try{const q=await adb.collection(col).get();await put(col,q.docs.filter(d=>d.exists).map(d=>[d.id,d.data()]))}catch(e){console.error("migrate "+col,e)}}
+  try{const s=await adb.doc("settings/site").get();if(s.exists)await put("settings",[["site",s.data()]])}catch(e){console.error("migrate settings",e)}
+  sbSetState("ok");toast("Your content is now in Supabase")}
+/* photos: every /_blob/<id> the site uses is mirrored to Supabase so rezekihartanah.com can show it */
+let sbMediaBusy=false;
+async function sbSyncMedia(){if(!S.sbDb||sbMediaBusy)return;sbMediaBusy=true;try{
+  const txt=JSON.stringify([...S.remote.values(),...S.posts.values(),S.settings||{}])+document.documentElement.outerHTML;
+  const ids=[...new Set([...txt.matchAll(/\/_blob\/([a-f0-9]{32})/g)].map(m=>m[1]))];if(!ids.length)return;
+  const have=new Set((await S.sbDb.run(`select id from public.media where complete and id in (${ids.map(sbLit).join(",")})`)).map(x=>x.id));
+  const todo=ids.filter(i=>!have.has(i));let n=0;
+  S.sbMediaFail=[];
+  for(const id of todo){const b=await sbReadBlob(id);if(!b){S.sbMediaFail.push(id);continue}
+    sbSetState("sync",`photo ${++n}/${todo.length}`);
+    const b64=await new Promise((ok,no)=>{const fr=new FileReader();fr.onload=()=>ok(String(fr.result).split(",")[1]||"");fr.onerror=no;fr.readAsDataURL(b)});
+    const CH=200000,parts=Math.max(1,Math.ceil(b64.length/CH)),ty=(b.type||"application/octet-stream").slice(0,100);
+    await S.sbDb.run(`insert into public.media(id,content_type,size,parts,complete) values (${sbLit(id)},${sbLit(ty)},${b.size|0},${parts},false) on conflict (id) do update set content_type=excluded.content_type,size=excluded.size,parts=excluded.parts,complete=false`);
+    await S.sbDb.run(`delete from public.media_parts where id=${sbLit(id)}`);
+    for(let i=0;i<parts;i++)await S.sbDb.run(`insert into public.media_parts(id,n,b64) values (${sbLit(id)},${i},${sbLit(b64.slice(i*CH,(i+1)*CH))})`);
+    await S.sbDb.run(`update public.media set complete=true where id=${sbLit(id)}`)}
+  if(todo.length)sbSetState("ok")}catch(e){console.error("media sync",e);S.sbMediaErr=String(e&&(e.code||e.message)||e)}finally{sbMediaBusy=false}}
+async function sbReadBlob(id){const u="/_blob/"+id;
+  for(const opt of [{},{credentials:"include"}]){try{const r=await fetch(u,opt);if(r.ok){const b=await r.blob();if(b&&b.size)return b}}catch(e){}}
+  try{if(S.assets){const l=await S.assets.list(),a=(l&&l.assets||[]).find(x=>x.id===id);if(a&&a.url){const r=await fetch(a.url);if(r.ok){const b=await r.blob();if(b&&b.size)return b}}}}catch(e){}
+  try{const img=await loadImg(u);if(img){const c=document.createElement("canvas");c.width=img.naturalWidth||img.width;c.height=img.naturalHeight||img.height;c.getContext("2d").drawImage(img,0,0);const b=await new Promise(r=>c.toBlob(r,"image/jpeg",.9));if(b&&b.size)return b}}catch(e){}
+  return null}
+/* live sync check: compares the dashboard with Supabase and shows whether rezekihartanah.com is reading it */
+function sbLogRows(p){const txt=typeof p==="string"?p:p&&typeof p.result==="string"?p.result:"";const m=txt.match(/<untrusted-data-[^>]*>([\s\S]*?)<\/untrusted-data-/);try{const o=JSON.parse((m?m[1]:txt).trim());return Array.isArray(o)?o:Array.isArray(o&&o.result)?o.result:[]}catch(e){return []}}
+async function sbRunCheck(){const box=$("#sbChk");if(!box||!S.sbDb)return;box.innerHTML=`<p class="fine">Checking…</p>`;
+  const row=(ok,t,d)=>`<li class="${ok===true?"pass":ok===false?"fail":"warn"}"><b>${ok===true?"✓":ok===false?"✕":"!"} ${esc(t)}</b>${d?`<span>${d}</span>`:""}</li>`,out=[];
+  try{
+    const c=(await S.sbDb.run("select (select count(*) from public.projects)::int pr,(select count(*) from public.posts)::int po,(select count(*) from public.leads)::int le,(select count(*) from public.sitemap_files)::int sm,(select max(updated_at) from public.sitemap_files) smat,(select max(updated_at) from public.projects) prat"))[0]||{};
+    const nPr=S.remote.size,nPo=S.posts.size;
+    out.push(row(c.pr===nPr&&c.po===nPo,"Dashboard ↔ Supabase",`${c.pr} projects, ${c.po} articles, ${c.le} enquiries in Supabase${c.pr===nPr&&c.po===nPo?" — same as this dashboard":` — dashboard shows ${nPr} projects, ${nPo} articles; reload the dashboard`}${c.prat?` · last change ${esc(ago(Date.parse(c.prat)))}`:""}`));
+    const txt=JSON.stringify([...S.remote.values(),...S.posts.values(),S.settings||{}])+document.documentElement.outerHTML,ids=[...new Set([...txt.matchAll(/\/_blob\/([a-f0-9]{32})/g)].map(m=>m[1]))];
+    const done=ids.length?(await S.sbDb.run(`select count(*)::int n from public.media where complete and id in (${ids.map(sbLit).join(",")})`))[0].n:0;
+    out.push(row(done===ids.length,"Photos copied to Supabase",`${done} of ${ids.length}${done<ids.length?(sbMediaBusy?" — copying now, keep this page open":` — <button type="button" class="btn btn-ghost btn-sm" data-sbmedia>Copy missing photos</button>`):""}${S.sbMediaFail&&S.sbMediaFail.length?` · ${S.sbMediaFail.length} could not be read here; re-upload them in the project editor`:""}`));
+    out.push(row(c.sm>0,"Live sitemap",c.sm?`${c.sm} files · updated ${esc(ago(Date.parse(c.smat)))} · <a href="${SB_FN}/sitemap/sitemap.xml" target="_blank" rel="noopener">open sitemap.xml</a>`:"not generated yet — save any project"));
+    let web=null;try{const r=await (await window.claude.use("mcp")).callTool("Supabase","query_logs",{project_id:SB_REF,sql:"select count(*) as n, max(timestamp) as last from logs where source='edge_logs' and event_message like '%rpc/public_seed%'"},{cache:false});const lr=sbLogRows(r&&r.payload!==undefined?r.payload:r)[0];web=lr?{n:Number(lr.n)||0,last:lr.last}:{n:0}}catch(e){web=null}
+    out.push(web===null?row(null,"rezekihartanah.com","Couldn’t read the visit log. Check the site yourself: open a project on rezekihartanah.com, change its price here, then refresh the site."):web.n?row(true,"rezekihartanah.com reads live data",`${web.n} page loads in the last 24 h · latest ${esc(ago(Date.parse(String(web.last).replace(" ","T")+(/Z|[+-]\d\d:?\d\d$/.test(String(web.last))?"":"Z"))))}`):row(false,"rezekihartanah.com is not reading Supabase yet","No visits to the live site in the last 24 h used Supabase. The site is still the old package: open the SEO tab › Download static site (.zip) › upload it to Cloudflare Pages, then open rezekihartanah.com and run this check again."));
+  }catch(e){out.push(row(false,"Check failed",esc(sbErrText(e))))}
+  box.innerHTML=`<ul class="sbchk">${out.join("")}</ul><p class="fine" style="margin:8px 0 0">Checked ${new Date().toLocaleTimeString("en-MY")}</p>`}
+document.addEventListener("change",e=>{if(e.target&&e.target.id==="hostSel"){store.set("host",e.target.value);render()}});
+document.addEventListener("click",e=>{if(e.target.closest("[data-sbcheck]")){e.preventDefault();sbRunCheck();return}if(e.target.closest("[data-sbmedia]")){e.preventDefault();sbSyncMedia().then(sbRunCheck);sbRunCheck()}});
+/* live sitemaps, served at SB_FN/sitemap/sitemap.xml (listed in robots.txt) */
+async function sbSyncSitemap(){if(!S.sbDb)return;const sm=sitemap(),files=Object.entries(sm.files).map(([n,x])=>[n,String(x)]);if(!files.length)return;
+  await S.sbDb.run(`insert into public.sitemap_files(name,xml) values ${files.map(([n,x])=>`(${sbLit(n)},${sbLit(x)})`).join(",")} on conflict (name) do update set xml=excluded.xml, updated_at=now()`);
+  await S.sbDb.run(`delete from public.sitemap_files where name not in (${files.map(f=>sbLit(f[0])).join(",")})`)}
+/* production domain: always show the latest content from Supabase, and send enquiries there */
+async function sbLead(lead){try{await fetch(SB_URL+"/rest/v1/leads",{method:"POST",headers:{apikey:SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({data:{...lead,source:"website"}})})}catch(e){console.error("lead save failed",e)}}
+if(PATHMODE)(async()=>{try{
+  const r=await fetch(SB_URL+"/rest/v1/rpc/public_seed",{method:"POST",headers:{apikey:SB_KEY,"Content-Type":"application/json"},body:"{}",cache:"no-store"});if(!r.ok)return;const d=await r.json();if(!d||!Array.isArray(d.projects)||(!d.projects.length&&!Object.keys(d.settings||{}).length))return; // empty database: keep the pre-rendered content
+  const sig=()=>stableStr([[...S.remote.values()].sort((a,b)=>String(a.slug).localeCompare(String(b.slug))),[...S.posts.values()].sort((a,b)=>String(a.slug).localeCompare(String(b.slug))),S.settings||{}]);
+  const before=sig();applySeed(d);if(sig()===before)return;siteLd();
+  const go=()=>{const ae=document.activeElement;if(ae&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)){ae.addEventListener("blur",go,{once:true});return}const y=window.scrollY;render();window.scrollTo(0,y)};go()}catch(e){}})();
 
+/* ============ SELF-HOSTED CMS (Netlify) — signs in with Supabase Auth, saves through supabase-js under admin-only security rules ============ */
+S.cms={state:window.RH_CMS?"loading":"off",email:"",msg:""};
+function rhLoginView(){const c=S.cms;
+  if(c.state==="loading")return `<div class="cms-lock"><div class="panel"><p class="sub">Loading dashboard…</p></div></div>`;
+  return `<div class="cms-lock"><div class="panel" style="text-align:left">
+  <span class="logo-mark" style="margin:0 0 14px;background:#F2B54F" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A1226" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+  <h1 style="font-size:1.6rem;margin:0 0 6px">Rezeki Hartanah CMS</h1>
+  ${c.state==="denied"?`<p class="sub" style="margin:0 0 14px">Signed in as <b>${esc(c.email)}</b>, but this account isn’t an admin. Ask the owner to add it, or sign out and use the admin account.</p><button type="button" class="btn btn-ghost" data-cmsout>Sign out</button>`:
+  `<p class="sub" style="margin:0 0 16px">Sign in with your admin account to manage projects, articles, enquiries and SEO.</p>
+  <form id="cmsLogin" class="cms-login" autocomplete="on">
+   <div class="field"><label for="cmsEmail">Email</label><input id="cmsEmail" name="email" type="email" autocomplete="username" required value="${esc(c.email)}"></div>
+   <div class="field"><label for="cmsPass">Password</label><input id="cmsPass" name="password" type="password" autocomplete="current-password" required minlength="8"></div>
+   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn btn-brand" data-mode="in">Sign in</button><button class="btn btn-ghost" data-mode="up">Create admin account</button><button class="btn btn-ghost" type="button" data-cmsreset>Forgot password</button></div>
+   <p class="msg ${c.msgOk?"ok":"err"}" id="cmsMsg" role="alert">${esc(c.msg||"")}</p>
+  </form>`}</div></div>`}
+function makeJsDb(sb){
+  const subs=new Map();let wTimer=0;
+  const chk=r=>{if(r.error){const e=new Error(r.error.message||"Supabase error");e.code=r.error.code;sbSetState("error","Couldn’t save: "+String(r.error.message||"").slice(0,140));throw e}if(S.sb.state!=="ok")sbSetState("ok");return r.data};
+  const tbl=c=>{if(!SB_TABLE[c])throw new Error("Unknown collection "+c);return SB_TABLE[c]};
+  const snap=(id,d)=>({id,exists:d!=null,data:()=>d==null?undefined:d});
+  const notify=t=>{(subs.get(t)||new Set()).forEach(f=>f());clearTimeout(wTimer);wTimer=setTimeout(()=>{rhSyncSitemap().catch(()=>{})},3000)};
+  const listen=(t,load)=>{if(!subs.has(t))subs.set(t,new Set());subs.get(t).add(load);load();const iv=setInterval(()=>{if(!document.hidden)load()},45000);return()=>{clearInterval(iv);subs.get(t).delete(load)}};
+  const docRef=(c,id)=>{const t=tbl(c);return {id,
+    async get(){const d=chk(await sb.from(t).select("data").eq("id",id).maybeSingle());return snap(id,d?d.data:null)},
+    async set(o){chk(await sb.from(t).upsert({id,data:JSON.parse(JSON.stringify(o)),updated_at:new Date().toISOString()}));notify(t)},
+    async update(o){const cur=chk(await sb.from(t).select("data").eq("id",id).maybeSingle());if(!cur)throw new Error("not-found");chk(await sb.from(t).update({data:{...cur.data,...JSON.parse(JSON.stringify(o))},updated_at:new Date().toISOString()}).eq("id",id));notify(t)},
+    async delete(){chk(await sb.from(t).delete().eq("id",id));notify(t)},
+    onSnapshot(cb,err){return listen(t,async()=>{try{const d=chk(await sb.from(t).select("data").eq("id",id).maybeSingle());cb(snap(id,d?d.data:null))}catch(e){err&&err(e)}})}}};
+  const query=(c,ord,lim)=>{const t=tbl(c);const run=async()=>{let q=sb.from(t).select("id,data");if(ord)q=q.order("data->"+String(ord[0]).replace(/[^\w]/g,""),{ascending:ord[1]!=="desc",nullsFirst:false});q=q.limit(lim?Math.max(1,Math.min(5000,lim|0)):5000);return chk(await q)||[]};
+    return {doc:id=>docRef(c,id),
+      async add(o){const r=chk(await sb.from(t).insert({data:JSON.parse(JSON.stringify(o))}).select("id").single());notify(t);return docRef(c,r.id)},
+      orderBy:(f,dir)=>query(c,[f,dir],lim),limit:n=>query(c,ord,n),
+      async get(){const r=await run();return {docs:r.map(x=>snap(x.id,x.data)),size:r.length,empty:!r.length}},
+      onSnapshot(cb,err){return listen(t,async()=>{try{const r=await run();cb({docs:r.map(x=>snap(x.id,x.data)),size:r.length,empty:!r.length})}catch(e){err&&err(e)}})}}};
+  window.addEventListener("focus",()=>subs.forEach(s=>s.forEach(f=>f())));
+  return {collection:c=>query(c),doc:p=>{const [c,id]=String(p).split("/");return docRef(c,id)}};
+}
+function makeJsAssets(sb){
+  const rid=()=>[...crypto.getRandomValues(new Uint8Array(16))].map(b=>b.toString(16).padStart(2,"0")).join("");
+  return {
+    async upload(blob){if(!blob||!blob.size)throw new Error("Empty file");if(blob.size>20*1024*1024)throw new Error("File is larger than 20 MB");const id=rid();
+      const r=await sb.storage.from("media").upload(id,blob,{contentType:blob.type||"application/octet-stream",cacheControl:"31536000",upsert:false});if(r.error)throw new Error(r.error.message);
+      return {id,url:"/_blob/"+id,sizeBytes:blob.size,contentType:blob.type}},
+    async list(){const r=await sb.storage.from("media").list("",{limit:1000});if(r.error)throw new Error(r.error.message);const a=(r.data||[]).filter(x=>x.id);
+      return {assets:a.map(x=>({id:x.name,url:"/_blob/"+x.name,sizeBytes:(x.metadata&&x.metadata.size)||0,contentType:x.metadata&&x.metadata.mimetype})),usage:{files:a.length,bytes:a.reduce((s,x)=>s+((x.metadata&&x.metadata.size)||0),0),maxFiles:20000,maxBytes:1024*1024*1024}}},
+    async delete(id){const r=await sb.storage.from("media").remove([String(id).replace(/^\/_blob\//,"")]);if(r.error)throw new Error(r.error.message)}}}
+async function rhSyncSitemap(){if(!S.jsSb||!S.isAdmin)return;const sm=sitemap(),files=Object.entries(sm.files);if(!files.length)return;
+  let r=await S.jsSb.from("sitemap_files").upsert(files.map(([name,xml])=>({name,xml:String(xml),updated_at:new Date().toISOString()})));if(r.error)return;
+  await S.jsSb.from("sitemap_files").delete().not("name","in",`(${files.map(f=>'"'+f[0]+'"').join(",")})`)}
+const rhDownloads={async save({filename,data}){const b=data instanceof Blob?data:new Blob([data]);const u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}};
+async function rhCmsBoot(startSubs){
+  if(!window.supabase||!window.supabase.createClient){S.cms.state="out";S.cms.msg="Couldn’t load the sign-in library. Check your connection and reload.";render();return}
+  const sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});S.jsSb=sb;S.downloads=rhDownloads;
+  let started=false;
+  const apply=async session=>{
+    if(!session){S.isAdmin=false;S.cms={state:"out",email:S.cms.email||"",msg:S.cms.msg||"",msgOk:S.cms.msgOk};sbSetState("off");render();return}
+    S.cms.email=session.user.email||"";
+    const r=await sb.rpc("is_admin");S.isAdmin=!r.error&&r.data===true;
+    if(!S.isAdmin){S.cms.state="denied";render();return}
+    S.cms.state="in";S.db=makeJsDb(sb);S.assets=makeJsAssets(sb);sbSetState("ok");
+    {const b=$("#admBtn");if(b)b.hidden=false}
+    if(!started){started=true;startSubs(S.db);setTimeout(()=>rhSyncSitemap().catch(()=>{}),5000)}
+    render()};
+  sb.auth.onAuthStateChange((ev,session)=>{if(ev==="SIGNED_OUT"){location.reload();return}if(ev==="PASSWORD_RECOVERY"){const np=prompt("Choose a new password (at least 8 characters):");if(np&&np.length>=8)sb.auth.updateUser({password:np}).then(x=>toast(x.error?x.error.message:"Password updated"))}if(ev==="SIGNED_IN"&&!started)apply(session)});
+  const {data}=await sb.auth.getSession();await apply(data&&data.session);
+  document.addEventListener("submit",async e=>{if(e.target.id!=="cmsLogin")return;e.preventDefault();const f=e.target,email=f.email.value.trim().toLowerCase(),password=f.password.value,msg=$("#cmsMsg");
+    S.cms.email=email;msg.className="msg";
+    if(e.submitter&&e.submitter.dataset.mode==="up"){if(password.length<8){msg.className="msg err";msg.textContent="Use a password of at least 8 characters.";return}msg.textContent="Creating account…";
+      const u=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.origin+"/"}});
+      if(u.error){msg.className="msg err";msg.textContent=u.error.message;return}
+      if(u.data&&u.data.session){await apply(u.data.session);return}
+      msg.className="msg ok";msg.textContent="Account created. Open the confirmation email we just sent, then come back and sign in.";return}
+    msg.textContent="Signing in…";
+    const r=await sb.auth.signInWithPassword({email,password});
+    if(r.error){S.cms.msg=/confirm/i.test(r.error.message)?"Please confirm your email first (check your inbox), then sign in.":"Wrong email or password.";S.cms.msgOk=false;msg.className="msg err";msg.textContent=S.cms.msg;return}
+    S.cms.msg="";await apply(r.data.session)});
+  document.addEventListener("click",async e=>{
+    if(e.target.closest("[data-cmsout]")){e.preventDefault();await sb.auth.signOut();location.reload();return}
+    if(e.target.closest("[data-cmsreset]")){e.preventDefault();const email=($("#cmsEmail")||{}).value||"";if(!email){toast("Type your email first");return}const r=await sb.auth.resetPasswordForEmail(email.trim(),{redirectTo:location.origin+"/"});const m=$("#cmsMsg");if(m){m.className="msg "+(r.error?"err":"ok");m.textContent=r.error?r.error.message:"Check your email for a reset link."}}});
+}
 /* ============ BOOT ============ */
+if(!PATHMODE&&(!location.hash||location.hash==="#"||location.hash==="#/")){try{history.replaceState(null,"","#/admin")}catch(e){}} // CMS edition: open on the dashboard
 (function(){const th=store.get("theme",null);if(th)document.documentElement.dataset.theme=th})();
-S.static=!(window.claude&&window.claude.use);
-async function hkvLoad(){
-  const get=async u=>{try{const r=await fetch(u,{cache:"no-cache"});return r.ok?await r.json():null}catch(e){return null}};
-  const [pr,po,st]=await Promise.all([get("/content/projects.json"),get("/content/posts.json"),get("/content/settings.json")]);
-  const ts=v=>typeof v==="string"&&v?(Date.parse(v)||0):num(v);
-  if(pr&&Array.isArray(pr.items))S.remote=new Map(pr.items.filter(x=>x&&x.slug).map(x=>[x.slug,{...x,published:x.published!==false}]));
-  if(po&&Array.isArray(po.items))S.posts=new Map(po.items.filter(x=>x&&x.slug).map(x=>{const a={...x,publishAt:ts(x.publishAt),createdAt:ts(x.createdAt)||ts(x.publishAt)};if(!a.updatedAt)a.updatedAt=a.publishAt;if(!a.contentAt)a.contentAt=a.publishAt;return [a.slug,a]}));
-  if(st&&typeof st==="object"){S.settings=st;applySettings()}
-}
-if(S.static){hkvLoad().finally(()=>{siteLd();render();schedulePop();scheduleSpot();})}else{siteLd();render();schedulePop();scheduleSpot();}
+siteLd();render();schedulePop();scheduleSpot();
 new MutationObserver(()=>{fillCap();const f=$("#setForm");if(f&&!f.dataset.popsync){f.dataset.popsync="1";popSyncForm();bandSync()}}).observe($("#app"),{childList:true});
-/* ===== Netlify mode: owner dashboard backed by GitHub (content) + Netlify Forms (enquiries) ===== */
-const HKV_GH={owner:"Shafeez91",repo:"Rezekihartanah",branch:"main"},HKV_SITE="rezekihartanah.netlify.app";
-const HKV_FILES={projects:"content/projects.json",posts:"content/posts.json",settings:"content/settings.json"};
-const hkvLS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
-const hkvPreview={};
-document.addEventListener("error",e=>{const t=e.target;if(t&&t.tagName==="IMG"){const u=t.getAttribute("src");if(u&&hkvPreview[u]&&t.src!==hkvPreview[u])t.src=hkvPreview[u]}},true);
-function hkvB64(bytes){let bin="";for(let i=0;i<bytes.length;i+=0x8000)bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+0x8000));return btoa(bin)}
-function hkvUnB64(s){return new TextDecoder().decode(Uint8Array.from(atob(String(s).replace(/\s/g,"")),c=>c.charCodeAt(0)))}
-function hkvStore(token){
-  const api=(p,o={})=>fetch("https://api.github.com/repos/"+HKV_GH.owner+"/"+HKV_GH.repo+p,{...o,cache:"no-store",headers:{Authorization:"Bearer "+token,Accept:"application/vnd.github+json",...(o.headers||{})}});
-  const chain={},mir={projects:new Map(),posts:new Map(),settings:{}},lis={projects:[],posts:[],settings:[],leads:[]};
-  async function read(path){const r=await api("/contents/"+path+"?ref="+HKV_GH.branch);if(r.status===404)return {sha:null,json:null};if(!r.ok)throw new Error("GitHub "+r.status);
-    const j=await r.json();let txt=j.content?hkvUnB64(j.content):"";if(!txt&&j.sha){const b=await api("/git/blobs/"+j.sha);txt=hkvUnB64((await b.json()).content)}return {sha:j.sha,json:txt?JSON.parse(txt):null}}
-  async function put(path,b64,msg,sha){const r=await api("/contents/"+path,{method:"PUT",body:JSON.stringify({message:msg,content:b64,branch:HKV_GH.branch,...(sha?{sha}:{})})});if(!r.ok){const e=new Error("GitHub save failed ("+r.status+")");e.status=r.status;throw e}return r.json()}
-  function mutate(path,fn,msg){const run=async()=>{for(let k=0;;k++){const {sha,json}=await read(path);const next=fn(json);
-      try{return await put(path,hkvB64(new TextEncoder().encode(JSON.stringify(next,null,2)+"\n")),msg,sha)}catch(e){if(k>=2||(e.status!==409&&e.status!==422))throw e}}};
-    const p=(chain[path]||Promise.resolve()).then(run,run);chain[path]=p.catch(()=>{});return p}
-  const SKIP="[skip netlify] ";
-  const snap=m=>({docs:[...m.entries()].map(([id,d])=>({id,exists:true,data:()=>d}))});
-  const emit=n=>{for(const cb of lis[n]){try{cb(n==="settings"?{exists:true,data:()=>mir.settings}:snap(mir[n]))}catch(e){console.error(e)}}};
-  function writeCol(n,id,fn,what){const cur=mir[n].get(id);const nv=fn(cur);if(nv===undefined)mir[n].delete(id);else mir[n].set(id,nv);emit(n);
-    return mutate(HKV_FILES[n],j=>{const items=(j&&Array.isArray(j.items))?j.items.filter(x=>x&&x.slug!==id):[];if(nv!==undefined)items.push({...nv,slug:nv.slug||id});
-      const order=[...mir[n].keys()];items.sort((a,b)=>order.indexOf(a.slug)-order.indexOf(b.slug));return {...(j||{}),items}},SKIP+"CMS: "+what+" "+n+" "+id)}
-  function writeSettings(fn,msg){mir.settings=fn(mir.settings||{});emit("settings");return mutate(HKV_FILES.settings,j=>fn(j||{}),msg)}
-  /* enquiries: Netlify Forms (read with a Netlify token) + status/notes kept on this device */
-  const meta=()=>hkvLS.get("hkv_leadmeta",{}),manual=()=>hkvLS.get("hkv_manual_leads",[]);
-  let netLeads=[],leadsErr="";
-  async function loadLeads(){const tk=hkvLS.get("hkv_ntoken","");if(!tk){netLeads=[];leadsErr="";emitLeads();return}
-    try{const out=[];for(let page=1;page<=10;page++){const r=await fetch("https://api.netlify.com/api/v1/sites/"+HKV_SITE+"/submissions?per_page=100&page="+page,{headers:{Authorization:"Bearer "+tk}});
-        if(!r.ok)throw new Error("Netlify "+r.status);const arr=await r.json();for(const x of arr){const d=x.data||{};let src=d.source||"";try{src=JSON.parse(src)}catch(e){}
-          out.push({id:String(x.id),name:d.name||x.name||"",phone:d.phone||"",email:d.email||x.email||"",budget:d.budget||"",project:d.project||"",msg:d.message||"",lang:d.lang||"",src,at:Date.parse(x.created_at)||0,status:"new",source:"netlify"})}
-        if(arr.length<100)break}
-      netLeads=out;leadsErr=""}catch(e){console.error(e);leadsErr="Could not load enquiries from Netlify. Check the token."}emitLeads()}
-  function allLeads(){const m=meta();return [...netLeads,...manual()].map(l=>({...l,...(m[l.id]||{})})).filter(l=>!l.deleted).sort((a,b)=>num(b.at)-num(a.at))}
-  function emitLeads(){S.leadsErr=leadsErr;const s={docs:allLeads().map(l=>{const {id,...rest}=l;return {id,exists:true,data:()=>rest}})};for(const cb of lis.leads){try{cb(s)}catch(e){}}}
-  const leadDoc=id=>({update:async p=>{const m=meta();m[id]={...(m[id]||{}),...p};hkvLS.set("hkv_leadmeta",m);emitLeads()},set:async p=>{const m=meta();m[id]={...p};hkvLS.set("hkv_leadmeta",m);emitLeads()},delete:async()=>{const m=meta();m[id]={...(m[id]||{}),deleted:true};hkvLS.set("hkv_leadmeta",m);emitLeads()},get:async()=>({exists:false,data:()=>null})});
-  const col=n=>{if(n==="leads"){const q={orderBy:()=>q,limit:()=>q,onSnapshot:cb=>{lis.leads.push(cb);emitLeads();return()=>{}},doc:leadDoc,
-        add:async o=>{const id="m"+Date.now().toString(36);const a=manual();a.push({...o,id,source:o.source||"manual"});hkvLS.set("hkv_manual_leads",a);emitLeads();return {id}}};return q}
-    return {onSnapshot:cb=>{lis[n].push(cb);cb(snap(mir[n]));return()=>{}},
-      doc:id=>({set:async o=>writeCol(n,id,()=>JSON.parse(JSON.stringify(o)),"save"),update:async p=>writeCol(n,id,c=>({...(c||{slug:id}),...JSON.parse(JSON.stringify(p))}),"update"),
-        delete:async()=>writeCol(n,id,()=>undefined,"delete"),get:async()=>{const d=mir[n].get(id);return {exists:!!d,data:()=>d}}})}};
-  const db={collection:col,doc:path=>{if(path!=="settings/site")throw new Error("unknown doc "+path);
-    return {onSnapshot:cb=>{lis.settings.push(cb);cb({exists:true,data:()=>mir.settings});return()=>{}},
-      set:async o=>writeSettings(()=>JSON.parse(JSON.stringify(o)),SKIP+"CMS: save settings"),update:async p=>writeSettings(c=>({...c,...JSON.parse(JSON.stringify(p))}),SKIP+"CMS: update settings"),
-      get:async()=>({exists:true,data:()=>mir.settings})}}};
-  const assets={upload:async file=>{const ext=((file.name||"").match(/\.([a-z0-9]{2,5})$/i)||[,"jpg"])[1].toLowerCase();
-      const base=String(file.name||"photo").replace(/\.[^.]*$/,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,40)||"photo";
-      const name=base+"-"+Date.now().toString(36)+"."+ext,path="images/uploads/"+name,url="/"+path;
-      const bytes=new Uint8Array(await file.arrayBuffer());await put(path,hkvB64(bytes),SKIP+"CMS: upload "+name);
-      try{hkvPreview[url]=URL.createObjectURL(file)}catch(e){}return {id:name,url}},
-    list:async()=>({usage:null})};
-  return {db,assets,loadLeads,
-    async verify(){const r=await api("");if(!r.ok)return null;const j=await r.json();if(!(j.permissions&&j.permissions.push))return null;
-      const u=await fetch("https://api.github.com/user",{headers:{Authorization:"Bearer "+token}});return u.ok?(await u.json()).login:"owner"},
-    async loadAll(){const [p,po,st]=await Promise.all([read(HKV_FILES.projects),read(HKV_FILES.posts),read(HKV_FILES.settings)]);
-      mir.projects=new Map(((p.json&&p.json.items)||[]).filter(x=>x&&x.slug).map(x=>[x.slug,x]));
-      mir.posts=new Map(((po.json&&po.json.items)||[]).filter(x=>x&&x.slug).map(x=>[x.slug,x]));mir.settings=st.json||{}},
-    deploy(){const at=Date.now();return writeSettings(c=>({...c,lastExportAt:at}),"Publish website changes")}};
-}
-const hkvDownloads={save:async({filename,data})=>{const blob=data instanceof Blob?data:new Blob([data]);const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename||"download";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},3000)}};
-let hkvSt=null;
-async function hkvAdminStart(token){
-  const st=hkvStore(token),login=await st.verify();if(!login)throw new Error("This GitHub account cannot edit the website.");
-  await st.loadAll();hkvSt=st;hkvLS.set("hkv_gtoken",token);
-  S.db=st.db;S.assets=st.assets;S.downloads=hkvDownloads;S.user={isOwner:async()=>true,id:async()=>login};S.isAdmin=true;S.ghLogin=login;
-  const busy=()=>{const ae=document.activeElement;return route().a==="admin"&&(admTab==="editor"||admTab==="post"||(ae&&ae.closest&&ae.closest(".cms")&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))};
-  S.db.doc("settings/site").onSnapshot(d=>{S.settings=d.data()||{};applySettings();if(!busy())render()});
-  S.db.collection("projects").onSnapshot(s=>{S.remote=new Map(s.docs.map(d=>[d.id,d.data()]));siteLd();if(!busy())render()});
-  S.db.collection("posts").onSnapshot(s=>{S.posts=new Map(s.docs.map(d=>[d.id,d.data()]));if(!busy())render()});
-  S.db.collection("leads").orderBy("at","desc").limit(1000).onSnapshot(s=>{S.leads=s.docs.map(d=>({id:d.id,...d.data()}));if(route().a==="admin"&&!busy())render()});
-  st.loadLeads();setInterval(()=>{if(document.visibilityState==="visible")st.loadLeads()},90000);
-  render();
-}
-function hkvGhLogin(){return new Promise((res,rej)=>{
-  const host=/localhost|127\.0\.0\.1/.test(location.hostname)?HKV_SITE:location.hostname;
-  const w=window.open("https://api.netlify.com/auth?provider=github&site_id="+encodeURIComponent(host)+"&scope=repo","hkvgh","width=520,height=680");
-  if(!w){rej(new Error("Pop-up blocked. Allow pop-ups for this site and try again."));return}
-  const on=e=>{if(e.origin!=="https://api.netlify.com"||typeof e.data!=="string")return;
-    if(e.data==="authorizing:github"){w.postMessage(e.data,e.origin);return}
-    const m=e.data.match(/^authorization:github:(success|error):(.*)$/s);if(!m)return;window.removeEventListener("message",on);try{w.close()}catch(x){}
-    let d={};try{d=JSON.parse(m[2])}catch(x){}if(m[1]==="success"&&d.token)res(d.token);else rej(new Error(d.message||"GitHub sign-in failed"))};
-  window.addEventListener("message",on)})}
-document.addEventListener("click",async e=>{
-  if(!S.static)return;
-  const lg=e.target.closest("[data-ghlogin]");
-  if(lg){const msg=$("#ghMsg");lg.disabled=true;if(msg){msg.className="msg";msg.textContent="Opening GitHub…"}
-    try{const tk=await hkvGhLogin();if(msg)msg.textContent="Loading your website data…";await hkvAdminStart(tk)}
-    catch(x){if(msg){msg.className="msg err";msg.textContent=x.message||"Sign-in failed"}lg.disabled=false}return}
-  const dp=e.target.closest("[data-hkvdeploy]");
-  if(dp&&hkvSt){dp.disabled=true;dp.textContent="Publishing…";try{await hkvSt.deploy();toast("Publishing. Your live website updates in about 1 minute.")}catch(x){toast("Publish failed. Try again.");dp.disabled=false;dp.textContent="Update live site"}return}
-  if(e.target.closest("[data-hkvlogout]")){hkvLS.del("hkv_gtoken");location.hash="#/";location.reload();return}
-  if(e.target.closest("[data-hkvntok]")){const v=($("#hkvNtok")||{}).value||"";hkvLS.set("hkv_ntoken",v.trim());toast(v.trim()?"Netlify connected. Loading enquiries…":"Netlify token removed");if(hkvSt)hkvSt.loadLeads();render();return}
-});
-/* extra panels in the dashboard on Netlify */
-new MutationObserver(()=>{if(!S.static||!S.isAdmin||route().a!=="admin")return;const main=document.querySelector(".cms-main")||document.querySelector(".cms");if(!main)return;
-  if(admTab==="leads"&&!$("#hkvLeadsBox")){const has=!!hkvLS.get("hkv_ntoken","");const box=document.createElement("section");box.id="hkvLeadsBox";box.className="panel";box.style.margin="0 0 14px";
-    box.innerHTML=has?`<p class="fine" style="margin:0">Enquiries come from your website form through Netlify Forms. Status and notes are saved on this device.${S.leadsErr?` <b style="color:#c0392b">${esc(S.leadsErr)}</b>`:""} <button class="btn btn-ghost btn-sm" data-hkvntok-reset>Change Netlify token</button></p>`
-      :`<h3 style="margin:0 0 6px">Connect enquiries</h3><p class="fine" style="margin:0 0 10px">Paste a Netlify personal access token (Netlify › your avatar › User settings › Applications › New access token) to show your website enquiries here.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="hkvNtok" type="password" autocomplete="off" placeholder="Netlify access token" style="flex:1;min-width:220px"><button class="btn btn-brand btn-sm" data-hkvntok>Connect</button></div>`;
-    const anchor=main.querySelector(".pend");if(anchor&&anchor.parentNode)anchor.parentNode.insertBefore(box,anchor.nextSibling);else main.prepend(box)}
-  if(admTab==="settings"&&!$("#hkvAcct")){const box=document.createElement("section");box.id="hkvAcct";box.className="panel";box.style.margin="0 0 14px";
-    box.innerHTML=`<h3 style="margin:0 0 6px">Account</h3><p class="fine" style="margin:0 0 10px">Signed in with GitHub as <b>${esc(S.ghLogin||"")}</b>. Your dashboard password is your GitHub password.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn btn-brand btn-sm" href="https://github.com/settings/security" target="_blank" rel="noopener">🔒 Change password</a><button class="btn btn-ghost btn-sm" data-hkvlogout>Sign out</button></div>`;
-    const anchor=main.querySelector(".pend");if(anchor&&anchor.parentNode)anchor.parentNode.insertBefore(box,anchor.nextSibling);else main.prepend(box)}
-}).observe(document.getElementById("app"),{childList:true,subtree:true});
-document.addEventListener("click",e=>{if(e.target.closest("[data-hkvntok-reset]")){hkvLS.del("hkv_ntoken");render()}});
-if(S.static){const tk=hkvLS.get("hkv_gtoken","");if(tk)hkvAdminStart(tk).catch(()=>hkvLS.del("hkv_gtoken"))}
 (async()=>{
-  if(!window.claude||!window.claude.use)return;
-  const [db,user,assets,downloads,sample]=await Promise.all(["db","user","assets","downloads","sample"].map(n=>window.claude.use(n).catch(()=>null)));
-  S.db=db;S.user=user;S.assets=assets;S.downloads=downloads;S.sample=sample;
-  try{S.isAdmin=!!(user&&(await user.isOwner()))}catch(e){S.isAdmin=false}
   const busy=()=>{const ae=document.activeElement;return route().a==="admin"&&(admTab==="editor"||admTab==="post"||(ae&&ae.closest&&ae.closest(".cms")&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))};
-  if(db){
+  const startSubs=db=>{if(!db)return;
     db.doc("settings/site").onSnapshot(d=>{S.settings=d.exists?(d.data()||{}):{};applySettings();if(!busy())render()},()=>{});
     db.collection("projects").onSnapshot(snap=>{S.remote=new Map(snap.docs.filter(d=>d.exists).map(d=>[d.id,d.data()]));siteLd();if(!busy())render()},()=>{});
     db.collection("posts").onSnapshot(snap=>{S.posts=new Map(snap.docs.filter(d=>d.exists).map(d=>[d.id,d.data()]));if(!busy())render()},()=>{});
-    if(S.isAdmin) db.collection("leads").orderBy("at","desc").limit(1000).onSnapshot(snap=>{S.leads=snap.docs.map(d=>({id:d.id,...d.data()}));if(route().a==="admin"&&!busy())render()},()=>{});
-  }
+    if(S.isAdmin) db.collection("leads").orderBy("at","desc").limit(1000).onSnapshot(snap=>{S.leads=snap.docs.map(d=>({id:d.id,...d.data()}));if(route().a==="admin"&&!busy())render()},()=>{});};
+  if(window.RH_CMS){await rhCmsBoot(startSubs);return}
+  if(!window.claude||!window.claude.use)return;
+  let [db,user,assets,downloads,sample]=await Promise.all(["db","user","assets","downloads","sample"].map(n=>window.claude.use(n).catch(()=>null)));
+  S.db=db;S.user=user;S.assets=assets;S.downloads=downloads;S.sample=sample;
+  try{S.isAdmin=!!(user&&(await user.isOwner()))}catch(e){S.isAdmin=false}
+  {const b=$("#admBtn");if(b)b.hidden=!S.isAdmin}
+  if(S.isAdmin){const mcp=await window.claude.use("mcp").catch(()=>null);
+    if(mcp){sbSetState("connecting");S.sbDb=makeSupaDb(mcp);try{await sbMigrate(S.sbDb,db)}catch(e){}S.adb=db;S.db=S.sbDb;db=S.sbDb;setTimeout(()=>{sbSyncMedia().catch(()=>{});sbSyncSitemap().catch(()=>{})},6000)}
+    else {S.db=null;db=null;sbSetState("error","Supabase isn’t available in this view. Open the dashboard in claude.ai with the Supabase connector connected; changes can’t be saved here.")}}
+  startSubs(db);
   if(route().a==="admin")render();
 })();
 </script>
