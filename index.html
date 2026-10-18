@@ -808,7 +808,10 @@ footer a{text-decoration:none}footer a:hover{text-decoration:underline}
 .fab::before{content:"";position:absolute;inset:0;border-radius:inherit;background:#1FAF5A;z-index:-1;animation:fabPulse 2.6s ease-out infinite}
 .fab::after{content:"";position:absolute;top:4px;right:4px;width:12px;height:12px;border-radius:50%;background:#7CFFB2;border:2px solid #1FAF5A}
 @keyframes fabPulse{0%{transform:scale(1);opacity:.55}70%,100%{transform:scale(1.5);opacity:0}}
-.fab:active{transform:scale(.94)}
+.fab:active{transform:translate3d(0,0,0) scale(.94)}
+/* keep the WhatsApp button glued to the screen corner on iPhone/iPad Safari: own GPU layer, no repaint while scrolling */
+.fab{transform:translate3d(0,0,0);-webkit-transform:translate3d(0,0,0);will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+html.is-scrolling .fab::before{animation-play-state:paused;opacity:0}
 @media(hover:hover) and (min-width:720px){.fab{bottom:calc(32px + env(safe-area-inset-bottom,0px));right:24px}.fab:hover{width:auto;padding:0 22px 0 16px;border-radius:999px}.fab:hover span{max-width:120px;opacity:1;margin-left:10px}}
 @media(prefers-reduced-motion:reduce){.fab::before{animation:none}}
 /* Pop-up */
@@ -969,8 +972,14 @@ header.top .icon-btn#siteShareBtn{color:#F2B54F;border-color:rgba(242,181,79,.5)
 @container (min-width:640px){.loc{grid-template-columns:1.1fr 1fr}}
 .loc-map{position:relative;border-radius:var(--r-lg);overflow:hidden;background:#0E1A3A;min-height:280px;width:100%;max-width:560px;margin-inline:auto}
 .lm-svg{display:block;width:100%;height:auto}
-.loc-map.real{max-width:none;background:var(--surface-2)}.lm-embed{display:block;width:100%;height:420px;border:0}
+.loc-map.real{max-width:none;isolation:isolate;transform:translateZ(0)}.lm-embed{display:block;width:100%;height:420px;border:0;background:#E9E5DC}
 @media(max-width:600px){.lm-embed{height:300px}}
+.loc-map.real.live .lm-svg,.loc-map.real.live .lm-load{display:none}
+.lm-load{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:0;background:linear-gradient(180deg,rgba(14,26,58,.15),rgba(14,26,58,.55));color:#fff;font:inherit;cursor:pointer;text-align:center;padding:16px}
+.lm-load b{font-size:16px;font-weight:800;background:#fff;color:#0E1A3A;padding:10px 18px;border-radius:999px;box-shadow:0 10px 24px -10px rgba(0,0,0,.6)}
+.lm-load small{font-size:12px;color:#E3E7F2;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.lm-load-pin{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#F2B54F;color:#0A1226;box-shadow:0 0 0 6px rgba(242,181,79,.25)}
+.lm-load:hover b{transform:translateY(-1px)}
 @media(min-width:1100px){.hero{padding-top:56px}.hero-grid{display:flex!important;flex-direction:column;align-items:center}.hero-grid>div{width:min(100%,920px);margin:0 auto;text-align:center}.hero h1{max-width:none;margin:0 auto;font-size:clamp(3.2rem,5.6vw,5.4rem)}.hero p.lead{margin:18px auto 0;max-width:62ch;font-size:1.22rem}.hero .searchbox{text-align:left;width:100%;max-width:920px;margin-left:auto;margin-right:auto}}
 .lm-bg{fill:#0E1A3A}.lm-blk{fill:#16264F}
 .lm-road{fill:none;stroke:#22356A;stroke-width:5;stroke-linecap:round}.lm-road.main{stroke:#2C4482;stroke-width:9}
@@ -2501,8 +2510,8 @@ function locSection(p){
   const near0=g?`${g.lat},${g.lng}`:[p.addr||p.name,p.area,p.state].filter(Boolean).join(", ");
   return `<div class="blk" id="locSec"><h2>${L2("Lokasi & sekitar","Location & surroundings")}</h2>
    <div class="loc">
-    <div class="loc-map${EMBED_MAP?" real":""}">${EMBED_MAP?`<iframe class="lm-embed" src="https://maps.google.com/maps?q=${encodeURIComponent(near0)}&z=15&hl=${S.lang==="en"?"en":"ms"}&output=embed" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" title="${esc(L2("Peta ","Map of ")+p.name)}"></iframe>`:""}${!EMBED_MAP&&cats.length>1?`<div class="loc-fil" role="group"><button type="button" data-lf="" aria-pressed="true">${L2("Semua","All")}</button>${cats.map(c=>`<button type="button" data-lf="${c}" aria-pressed="false">${NEARCAT[c][0]} ${L2(NEARCAT[c][1],NEARCAT[c][2])}</button>`).join("")}</div>`:""}
-     ${EMBED_MAP?"":svg}
+    <div class="loc-map${EMBED_MAP?" real":""}">${EMBED_MAP?`<button type="button" class="lm-load" data-mapsrc="${esc(`https://maps.google.com/maps?q=${encodeURIComponent(near0)}&z=15&hl=${S.lang==="en"?"en":"ms"}&output=embed`)}" data-maptitle="${esc(L2("Peta ","Map of ")+p.name)}"><span class="lm-load-pin" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><b>${L2("Buka peta interaktif","Open interactive map")}</b><small>${esc(p.name)} · Google Maps</small></button>`:""}${!EMBED_MAP&&cats.length>1?`<div class="loc-fil" role="group"><button type="button" data-lf="" aria-pressed="true">${L2("Semua","All")}</button>${cats.map(c=>`<button type="button" data-lf="${c}" aria-pressed="false">${NEARCAT[c][0]} ${L2(NEARCAT[c][1],NEARCAT[c][2])}</button>`).join("")}</div>`:""}
+     ${svg}
      <div class="loc-tip" id="locTip" hidden></div>
      <a class="loc-open" href="${esc(open)}" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="10" r="2.6"/></svg>${L2("Buka di Google Maps","Open in Google Maps")}</a>
     </div>
@@ -3018,6 +3027,7 @@ function staticI18n(){
   {const sb=$("#siteShareBtn");if(sb){const l=L2("Kongsi laman web ini","Share this website");sb.setAttribute("aria-label",l);sb.title=l}}
   $("#footLinks").innerHTML=[["#/","nav_props"],["#/simpanan","nav_saved"]].map(([h,k])=>`<li><a href="${h}"${h==="#/simpanan"?' rel="nofollow"':""}>${t(k)}</a></li>`).join("")+`<li><a href="#/projek">${L2("Semua projek (direktori)","All projects (directory)")}</a></li><li><a href="#/co-living">${L2("Pengurusan co-living","Co-living management")}</a></li><li><a href="#/blog">${L2("Blog & panduan","Blog & guides")}</a></li>`;
   $("#footWa").href=waLink(t("wa_gen"));$("#fabWa").href=waLink(t("wa_gen"));
+  if(!window.__fabScroll){window.__fabScroll=1;let st=0;window.addEventListener("scroll",()=>{document.documentElement.classList.add("is-scrolling");clearTimeout(st);st=setTimeout(()=>document.documentElement.classList.remove("is-scrolling"),180)},{passive:true})}
   {const s=(id,v)=>{const e=$(id);if(e)e.textContent=v};s("#fCtaH",L2("Sedia jumpa hartanah seterusnya?","Ready to find your next property?"));s("#fCtaP",L2("Ceritakan bajet & kawasan pilihan — kami balas dengan senarai pendek dalam masa sehari.","Tell us your budget & preferred area — we'll reply with a shortlist within a day."));s("#fCtaWa",L2("WhatsApp kami","WhatsApp us"));s("#fRights",L2("Hak cipta terpelihara.","All rights reserved."));s("#fTop",L2("Kembali ke atas","Back to top"));s("#fTelL",L2("Telefon","Call us"));s("#fHrs",L2("Balas dalam masa sehari · Isnin–Ahad","We reply within a day · Mon–Sun"));const w=$("#fCtaWa");if(w)w.href=waLink(t("wa_gen"));const tp=document.querySelector(".to-top");if(tp){tp.setAttribute("aria-label",L2("Kembali ke atas","Back to top"));if(!tp.dataset.b){tp.dataset.b=1;const rm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;tp.addEventListener("click",e=>{e.preventDefault();window.scrollTo({top:0,behavior:rm?"auto":"smooth"})});let q=0;const up=()=>{q=0;const h=document.documentElement,m=h.scrollHeight-h.clientHeight;tp.style.setProperty("--p",m>0?Math.min(1,h.scrollTop/m).toFixed(3):0)};window.addEventListener("scroll",()=>{if(!q){q=1;requestAnimationFrame(up)}},{passive:true});up()}}}
 }
 function renderCmpBar(){const b=$("#cmpBar");b.classList.toggle("show",S.cmp.size>0);b.textContent=`${t("cmp_btn")} (${S.cmp.size})`}
@@ -3819,6 +3829,9 @@ async function sbRunCheck(){const box=$("#sbChk");if(!box||!S.sbDb)return;box.in
     out.push(web===null?row(null,"rezekihartanah.com","Couldn’t read the visit log. Check the site yourself: open a project on rezekihartanah.com, change its price here, then refresh the site."):web.n?row(true,"rezekihartanah.com reads live data",`${web.n} page loads in the last 24 h · latest ${esc(ago(Date.parse(String(web.last).replace(" ","T")+(/Z|[+-]\d\d:?\d\d$/.test(String(web.last))?"":"Z"))))}`):row(false,"rezekihartanah.com is not reading Supabase yet","No visits to the live site in the last 24 h used Supabase. The site is still the old package: open the SEO tab › Download static site (.zip) › upload it to Cloudflare Pages, then open rezekihartanah.com and run this check again."));
   }catch(e){out.push(row(false,"Check failed",esc(sbErrText(e))))}
   box.innerHTML=`<ul class="sbchk">${out.join("")}</ul><p class="fine" style="margin:8px 0 0">Checked ${new Date().toLocaleTimeString("en-MY")}</p>`}
+document.addEventListener("click",e=>{const b=e.target.closest(".lm-load");if(!b)return;e.preventDefault();const box=b.closest(".loc-map");if(!box||box.querySelector(".lm-embed"))return;
+  const f=document.createElement("iframe");f.className="lm-embed";f.src=b.dataset.mapsrc;f.title=b.dataset.maptitle||"Map";f.allowFullscreen=true;f.referrerPolicy="no-referrer-when-downgrade";f.setAttribute("loading","eager");
+  box.insertBefore(f,box.firstChild);box.classList.add("live");track("map_open",{})});
 document.addEventListener("change",e=>{if(e.target&&e.target.id==="hostSel"){store.set("host",e.target.value);render()}});
 document.addEventListener("click",e=>{if(e.target.closest("[data-sbcheck]")){e.preventDefault();sbRunCheck();return}if(e.target.closest("[data-sbmedia]")){e.preventDefault();sbSyncMedia().then(sbRunCheck);sbRunCheck()}});
 /* live sitemaps, served at SB_FN/sitemap/sitemap.xml (listed in robots.txt) */
