@@ -2093,7 +2093,7 @@ function viewDetail(slug){
       <div class="pc-acts"><button type="button" data-save="${esc(p.slug)}" aria-pressed="${S.saved.has(p.slug)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.6 4.5 7.1 4.5c2 0 3.4 1.1 4.9 2.9 1.5-1.8 2.9-2.9 4.9-2.9 3.5 0 5.7 3.5 4.4 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg><span>${t("save")}</span></button><button type="button" data-cmp="${esc(p.slug)}" aria-pressed="${S.cmp.has(p.slug)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="cp"><path d="M7 4v16M17 4v16M3 8h8M13 16h8"/></g><path class="ck" d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>${t("cmp")}</span></button><button type="button" data-share="${esc(p.slug)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg><span>${t("share")}</span></button></div></div></div>
     </aside>
    </div>
-   ${sim.length?`<div class="blk"><h2>${L2("Projek berdekatan","Nearby projects")}</h2><div class="grid simgrid">${sim.map(s=>{const c=card(s.p);return s.km==null?c:c.replace("<div class=\"where\">",`<div class="sim-km">📍 ${s.km<1?"&lt;1":"~"+s.km.toFixed(1)} km ${L2("dari projek ini","from this project")}</div><div class="where">`)}).join("")}</div><p class="fine">${L2("Jarak anggaran garis lurus (dalam lingkungan "+NEAR_KM+" km). Jarak jalan raya mungkin lebih jauh.","Approximate straight-line distance (within "+NEAR_KM+" km). Road distance may be longer.")}</p></div>`:""}
+   ${sim.length?`<div class="blk"><h2>${L2("Projek berdekatan","Nearby projects")}</h2><div class="grid simgrid">${sim.map(s=>{const c=card(s.p);if(s.km==null)return c;const kmT=s.km<0.1?Math.round(s.km*1000)+" m":s.km.toFixed(1).replace(/\.0$/,"")+" km";const lbl=s.exact?`${kmT} ${L2("dari projek ini","from this project")}`:(s.same?L2("Kawasan yang sama","Same area"):`~${kmT} ${L2("(anggaran kawasan)","(area estimate)")}`);return c.replace("<div class=\"where\">",`<div class="sim-km">📍 ${lbl}</div><div class="where">`)}).join("")}</div><p class="fine">${sim.some(s=>s.exact)?L2("Jarak garis lurus dari pin Google Maps ke pin Google Maps. Jarak jalan raya biasanya lebih jauh.","Straight-line distance from Google Maps pin to pin. Road distance is usually longer."):L2("Jarak tepat dipaparkan apabila pautan Google Maps ditambah untuk setiap projek.","Exact distances show once each project has its Google Maps link.")}</p></div>`:""}
    <section id="enquiry">${enquiryForm(p.slug)}</section>
   </div>`;
 }
@@ -2828,7 +2828,8 @@ function kmBetween(a,b){const R=6371,r=Math.PI/180,dLa=(b.lat-a.lat)*r,dLo=(b.ln
 function nearbyProjects(p,ps){
   const others=ps.filter(x=>x.slug!==p.slug),g=geoAny(p);
   if(!g)return others.filter(x=>p.area&&x.area===p.area).slice(0,3).map(x=>({p:x,km:null}));
-  return others.map(x=>{const h=geoAny(x);return {p:x,km:h?kmBetween(g,h):null}}).filter(s=>s.km!=null&&s.km<=NEAR_KM).sort((a,b)=>a.km-b.km).slice(0,3);
+  const gx=geoOf(p);
+  return others.map(x=>{const h=geoAny(x),hx=geoOf(x);return {p:x,km:h?kmBetween(g,h):null,exact:!!(gx&&hx),same:!!(p.area&&x.area&&String(p.area).trim().toLowerCase()===String(x.area).trim().toLowerCase())}}).filter(s=>s.km!=null&&s.km<=NEAR_KM).sort((a,b)=>(b.exact-a.exact)||a.km-b.km).slice(0,3).sort((a,b)=>a.km-b.km);
 }
 function locP(p){
   if(!p||!p.tr||p.tr.h!==trHash(trSrc(p)))return p;const v=p.tr[S.lang];if(!v)return p;const o={...p};
@@ -3845,6 +3846,8 @@ function rhLoginView(){const c=S.cms;
    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn btn-brand" data-mode="in">Sign in</button><button class="btn btn-ghost" data-mode="up">Create admin account</button><button class="btn btn-ghost" type="button" data-cmsreset>Forgot password</button></div>
    <p class="msg ${c.msgOk?"ok":"err"}" id="cmsMsg" role="alert">${esc(c.msg||"")}</p>
   </form>`}</div></div>`}
+async function rhGeoFill(sb,o){try{if(!o||!o.mapUrl||geoOf(o))return o;const r=await sb.functions.invoke("geo",{body:{url:String(o.mapUrl)}});if(r.data&&typeof r.data.lat==="number"&&typeof r.data.lng==="number")return {...o,geo:r.data.lat.toFixed(6)+","+r.data.lng.toFixed(6)}}catch(e){}return o}
+async function rhGeoBackfill(sb){let n=0;for(const [slug,d] of S.remote){if(n>=15)break;if(!d||d.deleted||!d.mapUrl||geoOf(d))continue;const o=await rhGeoFill(sb,d);if(o!==d&&o.geo){try{await S.db.collection("projects").doc(slug).update({geo:o.geo});n++}catch(e){}}}if(n)toast(`${n} project pin${n>1?"s":""} set from Google Maps`)}
 function makeJsDb(sb){
   const subs=new Map();let wTimer=0;
   const chk=r=>{if(r.error){const e=new Error(r.error.message||"Supabase error");e.code=r.error.code;sbSetState("error","Couldn’t save: "+String(r.error.message||"").slice(0,140));throw e}if(S.sb.state!=="ok")sbSetState("ok");return r.data};
@@ -3854,7 +3857,7 @@ function makeJsDb(sb){
   const listen=(t,load)=>{if(!subs.has(t))subs.set(t,new Set());subs.get(t).add(load);load();const iv=setInterval(()=>{if(!document.hidden)load()},45000);return()=>{clearInterval(iv);subs.get(t).delete(load)}};
   const docRef=(c,id)=>{const t=tbl(c);return {id,
     async get(){const d=chk(await sb.from(t).select("data").eq("id",id).maybeSingle());return snap(id,d?d.data:null)},
-    async set(o){chk(await sb.from(t).upsert({id,data:JSON.parse(JSON.stringify(o)),updated_at:new Date().toISOString()}));notify(t)},
+    async set(o){if(t==="projects")o=await rhGeoFill(sb,o);chk(await sb.from(t).upsert({id,data:JSON.parse(JSON.stringify(o)),updated_at:new Date().toISOString()}));notify(t)},
     async update(o){const cur=chk(await sb.from(t).select("data").eq("id",id).maybeSingle());if(!cur)throw new Error("not-found");chk(await sb.from(t).update({data:{...cur.data,...JSON.parse(JSON.stringify(o))},updated_at:new Date().toISOString()}).eq("id",id));notify(t)},
     async delete(){chk(await sb.from(t).delete().eq("id",id));notify(t)},
     onSnapshot(cb,err){return listen(t,async()=>{try{const d=chk(await sb.from(t).select("data").eq("id",id).maybeSingle());cb(snap(id,d?d.data:null))}catch(e){err&&err(e)}})}}};
@@ -3922,7 +3925,7 @@ async function rhCmsBoot(startSubs){
     if(!S.isAdmin){S.cms.state="denied";render();return}
     S.cms.state="in";S.db=makeJsDb(sb);S.assets=makeJsAssets(sb);S.sample=makeJsSample(sb);sbSetState("ok");
     {const b=$("#admBtn");if(b)b.hidden=false}
-    if(!started){started=true;startSubs(S.db);setTimeout(()=>rhSyncSitemap().catch(()=>{}),5000);setTimeout(()=>rhOptimizeMedia(sb),9000)}
+    if(!started){started=true;startSubs(S.db);setTimeout(()=>rhSyncSitemap().catch(()=>{}),5000);setTimeout(()=>rhOptimizeMedia(sb),9000);setTimeout(()=>rhGeoBackfill(sb),6000)}
     render()};
   sb.auth.onAuthStateChange((ev,session)=>{if(ev==="SIGNED_OUT"){location.reload();return}if(ev==="PASSWORD_RECOVERY"){const np=prompt("Choose a new password (at least 8 characters):");if(np&&np.length>=8)sb.auth.updateUser({password:np}).then(x=>toast(x.error?x.error.message:"Password updated"))}if(ev==="SIGNED_IN"&&!started)apply(session)});
   const {data}=await sb.auth.getSession();await apply(data&&data.session);
