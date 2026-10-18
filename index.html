@@ -241,8 +241,8 @@ nav.main a:hover{background:var(--surface-2)}
 .field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--paper)}
 .field textarea{min-height:90px;resize:vertical}
 .sgrid{display:grid;gap:10px;grid-template-columns:1fr 1fr}
-.enq-grid{grid-template-columns:1fr 1fr;gap:12px}.enq-grid .field{min-width:0}.enq-grid select,.enq-grid input{width:100%;min-width:0;max-width:100%}
-@media(max-width:560px){.enq-grid{grid-template-columns:1fr}}
+.sgrid.enq-grid{grid-template-columns:1fr 1fr!important;gap:12px}.sgrid.enq-grid .field{min-width:0;grid-column:auto}.sgrid.enq-grid .field.full{grid-column:1/-1}.sgrid.enq-grid select,.sgrid.enq-grid input{width:100%;min-width:0;max-width:100%}
+@media(max-width:560px){.sgrid.enq-grid{grid-template-columns:1fr!important}}
 .sgrid .full{grid-column:1/-1}
 .sgrid .go{grid-column:1/-1}
 .split>*,.dgrid>*,.hero-grid>*{min-width:0}
@@ -343,18 +343,18 @@ nav.main a:hover{background:var(--surface-2)}
 .pc-spec div{padding:12px 18px;border-right:1px solid var(--line)}.pc-spec div:last-child{border-right:0}
 .pc-spec dt{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .pc-spec dd{margin:3px 0 0;font-weight:700;font-size:14px;color:var(--ink)}
-.pc-body{display:grid;gap:8px;padding:16px 18px 18px}
-.pc-cta{background:#0E1A3A;background-image:radial-gradient(120% 90% at 100% 0,rgba(242,181,79,.2),transparent 60%);color:#fff;padding:16px 18px 20px}
-.pc-cta-h{font:800 clamp(1.4rem,3vw,1.7rem)/1.15 var(--display);color:#fff}
-.pc-cta-p{margin:8px 0 0;color:#C4CBE0;font-size:14px;line-height:1.5}
-.pc-perks{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:7px}
-.pc-perks li{position:relative;padding-left:24px;font-size:14px;font-weight:600;color:#E3E7F2}
+.pc-body{display:grid;gap:7px;padding:12px 16px 14px}
+.pc-cta{background:#0E1A3A;background-image:radial-gradient(120% 90% at 100% 0,rgba(242,181,79,.2),transparent 60%);color:#fff;padding:12px 16px 14px}
+.pc-cta-h{font:800 clamp(1.08rem,1.6vw,1.28rem)/1.2 var(--display);color:#fff}
+.pc-cta-p{margin:5px 0 0;color:#C4CBE0;font-size:13px;line-height:1.45}
+.pc-perks{list-style:none;margin:9px 0 0;padding:0;display:grid;gap:4px}
+.pc-perks li{position:relative;padding-left:22px;font-size:12.5px;font-weight:600;color:#E3E7F2}
 .pc-perks li::before{content:"✓";position:absolute;left:0;top:0;width:17px;height:17px;border-radius:50%;background:#F2B54F;color:#0A1226;font-size:11px;font-weight:800;display:grid;place-items:center}
-.pc-main{font-size:16px;padding-top:14px;padding-bottom:14px;box-shadow:0 10px 22px -10px rgba(37,211,102,.7)}
+.pc-main{font-size:15px;padding-top:11px;padding-bottom:11px;box-shadow:0 10px 22px -10px rgba(37,211,102,.7)}
 .pc-note{margin:0;text-align:center;font-size:12px;color:var(--muted)}
 .pc-acts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
-.pc-acts button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:64px;border:1.5px solid var(--line);border-radius:14px;background:var(--surface-2);color:var(--ink);padding:10px 6px;font:700 13px var(--body);letter-spacing:.01em;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease,background .15s ease,color .15s ease}
-.pc-acts button svg{width:22px;height:22px;flex-shrink:0;color:var(--gold);transition:transform .2s ease,fill .15s ease}
+.pc-acts button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:50px;border:1.5px solid var(--line);border-radius:14px;background:var(--surface-2);color:var(--ink);padding:10px 6px;font:700 13px var(--body);letter-spacing:.01em;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease,background .15s ease,color .15s ease}
+.pc-acts button svg{width:18px;height:18px;flex-shrink:0;color:var(--gold);transition:transform .2s ease,fill .15s ease}
 .pc-acts button:hover{border-color:var(--gold);background:var(--gold-soft);transform:translateY(-2px);box-shadow:0 8px 18px -10px rgba(176,100,12,.55)}
 .pc-acts button:hover svg{transform:scale(1.12)}
 .pc-acts button:active{transform:translateY(0) scale(.97)}
