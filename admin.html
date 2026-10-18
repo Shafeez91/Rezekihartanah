@@ -1744,6 +1744,9 @@ function faqsFor(p,en){
   return q;
 }
 function absUrl(u){try{return u?new URL(u,location.href).href:""}catch(e){return ""}}
+/* focus keyword check: case-insensitive, ignores punctuation; the main phrase (before any comma) must appear word for word in order-free form */
+function kwIn(kw,text){const norm=s=>String(s||"").toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
+  const words=norm(String(kw||"").split(",")[0]).split(" ").filter(w=>w.length>1||/\d/.test(w)),t=" "+norm(text)+" ";return words.length>0&&words.every(w=>t.includes(" "+w+" "))}
 function seoFor(p){
   const keep=S.lang;S.lang="ms"; // search content is always generated in BM (the page's default language), so titles never mix languages
   try{
@@ -1788,8 +1791,8 @@ function seoFor(p){
   const checks=[
     [title.length>=30&&title.length<=60,`Meta title 30–60 characters (${title.length})`],
     [desc.length>=110&&desc.length<=160,`Meta description 110–160 characters (${desc.length})`],
-    [title.toLowerCase().includes(kw.split(" ")[0]),`Focus keyword in title`],
-    [desc.toLowerCase().includes(kw.split(" ")[0]),`Focus keyword in description`],
+    [kwIn(kw,title),`Focus keyword in title`],
+    [kwIn(kw,desc),`Focus keyword in description`],
     [/^[a-z0-9]+(-[a-z0-9]+)*$/.test(p.slug)&&p.slug.length>=3&&p.slug.length<=60,`Clean slug (lowercase, hyphens)`],
     [(p.summary||"").length>=250,`Content ≥250 characters (${(p.summary||"").length})`],
     [(p.hl||[]).length>=3,`At least 3 highlights`],
