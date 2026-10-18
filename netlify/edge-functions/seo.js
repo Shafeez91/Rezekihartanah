@@ -40,8 +40,7 @@ const ld = (o) => `<script type="application/ld+json" id="ld-ssr">${JSON.stringi
 
 function visible(d) {
   const ps = (d.projects || []).filter((p) => p && p.slug && !p.deleted && p.published !== false && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(p.slug));
-  const live = ps.filter((p) => !p.redirectTo && p.status !== "soldout" || p.status === "soldout");
-  return live;
+  return ps;
 }
 const crumbs = (items) => ({ "@type": "BreadcrumbList", "itemListElement": items.map(([n, u], i) => ({ "@type": "ListItem", "position": i + 1, "name": n, "item": u })) });
 
@@ -98,7 +97,7 @@ function itemList(url, list, name) {
 }
 
 function resolve(pathname, d) {
-  const ps = visible(d), posts = (d.posts || []).filter((a) => a && a.slug), areas = [...new Set(ps.map((p) => String(p.area || "").trim()).filter(Boolean))].sort();
+  const all = visible(d), ps = all.filter((p) => !p.redirectTo), posts = (d.posts || []).filter((a) => a && a.slug), areas = [...new Set(ps.map((p) => String(p.area || "").trim()).filter(Boolean))].sort();
   const seg = pathname.replace(/\/+$/, "").split("/").filter(Boolean).map(decodeURIComponent);
   const ok = (s) => ({ status: 200, ...s });
   if (!seg.length) {
@@ -107,7 +106,8 @@ function resolve(pathname, d) {
     return ok({ title: DEFAULT_TITLE, desc: DEFAULT_DESC, url: SITE + "/", body: listBody("Semua hartanah Klang Valley, satu tempat.", "Bandingkan harga, saiz, susun atur dan ansuran bulanan projek baharu, siap, tanah dan komersial — kemudian terus berbincang dengan kami.", ps, d).replace("</section>", areasHtml + postsHtml + "</section>"), graph: [itemList(SITE + "/", ps, "Projek hartanah Rezeki Hartanah")] });
   }
   if (seg[0] === "listings" && seg[1]) {
-    const p = ps.find((x) => x.slug === seg[1]) || ps.find((x) => slugify(String(x.name || "").replace(/@/g, " ")) === seg[1]);
+    const p = all.find((x) => x.slug === seg[1]) || ps.find((x) => slugify(String(x.name || "").replace(/@/g, " ")) === seg[1]);
+    if (p && p.redirectTo) { const t = ps.find((x) => x.slug === p.redirectTo && x.slug !== p.slug); if (t) return { status: 301, location: "/listings/" + t.slug }; return { status: 404, title: "Projek tidak dijumpai | Rezeki Hartanah", desc: "Projek ini tiada atau telah dikeluarkan.", url: SITE + "/", robots: "noindex, follow", body: `<section class="ssr"><h1>Projek tidak dijumpai</h1><p><a href="/projek">Lihat semua projek</a></p></section>`, graph: [] }; }
     if (!p) return { status: 404, title: "Projek tidak dijumpai | Rezeki Hartanah", desc: "Projek ini tiada atau telah dikeluarkan.", url: SITE + "/", robots: "noindex, follow", body: `<section class="ssr"><h1>Projek tidak dijumpai</h1><p><a href="/projek">Lihat semua projek</a></p></section>`, graph: [] };
     if (p.slug !== seg[1]) return { status: 301, location: "/listings/" + p.slug };
     return ok(projectPage(p, d));
