@@ -956,6 +956,9 @@ html.is-scrolling .fab::before{animation-play-state:paused;opacity:0}
 .sbstat i{width:9px;height:9px;border-radius:50%;flex:none;background:#9AA5C0}.sbstat.ok i{background:#1FAF5A;box-shadow:0 0 0 4px rgba(31,175,90,.18)}.sbstat.sync i,.sbstat.connecting i{background:#F2B54F;animation:shp 1.2s ease-in-out infinite}.sbstat.error{border-color:#E5484D;color:#E5484D}.sbstat.error i{background:#E5484D}
 header.top .icon-btn#siteShareBtn{color:#F2B54F;border-color:rgba(242,181,79,.5)}
 .shd.site{max-width:min(460px,96vw)}.shd.site .shd-body{grid-template-columns:1fr}
+.shd.hist{max-width:min(620px,96vw)}.hist-body{padding:14px 18px 18px;max-height:70vh;overflow:auto}
+.hist-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}.hist-list li{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}
+.hist-list li>div{display:grid;gap:2px;min-width:0}.hist-list b{font-size:14px}.hist-list small{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
 .shd-card{display:flex;gap:12px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2)}.shd-card img{width:72px;height:54px;object-fit:cover;border-radius:9px;flex:none}.shd-card b{display:block;font-size:14px}.shd-card small{display:block;font-size:12px;color:var(--muted);word-break:break-all}
 @media(max-width:480px){.bar{gap:6px;height:58px}.logo{gap:8px;min-width:0;flex:0 1 auto}.logo b{font-size:clamp(13px,4.4vw,17px);white-space:nowrap}.logo small{display:none}.logo-mark{width:32px;height:32px;border-radius:9px}.seg button{padding:4px 8px;font-size:12px}header.top .icon-btn{width:34px;height:34px}header.top .icon-btn svg{width:16px;height:16px}}
 @media(max-width:360px){.logo b{font-size:15px}.bar{gap:4px}}
@@ -1570,8 +1573,15 @@ function areaSlug(a){return slugify(a)}
 const SLUG_RE=/^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const SM_MAX=45000; // stays under the 50,000-URL / 50 MB per-file limit
 const SM_FILES={index:"sitemap.xml",pages:"sitemap-pages.xml",areas:"sitemap-areas.xml",blog:"sitemap-blog.xml",proj:n=>`sitemap-projects-${n}.xml`};
-const RESERVED_SLUGS=["admin","api","hartanah","listings","projek","simpanan","sitemap","robots","p","kawasan","blog","privasi","_blob","co-living","assets","favicon"];
-function projUrl(p){return `${SITE}/listings/${p.slug}`}
+const RESERVED_SLUGS=["en","admin","api","hartanah","listings","projek","simpanan","sitemap","robots","p","kawasan","blog","privasi","_blob","co-living","assets","favicon"];
+function projUrl(p,lang){return lang==="en"?`${SITE}/en/listings/${p.slug}`:`${SITE}/listings/${p.slug}`}
+/* ----- English versions: Missing / Auto-translated / Verified (only Verified English is indexable) ----- */
+function trSrc(p){return JSON.stringify({summary:String(p.summary||""),hl:(p.hl||[]).map(String),fac:(p.fac||[]).map(String)})}
+function trHash(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return String(h>>>0)}
+function enSig(p){const e=(p&&p.tr&&p.tr.en)||{};return trHash(String(p&&p.tr&&p.tr.h||"")+"|"+JSON.stringify({s:String(e.summary||""),hl:(e.hl||[]).map(String),fac:(e.fac||[]).map(String),mt:String(p.metaTitleEn||""),md:String(p.metaDescEn||"")}))}
+function enStatus(p){if(!p||!p.tr||!p.tr.en||p.tr.h!==trHash(trSrc(p)))return "missing";if(String(p.summary||"").trim()&&!String(p.tr.en.summary||"").trim())return "missing";return p.trEnOk&&p.trEnOk===enSig(p)?"verified":"auto"}
+function enIndexable(p){return listable(p)&&!p.noindex&&enStatus(p)==="verified"}
+function hreflangAlts(p){return enIndexable(p)?[["ms",projUrl(p)],["en",projUrl(p,"en")],["x-default",projUrl(p)]]:[]}
 function areaUrl(a){return `${SITE}/hartanah/${areaSlug(a)}`}
 const SIG_KEYS=["name","dev","area","state","purpose","type","status","tenure","furn","tod","pmin","pmax","mon","bmin","bmax","tmin","tmax","smin","smax","units","maint","completion","summary","hl","fac","layouts","towers","near","photos","metaTitle","metaDesc","keyword","mapUrl","geo","address","published","noindex","redirectTo"];
 function contentSig(p){return hash(JSON.stringify(SIG_KEYS.map(k=>p[k]??"")))}
@@ -1617,10 +1627,10 @@ function directoryModel(list){const m=new Map();for(const p of list.filter(lista
   return [...m.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([area,ps])=>({area,url:areaUrl(area),projects:ps.slice().sort((a,b)=>a.name.localeCompare(b.name))}))}
 const xmlEsc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[c]));
 const SM_NS="http://www.sitemaps.org/schemas/sitemap/0.9";
-function urlsetXml(es){return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="${SM_NS}">\n${es.map(e=>`  <url><loc>${xmlEsc(e.loc)}</loc>${e.lastmod?`<lastmod>${e.lastmod}</lastmod>`:""}</url>\n`).join("")}</urlset>\n`}
+function urlsetXml(es){const x=es.some(e=>e.alt&&e.alt.length);return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="${SM_NS}"${x?' xmlns:xhtml="http://www.w3.org/1999/xhtml"':""}>\n${es.map(e=>`  <url><loc>${xmlEsc(e.loc)}</loc>${e.lastmod?`<lastmod>${e.lastmod}</lastmod>`:""}${(e.alt||[]).map(a=>`<xhtml:link rel="alternate" hreflang="${xmlEsc(a.lang)}" href="${xmlEsc(a.href)}"/>`).join("")}</url>\n`).join("")}</urlset>\n`}
 function sitemapIndexXml(es){return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="${SM_NS}">\n${es.map(e=>`  <sitemap><loc>${xmlEsc(e.loc)}</loc>${e.lastmod?`<lastmod>${e.lastmod}</lastmod>`:""}</sitemap>\n`).join("")}</sitemapindex>\n`}
 function buildSitemaps(list,opt){
-  const max=(opt&&opt.max)||SM_MAX,ps=indexableProjects(list),pe=ps.map(p=>({loc:projUrl(p),lastmod:lastmodOf(p)}));
+  const max=(opt&&opt.max)||SM_MAX,ps=indexableProjects(list),pe=[];for(const p of ps){const alt=hreflangAlts(p).map(([lang,href])=>({lang,href}));pe.push({loc:projUrl(p),lastmod:lastmodOf(p),alt});if(alt.length)pe.push({loc:projUrl(p,"en"),lastmod:lastmodOf(p),alt})}
   const areas=new Map();for(const p of ps){const k=areaSlug(p.area);if(!areas.has(k))areas.set(k,{loc:areaUrl(p.area),ds:[]});areas.get(k).ds.push(lastmodOf(p))}
   const ae=[...areas.values()].map(a=>({loc:a.loc,lastmod:maxDay(a.ds)})).sort((a,b)=>a.loc<b.loc?-1:1);
   const latest=maxDay(pe.map(e=>e.lastmod)),pg=[{loc:SITE+"/",lastmod:latest},{loc:SITE+"/projek",lastmod:latest},{loc:SITE+"/co-living"},{loc:SITE+"/privasi"}];
@@ -1635,8 +1645,9 @@ function buildSitemaps(list,opt){
 }
 function robotsTxt(){return `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /simpanan\nDisallow: /api/\n\nSitemap: ${SITE}/${SM_FILES.index}\nSitemap: https://dttxithovvlmgeyahllk.supabase.co/functions/v1/sitemap/${SM_FILES.index}\n`}
 /* route <-> crawlable path mapping (#/p/x ↔ /listings/x, #/kawasan/x ↔ /hartanah/x) */
-function hashToPath(h){const [a="",b=""]=String(h||"").replace(/^#\/?/,"").split(/[?#]/)[0].split("/");if(a==="p"&&b)return "/listings/"+b;if(a==="kawasan"&&b)return "/hartanah/"+b;return a?"/"+a+(b?"/"+b:""):"/"}
-function pathToHash(path){const [a="",b=""]=String(path||"/").split(/[?#]/)[0].replace(/^\/+|\/+$/g,"").split("/");if(a==="listings"&&b)return "#/p/"+b;if(a==="hartanah"&&b)return "#/kawasan/"+b;return a?"#/"+a+(b?"/"+b:""):"#/"}
+function hashToPath(h,lang){const [a="",b=""]=String(h||"").replace(/^#\/?/,"").split(/[?#]/)[0].split("/");if(a==="p"&&b)return (lang==="en"?"/en/listings/":"/listings/")+b;if(a==="kawasan"&&b)return "/hartanah/"+b;return a?"/"+a+(b?"/"+b:""):"/"}
+function pathLang(path){return /^\/en\/listings\/[^/]+\/?$/.test(String(path||"").split(/[?#]/)[0])?"en":/^\/listings\/[^/]+\/?$/.test(String(path||"").split(/[?#]/)[0])?"ms":""}
+function pathToHash(path){path=String(path||"/").replace(/^\/en(\/listings\/[^/?#]+\/?)(?=$|[?#])/,"$1");const [a="",b=""]=String(path||"/").split(/[?#]/)[0].replace(/^\/+|\/+$/g,"").split("/");if(a==="listings"&&b)return "#/p/"+b;if(a==="hartanah"&&b)return "#/kawasan/"+b;return a?"#/"+a+(b?"/"+b:""):"#/"}
 
 /* ----- automated tests (isolated in-memory fixtures; never touch live data) ----- */
 function xmlWellFormed(x){
@@ -1685,6 +1696,22 @@ function seoSelfTest(){
   // K
   if(typeof filtered==="function"){const sv=S.f;try{S.f={...sv,q:"",area:"",type:"",status:"",dev:"",tenure:"",furn:"",bed:0,tod:false,maxMon:0,chip:"",maxPrice:500000,sort:"lo"};const L=[{slug:"x1",name:"X1",area:"A",dev:"",state:"",type:"condo",pmin:0},{slug:"x2",name:"X2",area:"A",dev:"",state:"",type:"condo",pmin:400000},{slug:"x3",name:"X3",area:"A",dev:"",state:"",type:"condo",pmin:300000}],r1=filtered(L);S.f={...S.f,maxPrice:0,sort:"lo"};const r2=filtered(L);
     ok("K","Missing prices are excluded from price filters and sorted last",r1.map(p=>p.slug).join()==="x3,x2"&&r2.map(p=>p.slug).join()==="x3,x2,x1")}finally{S.f=sv}}
+  // L–Q: English versions (Stage 2)
+  {const src={summary:"Kondominium di Setapak berhampiran LRT.",hl:["Dekat LRT"],fac:["Kolam"]},h0=trHash(trSrc(src));
+   const en={summary:"Condominium in Setapak near the LRT.",hl:["Near LRT"],fac:["Pool"]};
+   const auto=mk("gamma-auto",{...src,tr:{h:h0,ms:src,en}}),ver0=mk("delta-verified",{...src,tr:{h:h0,ms:src,en}});const ver={...ver0,trEnOk:enSig(ver0)};
+   const stale={...ver,slug:"eps-stale",summary:src.summary+" Baharu."},miss=mk("zeta-missing",{...src}),draftV={...ver,slug:"eta-draft",published:false},redirV={...ver,slug:"theta-redir",redirectTo:"alpha-residences"};
+   const editedEn={...ver,slug:"iota-edited",tr:{...ver.tr,en:{...en,summary:en.summary+" Edited."}}};
+   ok("L","Translation status: Missing / Auto-translated / Verified; any later source or English edit voids Verified",enStatus(miss)==="missing"&&enStatus(auto)==="auto"&&enStatus(ver)==="verified"&&enStatus(stale)==="missing"&&enStatus(editedEn)==="auto");
+   const list=[...base,auto,ver,stale,miss,draftV,redirV],b=buildSitemaps(list),locs=b.urls.map(u=>u.loc),px=b.files[SM_FILES.proj(1)];
+   const enLocs=locs.filter(u=>u.includes("/en/"));
+   ok("M","Sitemap: only verified, published, non-redirected English URLs are included; every BM listing stays",enLocs.length===1&&enLocs[0]===SITE+"/en/listings/delta-verified"&&["alpha-residences","beta-heights","gamma-auto","delta-verified","eps-stale","zeta-missing"].every(s=>locs.includes(SITE+"/listings/"+s))&&!locs.some(u=>/eta-draft|theta-redir/.test(u)),enLocs.join(" "));
+   const blk=u=>{const i=px.indexOf("<loc>"+u+"</loc>");return i<0?"":px.slice(i,px.indexOf("</url>",i))};
+   const bmB=blk(SITE+"/listings/delta-verified"),enB=blk(SITE+"/en/listings/delta-verified"),want=[`hreflang="ms" href="${SITE}/listings/delta-verified"`,`hreflang="en" href="${SITE}/en/listings/delta-verified"`,`hreflang="x-default" href="${SITE}/listings/delta-verified"`];
+   ok("N","Sitemap hreflang is reciprocal (BM ⇄ EN + x-default) and well-formed XML; unverified listings carry no alternates",want.every(w=>bmB.includes(w)&&enB.includes(w))&&!blk(SITE+"/listings/gamma-auto").includes("hreflang")&&xmlWellFormed(px)&&px.includes('xmlns:xhtml="http://www.w3.org/1999/xhtml"'));
+   ok("O","Routing: /en/listings/x ⇄ #/p/x; BM paths unchanged; other paths never gain /en",pathToHash("/en/listings/delta-verified")==="#/p/delta-verified"&&hashToPath("#/p/delta-verified","en")==="/en/listings/delta-verified"&&hashToPath("#/p/delta-verified","ms")==="/listings/delta-verified"&&hashToPath("#/kawasan/setapak","en")==="/hartanah/setapak"&&pathLang("/en/listings/x")==="en"&&pathLang("/listings/x")==="ms"&&pathLang("/hartanah/x")===""&&pathToHash("/en/blog")!=="#/blog");
+   ok("P","hreflang tags only for verified, listable projects",hreflangAlts(ver).length===3&&!hreflangAlts(auto).length&&!hreflangAlts(draftV).length&&!hreflangAlts(redirV).length&&!hreflangAlts({...ver,noindex:true}).length);
+   ok("Q","'en' cannot be used as a project slug",RESERVED_SLUGS.includes("en"))}
   return res;
 }
 /* ===== SEO-CORE:END ===== */
@@ -1693,7 +1720,7 @@ const PATHMODE=(()=>{try{if(window.RH_SITE)return true;return location.hostname.
 let CMS_HOME=false; // CMS edition: the dashboard is the start page until the user navigates to a site page
 window.addEventListener("hashchange",()=>{if(/^#\/.+/.test(location.hash)||location.hash==="#/")CMS_HOME=true});
 function curHash(){if(PATHMODE)return pathToHash(location.pathname);const h=location.hash||"#/";if(!CMS_HOME&&!window.RH_SITE&&(h==="#/"||!/^#\//.test(h)))return "#/admin";return h}
-function navTo(h,replace){if(!PATHMODE){if(replace)location.replace(h);else location.hash=h;return}const p=hashToPath(h);if(p!==location.pathname)history[replace?"replaceState":"pushState"](null,"",p);dispatchEvent(new HashChangeEvent("hashchange"))}
+function navTo(h,replace){if(!PATHMODE){if(replace)location.replace(h);else location.hash=h;return}const p=hashToPath(h,S.lang);if(p!==location.pathname)history[replace?"replaceState":"pushState"](null,"",p);dispatchEvent(new HashChangeEvent("hashchange"))}
 
 /* ============ DATA MERGE ============ */
 function projects(all){
@@ -1755,46 +1782,47 @@ function absUrl(u){try{return u?new URL(u,location.href).href:""}catch(e){return
 /* focus keyword check: case-insensitive, ignores punctuation; the main phrase (before any comma) must appear word for word in order-free form */
 function kwIn(kw,text){const norm=s=>String(s||"").toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
   const words=norm(String(kw||"").split(",")[0]).split(" ").filter(w=>w.length>1||/\d/.test(w)),t=" "+norm(text)+" ";return words.length>0&&words.every(w=>t.includes(" "+w+" "))}
-function seoFor(p){
-  const keep=S.lang;S.lang="ms"; // search content is always generated in BM (the page's default language), so titles never mix languages
+function seoFor(p,lang){
+  const EN=lang==="en",keep=S.lang;S.lang=EN?"en":"ms"; // BM by default; English only for the /en/ version of a listing
+  if(EN)p=locP(p);
   try{
   const name=String(p.name||p.slug||"").trim(),areaS=String(p.area||"").trim();
   const area=areaS+(p.state?", "+p.state:"");
   const typ=t("t_"+p.type)||"Hartanah";
   const kw=(p.keyword||"").trim()||(name.split("@")[0].trim()+" "+areaS).toLowerCase();
   const inName=areaS&&name.toLowerCase().includes(areaS.toLowerCase());
-  const price=p.pmin?" dari "+rm(p.pmin):"";
+  const price=p.pmin?(EN?" from ":" dari ")+rm(p.pmin):"",DI=EN?" in ":" di ";
   const BR=" | Rezeki Hartanah";
   const cands=[
-    `${name} | ${typ}${price}${inName?"":" di "+areaS}`,
+    `${name} | ${typ}${price}${inName?"":DI+areaS}`,
     `${name} | ${typ}${price}`,
-    p.pmin?`${name} | Harga dari ${rm(p.pmin)}`:"",
-    inName?"":`${name} | ${typ} di ${areaS}`,
+    p.pmin?`${name} | ${EN?"Price from":"Harga dari"} ${rm(p.pmin)}`:"",
+    inName?"":`${name} | ${typ}${DI}${areaS}`,
     `${name} | ${typ}`,
     name
   ].filter(Boolean);
-  let title=(p.metaTitle||"").trim();
+  let title=((EN?p.metaTitleEn:p.metaTitle)||"").trim();
   if(!title){title=cands.find(c=>c.length>=30&&c.length<=60)||cands.find(c=>c.length<=60)||clip(name,60);if(title.length+BR.length<=60&&title.length<30)title+=BR}
-  const mo=monthlyOf(p),devS=p.dev?" oleh "+p.dev:"";
-  const head=[[typ.toLowerCase()+devS,sizeTxt(p),bedTxt(p)],[typ.toLowerCase()+devS,sizeTxt(p)],[typ.toLowerCase(),sizeTxt(p)],[typ.toLowerCase()]].map(a=>`${name}${inName?(p.state?", "+p.state:""):" di "+area}: ${a.filter(Boolean).join(", ")}.`);
-  const tail=p.pmin?[` Harga dari ${rmFull(p.pmin)}, ansuran ~${rmFull(mo)}/bln.`,` Harga dari ${rmFull(p.pmin)}.`]:[""];
+  const mo=monthlyOf(p),devS=p.dev?(EN?" by ":" oleh ")+p.dev:"";
+  const head=[[typ.toLowerCase()+devS,sizeTxt(p),bedTxt(p)],[typ.toLowerCase()+devS,sizeTxt(p)],[typ.toLowerCase(),sizeTxt(p)],[typ.toLowerCase()]].map(a=>`${name}${inName?(p.state?", "+p.state:""):DI+area}: ${a.filter(Boolean).join(", ")}.`);
+  const tail=p.pmin?(EN?[` Priced from ${rmFull(p.pmin)}, about ${rmFull(mo)}/month.`,` Priced from ${rmFull(p.pmin)}.`]:[` Harga dari ${rmFull(p.pmin)}, ansuran ~${rmFull(mo)}/bln.`,` Harga dari ${rmFull(p.pmin)}.`]):[""];
   let auto="";for(const h of head){for(const tl of tail){if((h+tl).length<=160){auto=h+tl;break}}if(auto)break}
   if(!auto)auto=head[head.length-1];
-  for(const add of [" Semak unit & pembiayaan LPPSA."," WhatsApp kami untuk lawatan."])if(auto.length<110&&auto.length+add.length<=160)auto+=add;
-  const desc=clip((p.metaDesc||"").trim()||auto,160);
-  const url=projUrl(p);
-  const faqs=faqsFor(p,false);
+  for(const add of EN?[" Check units & LPPSA financing."," WhatsApp us to arrange a visit."]:[" Semak unit & pembiayaan LPPSA."," WhatsApp kami untuk lawatan."])if(auto.length<110&&auto.length+add.length<=160)auto+=add;
+  const desc=clip(((EN?p.metaDescEn:p.metaDesc)||"").trim()||auto,160);
+  const url=projUrl(p,EN?"en":"ms");
+  const faqs=faqsFor(p,EN);
   const imgs=photosOf(p).map(absUrl).filter(Boolean);
   const day=v=>v?new Date(v).toISOString().slice(0,10):undefined;
   const ld={"@context":"https://schema.org","@graph":[
-    {"@type":"RealEstateListing","@id":url+"#listing","url":url,"name":name,"description":desc,"inLanguage":"ms-MY","image":imgs.length?imgs:undefined,"datePosted":day(p.createdAt),"dateModified":day(p.contentAt||p.updatedAt||p.createdAt),
+    {"@type":"RealEstateListing","@id":url+"#listing","url":url,"name":name,"description":desc,"inLanguage":EN?"en-MY":"ms-MY","image":imgs.length?imgs:undefined,"datePosted":day(p.createdAt),"dateModified":day(p.contentAt||p.updatedAt||p.createdAt),
      "mainEntityOfPage":{"@type":"WebPage","@id":url,"url":url,"name":title,"breadcrumb":{"@id":url+"#crumbs"}},
      "offers":p.pmin?{"@type":"AggregateOffer","priceCurrency":"MYR","lowPrice":p.pmin,"highPrice":p.pmax||p.pmin,"availability":p.status==="soldout"?"https://schema.org/SoldOut":p.status==="upcoming"?"https://schema.org/PreOrder":"https://schema.org/InStock","offerCount":p.units||undefined,"seller":{"@id":SITE+"/#agent"}}:undefined,
      "about":{"@type":TYPES.com.includes(p.type)?"Place":"Residence","name":name,"image":imgs[0]||undefined,"address":{"@type":"PostalAddress","addressLocality":areaS,"addressRegion":p.state||undefined,"addressCountry":"MY"},
        "geo":(g=>g?{"@type":"GeoCoordinates","latitude":g.lat,"longitude":g.lng}:undefined)(typeof geoOf==="function"?geoOf(p):null),
        "floorSize":p.smin?{"@type":"QuantitativeValue","minValue":p.smin,"maxValue":p.smax||p.smin,"unitCode":"FTK"}:undefined,"numberOfRooms":p.bmax||undefined,"amenityFeature":(p.fac||[]).map(f=>({"@type":"LocationFeatureSpecification","name":f,"value":true}))},
      "provider":{"@id":SITE+"/#agent"}},
-    {"@type":"BreadcrumbList","@id":url+"#crumbs","itemListElement":[{"@type":"ListItem","position":1,"name":"Hartanah","item":SITE+"/"},{"@type":"ListItem","position":2,"name":areaS,"item":areaUrl(areaS)},{"@type":"ListItem","position":3,"name":name,"item":url}]}
+    {"@type":"BreadcrumbList","@id":url+"#crumbs","itemListElement":[{"@type":"ListItem","position":1,"name":EN?"Properties":"Hartanah","item":SITE+"/"},{"@type":"ListItem","position":2,"name":areaS,"item":areaUrl(areaS)},{"@type":"ListItem","position":3,"name":name,"item":url}]}
   ]};
   const checks=[
     [title.length>=30&&title.length<=60,`Meta title 30–60 characters (${title.length})`],
@@ -1819,7 +1847,9 @@ function seoFor(p){
 function faqBlock(p){const q=faqsFor(p,S.lang==="en");return `<div class="blk" id="faqSec"><h2>${L2("Soalan lazim","Frequently asked questions")}</h2><div class="faq">${q.map(([a,b],i)=>`<details${i?"":" open"}><summary>${esc(a)}</summary><p>${esc(b)}</p></details>`).join("")}</div></div>`}
 function scoreCls(s){return s>=80?"s-good":s>=55?"s-mid":"s-bad"}
 const OG_DEFAULT="https://rezekihartanah.com/og-image.jpg";
-function setHead({title,desc,canonical,ld,robots,image}){
+function setHead({title,desc,canonical,ld,robots,image,alts}){
+  document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(l=>l.remove());
+  for(const [lang,href] of alts||[]){const l=document.createElement("link");l.rel="alternate";l.hreflang=lang;l.href=href;document.head.appendChild(l)}
   const ab=image?absUrl(image):"",img=/^https:\/\//.test(ab)?ab:OG_DEFAULT;
   [['meta[property="og:image"]',img],['meta[name="twitter:image"]',img],['meta[name="twitter:title"]',title],['meta[name="twitter:description"]',desc||""],['meta[property="og:image:alt"]',title]].forEach(([s,v])=>{const m=$(s);if(m)m.setAttribute("content",v)});
   document.title=title;$('meta[name="robots"]').setAttribute("content",robots||"index, follow, max-image-preview:large");
@@ -2193,16 +2223,18 @@ function admProjects(){
   list.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0)||a.name.localeCompare(b.name));
   return `<div class="cms-bar"><div class="sb-row cms-q">${ic("search",18)}<input id="admQ" type="search" value="${esc(admQ)}" aria-label="Search projects, areas or developers" placeholder="Search projects, areas or developers"></div>
    <div class="chips">${[["all","All"],["pub","Published"],["draft","Drafts"],["feat","Featured"]].map(([k,l])=>`<button class="chip" data-af="${k}" aria-pressed="${admFilter===k}">${l}<span class="n">${cnt[k]}</span></button>`).join("")}</div></div>
+   ${S.jsSb?`<p class="fine" style="margin:0 0 8px;text-align:right"><button type="button" class="btn btn-ghost btn-sm" data-histdel>↺ Recently deleted projects</button></p>`:""}
    <div class="plist">${list.map(p=>{const s=seoFor(p).score,pub=p.published!==false;return `<article class="prow">
      <div class="pthumb">${art(p)}</div>
      <div class="pinfo"><b>${esc(p.name)}</b><span>${esc(p.area)}, ${esc(tE("t_"+p.type))}</span><span>${esc(priceRange(p))}</span></div>
-     <div class="pmeta"><span class="pill ${pub?"on":"off"}">${pub?"Published":"Draft"}</span><span class="score ${scoreCls(s)}" title="SEO score">SEO ${s}</span>${p.featured?`<span class="pill gold">★ Featured</span>`:""}<small>${p.updatedAt?"Updated "+ago(p.updatedAt):"Original listing"}</small></div>
+     <div class="pmeta"><span class="pill ${pub?"on":"off"}">${pub?"Published":"Draft"}</span><span class="score ${scoreCls(s)}" title="SEO score">SEO ${s}</span>${p.featured?`<span class="pill gold">★ Featured</span>`:""}${enPill(enStatus(p))}<small>${p.updatedAt?"Updated "+ago(p.updatedAt):"Original listing"}</small></div>
      <div class="pacts"><button class="btn btn-ghost btn-sm" data-edit="${esc(p.slug)}">Edit</button>
       <details class="menu"><summary class="icon-btn" aria-label="More actions for ${esc(p.name)}">⋯</summary><div>
        <a href="#/p/${esc(p.slug)}">View page</a>
        <button data-pub="${esc(p.slug)}">${pub?"Make draft":"Publish"}</button>
        <button data-feat="${esc(p.slug)}">${p.featured?"Remove from featured":"Make featured"}</button>
        <button data-dup="${esc(p.slug)}">Duplicate project</button>
+       ${S.jsSb?`<button data-hist="${esc(p.slug)}">Version history</button>`:""}
        <button data-del="${esc(p.slug)}" class="danger">Delete</button></div></details></div>
     </article>`}).join("")||`<div class="empty"><p>No matching projects.</p><button class="btn btn-brand" data-new>+ New project</button></div>`}</div>`;
 }
@@ -2317,13 +2349,14 @@ function editorView(){
     <section class="panel"><h3>Card preview</h3><div class="edprev" id="edPrev" aria-hidden="true"></div></section>
     <section class="panel"><h3>SEO</h3>
      <div class="field"><label for="ed_keyword">Focus keyword</label><input id="ed_keyword" name="keyword" value="${esc(p.keyword||"")}" placeholder="e.g. m aria sentul"></div>
-     <div class="field" style="margin-top:8px"><label for="ed_metaTitle">Meta title <span class="counter" id="cntT"></span></label><input id="ed_metaTitle" name="metaTitle" maxlength="70" value="${esc(p.metaTitle||"")}" placeholder="Leave empty to generate automatically"></div>
-     <div class="field" style="margin-top:8px"><label for="ed_metaDesc">Meta description <span class="counter" id="cntD"></span></label><textarea id="ed_metaDesc" name="metaDesc" maxlength="170" placeholder="Leave empty to generate automatically">${esc(p.metaDesc||"")}</textarea></div>
+     <div class="field" style="margin-top:8px"><label for="ed_metaTitle">Meta title (BM page) <span class="counter" id="cntT"></span></label><input id="ed_metaTitle" name="metaTitle" maxlength="70" value="${esc(p.metaTitle||"")}" placeholder="Leave empty to generate automatically"></div>
+     <div class="field" style="margin-top:8px"><label for="ed_metaDesc">Meta description (BM page) <span class="counter" id="cntD"></span></label><textarea id="ed_metaDesc" name="metaDesc" maxlength="170" placeholder="Leave empty to generate automatically">${esc(p.metaDesc||"")}</textarea></div>
      <p class="fine" style="margin:14px 0 6px">Google preview</p><div class="serp" id="serp"></div>
      <div style="display:flex;align-items:center;gap:10px;margin-top:14px"><b>SEO score</b><span class="score" id="seoScore"></span></div>
      <ul class="checks" id="seoChecks"></ul>
      <details style="margin-top:12px"><summary class="fine" style="cursor:pointer">Schema JSON-LD</summary><pre class="code" id="ldOut"></pre></details>
     </section>
+    ${enPanel(p)}
    </div>
    <div class="ed-bar"><label class="switch"><input type="checkbox" name="published" ${p.published!==false?"checked":""}><span>Published on site</span></label><span class="msg" id="edMsg" role="alert"></span><button type="button" class="btn btn-ghost btn-sm" data-cancel>Cancel</button><button class="btn btn-brand btn-sm" ${S.db?"":"disabled"}>${edIsNew?"Save project":"Save changes"}</button></div>
   </form>`;
@@ -2364,6 +2397,33 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-tw-add],[d
   if(b.hasAttribute("data-tw-add")){$("#twRows").insertAdjacentHTML("beforeend",twRow(""));$("#twRows .tw-row:last-child .tw-i").focus()}
   else b.closest(".tw-row").remove();
   edDirty=true;updateSeoPanel()});
+/* ===== English version panel: status, editable English text, explicit verification ===== */
+const EN_LBL={verified:["Verified","on"],auto:["Auto-translated","gold"],missing:["Missing","off"]};
+function enPill(st){const [l,c]=EN_LBL[st]||EN_LBL.missing;return `<span class="pill ${c}" title="English version status">EN · ${l}</span>`}
+function enPanel(p){const st=enStatus(p),e=(p.tr&&p.tr.h===trHash(trSrc(p))&&p.tr.en)||{};
+  return `<section class="panel" id="enPanel"><h3 style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">English version <span id="enStat">${enPill(st)}</span></h3>
+   <p class="fine" style="margin:0 0 10px">The BM page is always indexed. The English page <code>/en/listings/${esc(p.slug||"…")}</code> is indexed by Google <b>only when Verified</b>. Auto-translations stay visible to visitors but are kept out of search. Any later change to the source or to this English text resets the status to Auto-translated.</p>
+   <div class="field"><label for="ed_enSummary">English description</label><textarea id="ed_enSummary" name="enSummary" rows="6" placeholder="Saved automatically by Auto-translate, or write it yourself">${esc(e.summary||"")}</textarea></div>
+   <div class="field" style="margin-top:8px"><label for="ed_enHl">English highlights, one per line <span class="counter" id="cntEnHl"></span></label><textarea id="ed_enHl" name="enHl" rows="4">${esc((e.hl||[]).join("\n"))}</textarea></div>
+   <div class="field" style="margin-top:8px"><label for="ed_enFac">English facilities, one per line <span class="counter" id="cntEnFac"></span></label><textarea id="ed_enFac" name="enFac" rows="4">${esc((e.fac||[]).join("\n"))}</textarea></div>
+   <div class="field" style="margin-top:8px"><label for="ed_metaTitleEn">Meta title (English page)</label><input id="ed_metaTitleEn" name="metaTitleEn" maxlength="70" value="${esc(p.metaTitleEn||"")}" placeholder="Leave empty to generate automatically"></div>
+   <div class="field" style="margin-top:8px"><label for="ed_metaDescEn">Meta description (English page)</label><textarea id="ed_metaDescEn" name="metaDescEn" maxlength="170" placeholder="Leave empty to generate automatically">${esc(p.metaDescEn||"")}</textarea></div>
+   <label class="chk" style="margin-top:12px;display:flex;gap:10px;align-items:flex-start"><input type="checkbox" name="enVerified" ${st==="verified"?"checked":""}><span><b>I have reviewed this English text: mark as Verified</b><br><small class="fine">Only tick this after a person has read and corrected the English. Machine translation is never verified automatically.</small></span></label>
+   <p class="msg" id="enMsg" style="margin:8px 0 0"></p>
+  </section>`}
+function readEnFields(o,fm){
+  const lines=v=>String(v||"").split("\n").map(s=>s.trim()).filter(Boolean).slice(0,40);
+  const enIn={summary:String(o.enSummary||"").trim().slice(0,6000),hl:lines(o.enHl),fac:lines(o.enFac)},verify=!!(fm.elements.enVerified&&fm.elements.enVerified.checked);
+  delete o.enSummary;delete o.enHl;delete o.enFac;delete o.enVerified;
+  for(const k of ["metaTitleEn","metaDescEn"]){o[k]=String(o[k]||"").trim();if(!o[k])delete o[k]}
+  const srcH=trHash(trSrc(o)),prev=editing&&editing.tr,hasEn=!!(enIn.summary||enIn.hl.length||enIn.fac.length);
+  let warn="";
+  if(prev&&prev.h===srcH){const pe=prev.en||{};if(hasEn&&JSON.stringify(enIn)!==JSON.stringify({summary:String(pe.summary||""),hl:(pe.hl||[]).map(String),fac:(pe.fac||[]).map(String)}))o.tr={...prev,en:enIn};else o.tr=prev}
+  else if(!prev&&hasEn)o.tr={h:srcH,ms:JSON.parse(trSrc(o)),en:enIn};
+  else if(prev&&prev.h!==srcH&&verify)warn="The BM/source text changed, so the English will be re-translated on save. Review it again afterwards and tick Verified.";
+  if(verify&&!warn){if((o.hl||[]).length!==enIn.hl.length||(o.fac||[]).length!==enIn.fac.length)warn=`English highlights/facilities must match the source count (highlights ${(o.hl||[]).length}, facilities ${(o.fac||[]).length}) before it can be Verified.`;else if(enStatus(o)==="missing")warn="Add the English description before marking it Verified.";}
+  if(verify&&!warn)o.trEnOk=enSig(o);else delete o.trEnOk;
+  o._enWarn=verify?warn:"";return o}
 function readEditor(){
   const fm=$("#edForm");if(!fm)return null;syncLay();syncTw();const fd=new FormData(fm),o={...(editing||blank())};
   for(const [k,v] of fd.entries()) if(typeof v==="string") o[k]=v.trim();
@@ -2373,10 +2433,13 @@ function readEditor(){
   for(const k of ["hl","fac","layouts","towers","near","photos"]) o[k]=String(fd.get(k)||"").split("\n").map(s=>s.trim()).filter(Boolean).slice(0,40);
   o.image=o.photos[0]||"";
   if(!o.slug||(edIsNew&&!slugTouched)) o.slug=slugify(o.name+(o.area&&!o.name.toLowerCase().includes(o.area.toLowerCase())?" "+o.area:""));
+  readEnFields(o,fm);
   return o;
 }
 function updateSeoPanel(){
-  const o=readEditor();if(!o)return;const pv={...o,name:o.name||"Project name",area:o.area||"Area",slug:o.slug||"new-project"};
+  const o=readEditor();if(!o)return;
+  {const es=$("#enStat");if(es)es.innerHTML=enPill(enStatus(o));const m=$("#enMsg");if(m){m.className="msg"+(o._enWarn?" err":"");m.textContent=o._enWarn||""}
+   const c=(id,a,b)=>{const x=$(id);if(x){x.textContent=`${a}/${b}`;x.style.color=a===b?"":"#C98A1B"}};c("#cntEnHl",String($("#ed_enHl")?.value||"").split("\n").filter(s=>s.trim()).length,(o.hl||[]).length);c("#cntEnFac",String($("#ed_enFac")?.value||"").split("\n").filter(s=>s.trim()).length,(o.fac||[]).length)}const pv={...o,name:o.name||"Project name",area:o.area||"Area",slug:o.slug||"new-project"};
   const s=seoFor(pv);
   $("#cntT").textContent=s.title.length+"/60";$("#cntD").textContent=s.desc.length+"/160";$("#cntSum").textContent=(o.summary||"").length;
   $("#serp").innerHTML=`<div class="u">rezekihartanah.com › listings › ${esc(o.slug||"slug")}</div><div class="t">${esc(s.title.slice(0,62))}${s.title.length>62?"…":""}</div><div class="d">${esc(s.desc.slice(0,160))}</div>`;
@@ -2395,7 +2458,7 @@ async function saveProject(e){
   e.preventDefault();const out=$("#edMsg");let o=readEditor();
   const err=!o.name?"Enter the project name.":!o.area?"Enter the area.":!o.pmin?"Enter the starting price.":slugError(projects(true),o.slug,o.name,edIsNew)||(o.redirectTo&&(o.redirectTo===o.slug||!listable(bySlugAll(o.redirectTo)))?"The redirect target must be another published project.":"");
   if(err){out.className="msg err";out.textContent=err;return}
-  o.createdAt=o.createdAt||Date.now();delete o.deleted;
+  o.createdAt=o.createdAt||Date.now();delete o.deleted;const enWarn=o._enWarn;delete o._enWarn;if(enWarn)toast(enWarn);
   if(S.sample&&needsTr(o)){out.className="msg";out.textContent="Translating content into BM & English…";try{o=await translateProject(o)}catch(x){toast("Translation failed; project saved without translation")}}
   if(await putProject(o,o.published?"Project published":"Saved as draft")){edDirty=false;editing=null;admTab="projects";render();window.scrollTo(0,0)}
 }
@@ -2828,8 +2891,6 @@ document.addEventListener("click",e=>{
   if(e.target.closest("[data-popimgdel]")){$("#setForm [name=popImg]").value="";$("#popThumb").innerHTML="<span>No image</span>";e.target.closest("[data-popimgdel]").hidden=true}
 });
 /* ============ PROJECT CONTENT TRANSLATION (stored BM + EN, shown in the page language) ============ */
-function trSrc(p){return JSON.stringify({summary:String(p.summary||""),hl:(p.hl||[]).map(String),fac:(p.fac||[]).map(String)})}
-function trHash(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return String(h>>>0)}
 function needsTr(p){const s=trSrc(p);return !!(p.summary||(p.hl||[]).length||(p.fac||[]).length)&&!(p.tr&&p.tr.h===trHash(s))}
 /* ============ NEARBY PROJECTS (distance-based) ============ */
 const NEAR_KM=10;
@@ -2855,7 +2916,7 @@ async function translateProject(p){
   const ok=v=>v&&typeof v.summary==="string"&&Array.isArray(v.hl)&&Array.isArray(v.fac)&&v.hl.length===inp.hl.length&&v.fac.length===inp.fac.length;
   if(!r||!ok(r.ms)||!ok(r.en))throw {code:"bad"};
   const clean=v=>({summary:v.summary.slice(0,6000),hl:v.hl.map(s=>String(s).slice(0,300)),fac:v.fac.map(s=>String(s).slice(0,120))});
-  return {...p,tr:{h,ms:clean(r.ms),en:clean(r.en)}};
+  const out={...p,tr:{h,ms:clean(r.ms),en:clean(r.en)}};delete out.trEnOk;return out; // fresh machine translation is never "Verified"
 }
 document.addEventListener("click",async e=>{const b=e.target.closest("[data-trproj]");if(!b||!S.db||!S.sample)return;
   const list=projects(true).filter(needsTr);if(!list.length){toast("All projects are already translated");return}
@@ -2986,7 +3047,7 @@ function render(){
   {const s=document.getElementById("ld-ssr");if(s)s.remove()} // server-rendered structured data is replaced by the live page's own
   siteLd();const {a,b}=route(),app=$("#app"),reBud=!!$("#budDlg")?.open;if($("#cmpDlg").open)$("#cmpDlg").close();
   document.documentElement.lang=S.lang==="ms"?"ms":"en";document.body.classList.toggle("adm",a==="admin");
-  if(a==="p"){const rs=resolveSlug(projects(true),b,S.isAdmin);if(rs.status===301){navTo("#/p/"+rs.p.slug,true);return}app.innerHTML=viewDetail(b);if(rs.status===200)app.insertAdjacentHTML("beforeend",relatedPostsHtml(rs.p.slug));const p=rs.status===200?rs.p:null;if(p){const s=seoFor(p);setHead({title:s.title,desc:s.desc,canonical:s.url,ld:s.ld,image:p.image,robots:p.noindex||p.published===false?"noindex, follow":""})}else setHead({title:"Projek tidak dijumpai | Rezeki Hartanah",desc:"Projek ini tiada atau telah dikeluarkan.",canonical:SITE+"/",ld:null,robots:"noindex, follow"});initCalc();initPElig();initLoc();initEnq();window.scrollTo(0,0)}
+  if(a==="p"){const rs=resolveSlug(projects(true),b,S.isAdmin);if(rs.status===301){navTo("#/p/"+rs.p.slug,true);return}app.innerHTML=viewDetail(b);if(rs.status===200)app.insertAdjacentHTML("beforeend",relatedPostsHtml(rs.p.slug));const p=rs.status===200?rs.p:null;if(p){const L=S.lang==="en"?"en":"ms",s=seoFor(p,L);setHead({title:s.title,desc:s.desc,canonical:s.url,ld:s.ld,image:p.image,alts:hreflangAlts(p),robots:p.noindex||p.published===false||(L==="en"&&!enIndexable(p))?"noindex, follow":""})}else setHead({title:"Projek tidak dijumpai | Rezeki Hartanah",desc:"Projek ini tiada atau telah dikeluarkan.",canonical:SITE+"/",ld:null,robots:"noindex, follow"});initCalc();initPElig();initLoc();initEnq();window.scrollTo(0,0)}
   else if(a==="kawasan"){const ps=projects(),area=uniq(ps.map(p=>p.area)).find(x=>areaSlug(x)===b)||b,list=ps.filter(p=>p.area===area);
     app.innerHTML=viewList(`${t("area_t")} ${area}`,`${list.length} ${t("area_s")}`,list,"",area,areaIntro(area,list));
     setHead({title:[`Hartanah di ${area} (${list.length} Projek) | Rezeki Hartanah`,`Hartanah di ${area}: ${list.length} Projek Baharu & Siap`,`Projek Hartanah di ${area} (${list.length})`].find(x=>x.length<=60)||clip(`Hartanah di ${area}`,60),desc:`Senarai ${list.length} projek hartanah di ${area}: harga, saiz, ansuran bulanan dan pembiayaan. Bandingkan dan tanya terus melalui WhatsApp.`,canonical:areaUrl(area),robots:list.length?"":"noindex, follow",ld:{"@context":"https://schema.org","@type":"CollectionPage","name":`Hartanah di ${area}`,"url":areaUrl(area),"inLanguage":"ms-MY","isPartOf":{"@id":SITE+"/#site"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Hartanah","item":SITE+"/"},{"@type":"ListItem","position":2,"name":area,"item":areaUrl(area)}]},"mainEntity":{"@type":"ItemList","itemListElement":list.map((p,i)=>({"@type":"ListItem","position":i+1,"url":projUrl(p),"name":p.name}))}}});window.scrollTo(0,0)}
@@ -3329,7 +3390,10 @@ document.addEventListener("click",async e=>{
   if(d.pop||d.sga){S.f.q="";S.f.status="";S.f.area=d.pop||d.sga;render();$("#listings").scrollIntoView({behavior:"smooth"});return}
   if(d.sgd){S.f.q=d.sgd;S.f.area="";render();$("#listings").scrollIntoView({behavior:"smooth"});return}
   if(d.go){e.preventDefault();if(route().a){navTo("#/");setTimeout(()=>$("#"+d.go)?.scrollIntoView({behavior:"smooth"}),30)}else $("#"+d.go)?.scrollIntoView({behavior:"smooth"});return}
-  if(d.lang){if(d.lang===S.lang)return;const y=window.scrollY||document.documentElement.scrollTop||0;S.lang=d.lang;store.set("lang",S.lang);render();window.scrollTo(0,y);requestAnimationFrame(()=>window.scrollTo(0,y));return}
+  if(d.lang){if(d.lang===S.lang)return;const y=window.scrollY||document.documentElement.scrollTop||0;S.lang=d.lang;store.set("lang",S.lang);
+    if(PATHMODE&&pathLang(location.pathname)){const np=hashToPath(pathToHash(location.pathname),S.lang);if(np!==location.pathname)history.replaceState(null,"",np)}
+    document.querySelectorAll('a[href^="/listings/"],a[href^="/en/listings/"]').forEach(a=>{const hh=pathToHash(a.getAttribute("href"));if(hh.startsWith("#/p/"))a.setAttribute("href",hashToPath(hh,S.lang))});
+    render();window.scrollTo(0,y);requestAnimationFrame(()=>window.scrollTo(0,y));return}
   if(d.save!==undefined){const s=d.save;S.saved.has(s)?(S.saved.delete(s),toast(t("saved_off"))):(S.saved.add(s),toast(t("saved_on")));store.set("saved",[...S.saved]);
     document.querySelectorAll(`[data-save="${CSS.escape(s)}"]`).forEach(b=>{b.setAttribute("aria-pressed",S.saved.has(s));const on=S.saved.has(s);if(b.closest(".pc-acts"))return;b.textContent=b.classList.contains("icon-btn")?(on?"♥":"♡"):(on?"♥ ":"♡ ")+t("save")});return}
   if(d.cmp!==undefined){const s=d.cmp;if(S.cmp.has(s))S.cmp.delete(s);else if(S.cmp.size>=3){toast(t("cmp_full"));return}else S.cmp.add(s);
@@ -3397,8 +3461,8 @@ document.addEventListener("submit",e=>{
 window.addEventListener("hashchange",render);
 /* Production domain: every internal link is a real <a href="/listings/..."> path Google can crawl; clicks stay in-app via the History API */
 if(PATHMODE){
-  if(/^#\//.test(location.hash))history.replaceState(null,"",hashToPath(location.hash));
-  const fixA=a=>{const h=a.getAttribute("href")||"";if(h.startsWith("#/"))a.setAttribute("href",hashToPath(h))},fix=r=>{if(r.matches&&r.matches("a[href]"))fixA(r);r.querySelectorAll&&r.querySelectorAll('a[href^="#/"]').forEach(fixA)};
+  if(/^#\//.test(location.hash))history.replaceState(null,"",hashToPath(location.hash,S.lang));
+  const fixA=a=>{const h=a.getAttribute("href")||"";if(h.startsWith("#/"))a.setAttribute("href",hashToPath(h,S.lang))},fix=r=>{if(r.matches&&r.matches("a[href]"))fixA(r);r.querySelectorAll&&r.querySelectorAll('a[href^="#/"]').forEach(fixA)};
   fix(document);
   new MutationObserver(ms=>{for(const m of ms){if(m.type==="attributes")fixA(m.target);else m.addedNodes.forEach(n=>{if(n.nodeType===1)fix(n)})}}).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:["href"]});
   document.addEventListener("click",e=>{if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;const a=e.target.closest("a[href]");if(!a||a.target==="_blank"||a.hasAttribute("download"))return;let u;try{u=new URL(a.getAttribute("href"),location.href)}catch(x){return}if(u.origin!==location.origin)return;const h=pathToHash(u.pathname);if(!/^#\/(|p\/[^/]+|kawasan\/[^/]+|blog|blog\/[^/]+|projek|simpanan|privasi|co-living|admin)$/.test(h))return;e.preventDefault();navTo(h)});
@@ -3928,6 +3992,37 @@ function makeJsSample(sb){
     const [ms,en]=await Promise.all([call([txt],"ms"),call([txt],"en")]);
     const d=String(en.detected[0]||"");return {lang:/^en/i.test(d)?"en":"ms",ms:ms.translations[0]||txt,en:en.translations[0]||txt}};
   return s}
+/* ===== Version history & restore (Supabase content_history, admins only) ===== */
+const HIST_FIELDS=[["name","Name"],["pmin","Price from"],["pmax","Price to"],["summary","Description"],["published","Published"],["status","Status"],["dev","Developer"],["area","Area"],["photos","Photos"],["layouts","Layouts"],["fac","Facilities"],["hl","Highlights"],["metaTitle","Meta title"],["metaDesc","Meta description"],["geo","Pin"],["mapUrl","Map link"],["redirectTo","Redirect"],["featured","Featured"]];
+function histDiff(a,b){a=a||{};b=b||{};const out=[];for(const [k,l] of HIST_FIELDS){if(JSON.stringify(a[k]??null)!==JSON.stringify(b[k]??null))out.push(l)}
+  const other=new Set([...Object.keys(a),...Object.keys(b)].filter(k=>!HIST_FIELDS.some(f=>f[0]===k)&&!/^(updatedAt|contentAt|tr|sig|createdAt)$/.test(k)&&JSON.stringify(a[k]??null)!==JSON.stringify(b[k]??null)));
+  if(other.size)out.push(`${other.size} other field${other.size>1?"s":""}`);return out}
+function histDlg(){let d=$("#histDlg");if(!d){d=document.createElement("dialog");d.id="histDlg";d.className="shd site hist";document.body.appendChild(d);d.addEventListener("click",e=>{if(e.target===d||e.target.closest("[data-histclose]"))d.close()})}return d}
+function histShell(title,sub,body){return `<div class="shd-in"><div class="shd-h"><div><b>${esc(title)}</b><small>${esc(sub)}</small></div><button type="button" class="dbtn x" data-histclose aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div class="hist-body">${body}</div></div>`}
+const fmtWhen=t=>new Date(t).toLocaleString("en-MY",{day:"numeric",month:"short",year:"numeric",hour:"numeric",minute:"2-digit"});
+async function openHistory(slug){if(!S.jsSb)return;const d=histDlg(),cur=S.remote.get(slug)||{};d.innerHTML=histShell("Version history",cur.name||slug,`<p class="fine">Loading…</p>`);if(!d.open)d.showModal();
+  const r=await S.jsSb.from("content_history").select("id,action,changed_by,changed_at,old_data").eq("tbl","projects").eq("row_id",slug).order("changed_at",{ascending:false}).limit(60);
+  if(r.error){d.querySelector(".hist-body").innerHTML=`<p class="msg err">${esc(r.error.message)}</p>`;return}
+  const rows=r.data||[];if(!rows.length){d.querySelector(".hist-body").innerHTML=`<p class="fine">No earlier versions yet. From now on, every save keeps the previous version here for 180 days.</p>`;return}
+  let newer=cur;const items=rows.map(v=>{const ch=histDiff(v.old_data,newer);newer=v.old_data;return {v,ch}});
+  d.querySelector(".hist-body").innerHTML=`<p class="fine" style="margin:0 0 10px">Each entry is how the project looked <b>before</b> that change. Restoring keeps the current version in history too, so nothing is lost.</p><ol class="hist-list">${items.map(({v,ch})=>`<li><div><b>${fmtWhen(v.changed_at)}</b><small>${v.action==="delete"?"Deleted":"Changed"} by ${esc(v.changed_by||"unknown")}${ch.length?" · changed: "+esc(ch.slice(0,5).join(", "))+(ch.length>5?"…":""):""}</small><small>${esc(v.old_data.name||"")} · ${esc(priceRange(normalize(v.old_data)))} · ${v.old_data.published===false?"Draft":"Published"}</small></div><button type="button" class="btn btn-ghost btn-sm" data-histrestore="${v.id}">Restore</button></li>`).join("")}</ol>`;
+  d._rows=rows;d._slug=slug}
+async function openDeleted(){if(!S.jsSb)return;const d=histDlg();d.innerHTML=histShell("Recently deleted projects","Last 180 days",`<p class="fine">Loading…</p>`);if(!d.open)d.showModal();
+  // the CMS "Delete" keeps a hidden marker; the full project is the last history version before that marker
+  const gone=[...S.remote.entries()].filter(([,x])=>x&&x.deleted).map(([k])=>k);
+  const r=await S.jsSb.from("content_history").select("id,row_id,action,changed_by,changed_at,old_data").eq("tbl","projects").order("changed_at",{ascending:false}).limit(1000);
+  if(r.error){d.querySelector(".hist-body").innerHTML=`<p class="msg err">${esc(r.error.message)}</p>`;return}
+  const seen=new Set(),rows=(r.data||[]).filter(v=>v.old_data&&!v.old_data.deleted&&v.old_data.name&&(gone.includes(v.row_id)||(v.action==="delete"&&!S.remote.has(v.row_id)))&&!seen.has(v.row_id)&&seen.add(v.row_id));
+  d.querySelector(".hist-body").innerHTML=rows.length?`<ol class="hist-list">${rows.map(v=>`<li><div><b>${esc(v.old_data.name||v.row_id)}</b><small>Deleted ${fmtWhen(v.changed_at)} by ${esc(v.changed_by||"unknown")}</small><small>${esc(v.old_data.area||"")} · ${esc(priceRange(normalize(v.old_data)))}</small></div><button type="button" class="btn btn-ghost btn-sm" data-histrestore="${v.id}">Restore as draft</button></li>`).join("")}</ol>`:`<p class="fine">No deleted projects to restore.</p>`;
+  d._rows=r.data||[];d._slug=null}
+document.addEventListener("click",async e=>{
+  const h1=e.target.closest("[data-hist]");if(h1){e.preventDefault();h1.closest("details")?.removeAttribute("open");openHistory(h1.dataset.hist);return}
+  if(e.target.closest("[data-histdel]")){e.preventDefault();openDeleted();return}
+  const rb=e.target.closest("[data-histrestore]");if(!rb)return;e.preventDefault();const d=$("#histDlg"),v=(d&&d._rows||[]).find(x=>String(x.id)===rb.dataset.histrestore);if(!v)return;
+  const restoringDeleted=!d._slug,slug=d._slug||v.row_id,data={...v.old_data};if(restoringDeleted)data.published=false;delete data.deleted;
+  if(!confirm(restoringDeleted?`Restore “${data.name||slug}” as a draft? You can review it and publish it again.`:`Restore the version from ${fmtWhen(v.changed_at)}? The current version stays in history.`))return;
+  rb.disabled=true;rb.textContent="Restoring…";
+  try{await S.db.collection("projects").doc(slug).set(data);toast(restoringDeleted?"Project restored as a draft":"Version restored");d.close()}catch(x){rb.disabled=false;rb.textContent="Restore";toast("Restore failed: "+(x.message||x))}});
 const rhDownloads={async save({filename,data}){const b=data instanceof Blob?data:new Blob([data]);const u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}};
 async function rhCmsBoot(startSubs){
   if(!window.supabase||!window.supabase.createClient){S.cms.state="out";S.cms.msg="Couldn’t load the sign-in library. Check your connection and reload.";render();return}
@@ -3960,6 +4055,8 @@ async function rhCmsBoot(startSubs){
     if(e.target.closest("[data-cmsreset]")){e.preventDefault();const email=($("#cmsEmail")||{}).value||"";if(!email){toast("Type your email first");return}const r=await sb.auth.resetPasswordForEmail(email.trim(),{redirectTo:location.origin+location.pathname});const m=$("#cmsMsg");if(m){m.className="msg "+(r.error?"err":"ok");m.textContent=r.error?r.error.message:"Check your email for a reset link."}}});
 }
 /* ============ BOOT ============ */
+if(PATHMODE){const L=pathLang(location.pathname);if(L)S.lang=L}
+window.addEventListener("popstate",()=>{if(PATHMODE){const L=pathLang(location.pathname);if(L&&L!==S.lang){S.lang=L;render()}}});
 if(!PATHMODE&&!window.RH_SITE&&(!location.hash||location.hash==="#"||location.hash==="#/")){try{history.replaceState(null,"","#/admin")}catch(e){}} // CMS edition: open on the dashboard
 (function(){const th=store.get("theme",null);if(th)document.documentElement.dataset.theme=th})();
 siteLd();render();schedulePop();scheduleSpot();
