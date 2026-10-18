@@ -161,7 +161,9 @@ export default async (request, context) => {
   for (const [k, v] of [["twitter:title", page.title], ["twitter:description", page.desc], ["twitter:image", image]]) set(new RegExp(`<meta name="${k}"[^>]*>`), `<meta name="${k}" content="${esc(v)}">`);
   const graph = page.graph && page.graph.length ? ld({ "@context": "https://schema.org", "@graph": page.graph }) : "";
   const seedJs = `<script>window.__HKV_SEED=${JSON.stringify(d).replace(/</g, "\\u003c")};</script>`;
-  const css = `<style>.ssr{max-width:1180px;margin:0 auto;padding:28px 18px;line-height:1.6}.ssr img{max-width:100%;height:auto;border-radius:14px}.ssr dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px}.ssr dt{font-weight:700}</style>`;
+  // The server-written content is for Google, WhatsApp and visitors without JavaScript. The app replaces it within a moment,
+// so it stays invisible while loading (no flash of plain text) and only fades in if the app has not taken over after 3 s.
+const css = `<style>@keyframes ssrIn{to{opacity:1}}.ssr{opacity:0;animation:ssrIn .25s ease 3s forwards;max-width:1180px;margin:0 auto;padding:28px 18px;line-height:1.6}.ssr img{max-width:100%;height:auto;border-radius:14px}.ssr dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px}.ssr dt{font-weight:700}</style><noscript><style>.ssr{opacity:1;animation:none}</style></noscript>`;
   html = html.replace("</head>", graph + "\n" + seedJs + "\n" + css + "\n</head>");
   if (page.body) html = html.replace(/<main id="app"([^>]*)><\/main>/, `<main id="app"$1>${page.body}</main>`);
   const headers = new Headers(res.headers);
