@@ -173,6 +173,30 @@ nav.main a:hover{background:var(--surface-2)}
 .bud:hover .bud-a{transform:translateX(2px)}
 .searchbox.sb2{margin-top:52px}
 .sb-foot{display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px dashed var(--line)}
+/* ---- Filter actions ("Lagi penapis" / "Set semula") ---- */
+.sb-foot{align-items:stretch}.sb-foot .sb-more,.sb-foot .sb-reset{white-space:nowrap;flex:0 0 auto}.sb-foot .sb-reset .rs-short{display:none}
+.sb-foot .sb-more .sb-caret{display:inline-grid;place-items:center;opacity:.85;transition:transform .2s ease}.sb-foot .sb-more .sb-caret svg{display:block;width:6px;height:6px} /* desktop: same footprint as the old ▾ */
+.sb-foot .sb-more[aria-expanded="true"] .sb-caret{transform:rotate(180deg)}
+@media(max-width:600px){
+  /* equal widths when both labels fit; if they truly cannot, each gets its own row. Never squeezed or clipped. */
+  .sb-foot{display:flex;flex-wrap:wrap;gap:10px;padding-bottom:12px}
+  .sb-foot .sb-more,.sb-foot .sb-reset{--tone:var(--gold);flex:1 1 0;min-width:max-content;justify-content:center;gap:7px;height:44px;padding:0 14px;border-radius:12px;
+    font:600 13.5px/1 var(--body);letter-spacing:.005em;color:color-mix(in srgb,var(--tone) 72%,var(--ink));
+    border:1px solid color-mix(in srgb,var(--tone) 52%,var(--line));
+    background:linear-gradient(180deg,color-mix(in srgb,var(--tone) 10%,var(--surface)),color-mix(in srgb,var(--tone) 4%,var(--surface)));
+    box-shadow:0 1px 2px rgba(14,23,48,.07),inset 0 1px 0 rgba(255,255,255,.4);transition:transform .12s ease,box-shadow .2s ease,background .2s ease}
+  .sb-foot .sb-reset{--tone:color-mix(in srgb,var(--danger) 68%,var(--gold))} /* muted terracotta */
+  .sb-foot .sb-more:hover,.sb-foot .sb-reset:hover{transform:none;color:color-mix(in srgb,var(--tone) 80%,var(--ink));box-shadow:0 4px 14px -6px color-mix(in srgb,var(--tone) 55%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--tone) 15%,var(--surface)),color-mix(in srgb,var(--tone) 8%,var(--surface)))}
+  .sb-foot .sb-more:active,.sb-foot .sb-reset:active{transform:scale(.98)}
+  .sb-foot .sb-more[aria-expanded="true"]{color:#fff;background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 88%,#fff),var(--gold));border-color:var(--gold)}
+  .sb-foot .sb-more:focus-visible,.sb-foot .sb-reset:focus-visible{outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--tone) 35%,transparent)}
+  .sb-foot .sb-more>svg,.sb-foot .sb-reset>svg{flex:none;width:15px;height:15px}.sb-foot .sb-more .sb-caret svg{width:11px;height:11px}
+  .sb-foot .sb-more .nbadge{min-width:18px;height:18px;padding:0 5px;font-size:11px;line-height:18px;border-radius:9px;margin:0}
+  .sb-foot .sb-reset .rs-long{display:none}.sb-foot .sb-reset .rs-short{display:inline}
+}
+@media(max-width:400px){.sb-foot{gap:8px}.sb-foot .sb-more,.sb-foot .sb-reset{padding:0 11px;gap:6px;font-size:13px}}
+@media(max-width:360px){.sb-foot .sb-more,.sb-foot .sb-reset{padding:0 10px}.sb-foot .sb-more .sb-caret{display:none}}
+@media(max-width:340px){.sb-foot{gap:7px}.sb-foot .sb-more,.sb-foot .sb-reset{padding:0 8px;gap:5px;font-size:12.5px;letter-spacing:0}.sb-foot .sb-more>svg,.sb-foot .sb-reset>svg{width:14px;height:14px}}
 .lnk{border:0;background:none;padding:4px 0;font-weight:600;font-size:14px;color:var(--gold);cursor:pointer}
 .sb-reset{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--danger);background:color-mix(in srgb,var(--danger) 8%,transparent);color:var(--danger);border-radius:999px;padding:7px 14px;font-weight:700;font-size:14px;line-height:1;cursor:pointer;transition:background .15s,color .15s}
 .sb-reset:hover{background:var(--danger);color:var(--surface,#fff)}
@@ -956,6 +980,9 @@ html.is-scrolling .fab::before{animation-play-state:paused;opacity:0}
 .sbstat i{width:9px;height:9px;border-radius:50%;flex:none;background:#9AA5C0}.sbstat.ok i{background:#1FAF5A;box-shadow:0 0 0 4px rgba(31,175,90,.18)}.sbstat.sync i,.sbstat.connecting i{background:#F2B54F;animation:shp 1.2s ease-in-out infinite}.sbstat.error{border-color:#E5484D;color:#E5484D}.sbstat.error i{background:#E5484D}
 header.top .icon-btn#siteShareBtn{color:#F2B54F;border-color:rgba(242,181,79,.5)}
 .shd.site{max-width:min(460px,96vw)}.shd.site .shd-body{grid-template-columns:1fr}
+.shd.hist{max-width:min(620px,96vw)}.hist-body{padding:14px 18px 18px;max-height:70vh;overflow:auto}
+.hist-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}.hist-list li{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}
+.hist-list li>div{display:grid;gap:2px;min-width:0}.hist-list b{font-size:14px}.hist-list small{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
 .shd-card{display:flex;gap:12px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2)}.shd-card img{width:72px;height:54px;object-fit:cover;border-radius:9px;flex:none}.shd-card b{display:block;font-size:14px}.shd-card small{display:block;font-size:12px;color:var(--muted);word-break:break-all}
 @media(max-width:480px){.bar{gap:6px;height:58px}.logo{gap:8px;min-width:0;flex:0 1 auto}.logo b{font-size:clamp(13px,4.4vw,17px);white-space:nowrap}.logo small{display:none}.logo-mark{width:32px;height:32px;border-radius:9px}.seg button{padding:4px 8px;font-size:12px}header.top .icon-btn{width:34px;height:34px}header.top .icon-btn svg{width:16px;height:16px}}
 @media(max-width:360px){.logo b{font-size:15px}.bar{gap:4px}}
@@ -1192,6 +1219,33 @@ body.adm::before{background:#0A1226}
 .cms-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
 .cms-q{flex:1 1 260px;max-width:440px;background:var(--surface)}
 .plist,.llist{display:grid;gap:10px}
+/* ---- Leads CRM ---- */
+.crm-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}.crm-k{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:2px}.crm-k b{font-size:20px;line-height:1.1}.crm-k span{font-size:12.5px;font-weight:700}.crm-k small{font-size:11.5px;color:var(--muted)}.crm-k.warn{border-color:color-mix(in srgb,var(--danger) 45%,var(--line))}.crm-k.warn b{color:var(--danger)}.crm-k.gold{border-color:color-mix(in srgb,var(--gold) 45%,var(--line))}.crm-k.gold b{color:var(--gold)}
+.lbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px}.lbar .cms-q{flex:1 1 220px;margin:0}.lseg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--surface)}.lseg button{border:0;background:none;border-radius:999px;padding:7px 12px;font:600 13px var(--body);color:var(--muted);cursor:pointer;white-space:nowrap}.lseg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}.lseg .n{opacity:.7;font-size:11.5px}
+.lfilters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}.lf select{padding:8px 30px 8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 13px var(--body);max-width:100%}.lclear{border:0;background:none;color:var(--danger);font:700 13px var(--body);cursor:pointer;padding:8px 4px}
+.lcount{margin:4px 0 8px}
+.crm-c{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--sc,var(--line));border-radius:14px;padding:12px 14px;display:grid;gap:8px;min-width:0}
+.crm-c.st-new{--sc:var(--gold)}.crm-c.st-contacted{--sc:#3B82F6}.crm-c.st-hot{--sc:#D9480F}.crm-c.st-cold{--sc:#0B7285}.crm-c.st-noresp{--sc:#6B7280}.crm-c.st-booked{--sc:#2F9E44}.crm-c.st-spa{--sc:#7048E8}.crm-c.st-lost{--sc:#9B2C2C}
+.crm-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.crm-who{min-width:0}.crm-name{border:0;background:none;padding:0;font:800 15.5px/1.25 var(--body);color:var(--ink);text-align:left;cursor:pointer;overflow-wrap:anywhere}.crm-name:hover{text-decoration:underline}.crm-who small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.crm-ctl{display:flex;gap:6px;align-items:center;flex:none}
+.stb{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--sc) 40%,var(--line));background:color-mix(in srgb,var(--sc) 10%,var(--surface));color:color-mix(in srgb,var(--sc) 82%,var(--ink));font:700 12.5px var(--body);cursor:pointer;white-space:nowrap}.stb i{width:7px;height:7px;border-radius:50%;background:var(--sc)}.stb.static{cursor:default}.stb:disabled{opacity:.7;cursor:progress}
+.stb:focus-visible,.crm-more:focus-visible,.crm-btn:focus-visible,.crm-name:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.crm-more{width:36px;height:32px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.crm-meta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13.5px;align-items:center}
+.fuc{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font:700 12px var(--body)}.fu-overdue{background:color-mix(in srgb,var(--danger) 13%,transparent);color:var(--danger)}.fu-today{background:var(--gold-soft);color:var(--gold)}.fu-upcoming{background:var(--surface-2);color:var(--muted)}
+.crm-msg{margin:0;padding:8px 10px;background:var(--paper);border-radius:10px;font-size:13.5px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.ld-body .crm-msg{display:block;-webkit-line-clamp:unset}.crm-note{margin:0;font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.crm-acts{display:flex;gap:8px;flex-wrap:wrap}.crm-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:700 13.5px var(--body);text-decoration:none;cursor:pointer;flex:1 1 auto}.crm-btn.wa{background:#1FAF5A;border-color:#1FAF5A;color:#fff}.crm-btn.ghost{flex:0 0 auto}
+.crm-c.compact{padding:10px 11px;gap:6px}.crm-c.compact .crm-name{font-size:14px}.crm-c.compact .crm-btn{min-height:34px;padding:0 10px;font-size:12.5px}
+.lpipe{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(250px,1fr);gap:10px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x proximity;max-width:100%}.lcol{background:var(--surface-2);border-radius:14px;padding:10px;display:grid;gap:8px;align-content:start;scroll-snap-align:start;min-width:0}.lcol h4{margin:0 0 2px;display:flex;align-items:center;gap:7px;font-size:13.5px}.lcol h4 i{width:8px;height:8px;border-radius:50%;background:var(--sc,var(--muted))}.lcol h4 .n{margin-left:auto;color:var(--muted);font-weight:700}.lcol.st-new{--sc:var(--gold)}.lcol.st-contacted{--sc:#3B82F6}.lcol.st-hot{--sc:#D9480F}.lcol.st-cold{--sc:#0B7285}.lcol.st-noresp{--sc:#6B7280}.lcol.st-booked{--sc:#2F9E44}.lcol.st-spa{--sc:#7048E8}.lcol.st-lost{--sc:#9B2C2C}.lcol-empty{text-align:center;margin:6px 0}
+.lpop{position:fixed;z-index:9999;min-width:200px;max-width:min(280px,calc(100vw - 16px));max-height:min(420px,calc(100vh - 16px));overflow:auto;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 40px -12px rgba(10,18,38,.35);padding:6px;display:grid}
+.lpop button{display:flex;align-items:center;gap:9px;width:100%;min-height:42px;padding:0 12px;border:0;border-radius:10px;background:none;color:inherit;font:600 14px var(--body);text-align:left;cursor:pointer}.lpop button:hover,.lpop button:focus-visible{background:var(--surface-2);outline:none}.lpop button[aria-checked="true"]{font-weight:800}.lpop .ck{margin-left:auto;color:var(--gold)}.lpop .dot{width:9px;height:9px;border-radius:50%;background:var(--sc)}.lpop hr{border:0;border-top:1px solid var(--line);margin:4px 2px}.lpop .danger{color:var(--danger)}
+.lpop .dot.st-new{--sc:var(--gold)}.lpop .dot.st-contacted{--sc:#3B82F6}.lpop .dot.st-hot{--sc:#D9480F}.lpop .dot.st-cold{--sc:#0B7285}.lpop .dot.st-noresp{--sc:#6B7280}.lpop .dot.st-booked{--sc:#2F9E44}.lpop .dot.st-spa{--sc:#7048E8}.lpop .dot.st-lost{--sc:#9B2C2C}
+.shd.ldlg{max-width:min(560px,96vw)}.shd.ldlg.wide{max-width:min(720px,96vw)}.ld-body{padding:14px 18px 18px;display:grid;gap:12px;max-height:calc(100vh - 140px);overflow:auto}.ld-top{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ld-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px 14px;margin:0}.ld-grid div{min-width:0}.ld-grid dt{font-size:11.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}.ld-grid dd{margin:2px 0 0;font-size:14px;overflow-wrap:anywhere}
+.ld-sec h5{margin:0 0 6px;font-size:13px}.ld-logrow{display:flex;gap:8px;flex-wrap:wrap}.ld-logrow select{padding:9px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}.ld-logrow input{flex:1 1 200px;min-width:0;padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.ld-tl{list-style:none;margin:0;padding:0 0 0 14px;border-left:2px solid var(--line);display:grid;gap:10px}.ld-tl li{position:relative;display:grid;gap:2px;font-size:13.5px}.ld-tl li::before{content:"";position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--surface);border:2px solid var(--gold)}.ld-tl small{color:var(--muted);font-size:12px}.ld-tl .ev-deleted::before,.ld-tl .ev-archived::before{border-color:var(--danger)}
+.qd{display:flex;gap:6px;flex-wrap:wrap}.ldanger{background:var(--danger);border-color:var(--danger);color:#fff}.ldanger:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:600px){.crm-c{padding:11px 12px}.crm-h{flex-wrap:wrap}.crm-ctl{margin-left:auto}.lfilters .lf{flex:1 1 calc(50% - 8px);min-width:0}.lf select{width:100%}.lbar .lseg{flex:1 1 auto;justify-content:space-between}.lbar .lseg button{flex:1}.lpipe{grid-auto-columns:minmax(240px,85vw)}.ld-body{padding:12px 14px 16px}}
 .prow{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:8px 12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:10px}
 .pthumb{width:72px;height:54px;border-radius:8px;overflow:hidden;background:var(--surface-2)}
 .pthumb svg,.pthumb img{width:100%;height:100%;object-fit:cover}
@@ -1208,6 +1262,8 @@ body.adm::before{background:#0A1226}
 .pill.off{background:var(--surface-2);color:var(--muted)}
 .pill.gold{background:var(--gold-soft);color:var(--gold)}
 .pill.st-new{background:var(--gold-soft);color:var(--gold)}
+.pill.st-hot,.stb.st-hot{--sc:#D9480F}.pill.st-cold,.stb.st-cold{--sc:#0B7285}.pill.st-noresp,.stb.st-noresp{--sc:#6B7280}.pill.st-booked,.stb.st-booked{--sc:#2F9E44}.pill.st-spa,.stb.st-spa{--sc:#7048E8}.pill.st-contacted,.stb.st-contacted{--sc:#3B82F6}.stb.st-new{--sc:var(--gold)}.pill.st-lost,.stb.st-lost{--sc:#9B2C2C}
+.pill.st-hot,.pill.st-cold,.pill.st-noresp,.pill.st-booked,.pill.st-spa{background:color-mix(in srgb,var(--sc) 14%,transparent);color:var(--sc)}
 .pill.st-contacted{background:color-mix(in srgb,#3B82F6 15%,transparent);color:#3B82F6}
 .pill.st-viewing{background:color-mix(in srgb,#8B5CF6 15%,transparent);color:#8B5CF6}
 .pill.st-booked,.pill.st-closed{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
@@ -1459,7 +1515,7 @@ const T = {
  ms:{nav_props:"Hartanah",nav_calc:"Kalkulator",nav_fin:"Pembiayaan",nav_contact:"Hubungi",nav_saved:"Simpanan",
   h1:"Semua hartanah Klang Valley, satu tempat.",lead:"Bandingkan harga, saiz, susun atur dan ansuran bulanan projek baharu, siap, tanah dan komersial — kemudian terus berbincang dengan kami.",
   dial_l:"Ansuran bulanan yang saya selesa",dial_lp:"Bajet harga hartanah saya",m_mon:"Ansuran bulanan",m_price:"Harga hartanah",eq_price:"harga sehingga",eq_mon:"ansuran",ten_lbl:"Tempoh pinjaman",eqm_t:"Bayar {m} selama {n} tahun = mampu harga sehingga {p}",eqp_t:"Harga {p} selama {n} tahun = ansuran ~{m}/bln",ten_why:"Pinjaman perlu tamat sebelum umur {age}. Lebih muda, lebih panjang tempoh, lebih rendah ansuran.",dial_hit:"hartanah sepadan",dial_btn:"Tunjuk",per:"/bln",
-  s_kw:"Cari projek, kawasan atau pemaju",pop:"Popular:",bud_t:"Cari ikut bajet",bud_s:"Tetapkan harga atau ansuran, lihat semua rumah yang sepadan",reset_all:"Set semula semua",close:"Tutup",reset_done:"Penapis diset semula",s_area:"Kawasan",s_type:"Jenis",s_all:"Semua",s_btn:"Cari",
+  s_kw:"Cari projek, kawasan atau pemaju",pop:"Popular:",bud_t:"Cari ikut bajet",bud_s:"Tetapkan harga atau ansuran, lihat semua rumah yang sepadan",reset_all:"Set semula semua",reset_short:"Set semula",close:"Tutup",reset_done:"Penapis diset semula",s_area:"Kawasan",s_type:"Jenis",s_all:"Semua",s_btn:"Cari",
   l_title:"Direktori hartanah",l_sub:"Tapis ikut status, pemaju, pegangan, perabot, bilik dan akses transit.",more:"Lagi penapis",reset:"Set semula",
   f_status:"Status",f_dev:"Pemaju",f_ten:"Pegangan",f_furn:"Perabot",f_bed:"Bilik",any:"Mana-mana",
   sort:"Susun",s_new:"Pilihan dahulu",s_lo:"Harga: rendah ke tinggi",s_hi:"Harga: tinggi ke rendah",s_az:"Nama A–Z",s_mo:"Ansuran: rendah ke tinggi",
@@ -1493,7 +1549,7 @@ const T = {
  en:{nav_props:"Properties",nav_calc:"Calculator",nav_fin:"Financing",nav_contact:"Contact",nav_saved:"Saved",
   h1:"Every Klang Valley property, in one place.",lead:"Compare prices, sizes, layouts and monthly instalments for new launch, completed, land and commercial projects — then talk to us directly.",
   dial_l:"Monthly instalment I'm comfortable with",dial_lp:"My property price budget",m_mon:"Monthly instalment",m_price:"Property price",eq_price:"price up to",eq_mon:"instalment",ten_lbl:"Loan tenure",eqm_t:"Pay {m} for {n} years = afford a price up to {p}",eqp_t:"Price {p} over {n} years = ~{m}/mo instalment",ten_why:"Loans must end before age {age}. The younger you are, the longer the tenure and the lower the instalment.",dial_hit:"matching properties",dial_btn:"Show",per:"/mo",
-  s_kw:"Search project, area or developer",pop:"Popular:",bud_t:"Find by budget",bud_s:"Set your price or instalment, see every home that fits",reset_all:"Reset all",close:"Close",reset_done:"Filters reset",s_area:"Area",s_type:"Type",s_all:"All",s_btn:"Search",
+  s_kw:"Search project, area or developer",pop:"Popular:",bud_t:"Find by budget",bud_s:"Set your price or instalment, see every home that fits",reset_all:"Reset all",reset_short:"Reset",close:"Close",reset_done:"Filters reset",s_area:"Area",s_type:"Type",s_all:"All",s_btn:"Search",
   l_title:"Property directory",l_sub:"Filter by status, developer, tenure, furnishing, bedrooms and transit access.",more:"More filters",reset:"Reset",
   f_status:"Status",f_dev:"Developer",f_ten:"Tenure",f_furn:"Furnishing",f_bed:"Bedrooms",any:"Any",
   sort:"Sort",s_new:"Featured first",s_lo:"Price: low to high",s_hi:"Price: high to low",s_az:"Name A–Z",s_mo:"Instalment: low to high",
@@ -1572,8 +1628,15 @@ function areaSlug(a){return slugify(a)}
 const SLUG_RE=/^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const SM_MAX=45000; // stays under the 50,000-URL / 50 MB per-file limit
 const SM_FILES={index:"sitemap.xml",pages:"sitemap-pages.xml",areas:"sitemap-areas.xml",blog:"sitemap-blog.xml",proj:n=>`sitemap-projects-${n}.xml`};
-const RESERVED_SLUGS=["admin","api","hartanah","listings","projek","simpanan","sitemap","robots","p","kawasan","blog","privasi","_blob","co-living","assets","favicon"];
-function projUrl(p){return `${SITE}/listings/${p.slug}`}
+const RESERVED_SLUGS=["en","admin","api","hartanah","listings","projek","simpanan","sitemap","robots","p","kawasan","blog","privasi","_blob","co-living","assets","favicon"];
+function projUrl(p,lang){return lang==="en"?`${SITE}/en/listings/${p.slug}`:`${SITE}/listings/${p.slug}`}
+/* ----- English versions: Missing / Auto-translated / Verified (only Verified English is indexable) ----- */
+function trSrc(p){return JSON.stringify({summary:String(p.summary||""),hl:(p.hl||[]).map(String),fac:(p.fac||[]).map(String)})}
+function trHash(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return String(h>>>0)}
+function enSig(p){const e=(p&&p.tr&&p.tr.en)||{};return trHash(String(p&&p.tr&&p.tr.h||"")+"|"+JSON.stringify({s:String(e.summary||""),hl:(e.hl||[]).map(String),fac:(e.fac||[]).map(String),mt:String(p.metaTitleEn||""),md:String(p.metaDescEn||"")}))}
+function enStatus(p){if(!p||!p.tr||!p.tr.en||p.tr.h!==trHash(trSrc(p)))return "missing";if(String(p.summary||"").trim()&&!String(p.tr.en.summary||"").trim())return "missing";return p.trEnOk&&p.trEnOk===enSig(p)?"verified":"auto"}
+function enIndexable(p){return listable(p)&&!p.noindex&&enStatus(p)==="verified"}
+function hreflangAlts(p){return enIndexable(p)?[["ms",projUrl(p)],["en",projUrl(p,"en")],["x-default",projUrl(p)]]:[]}
 function areaUrl(a){return `${SITE}/hartanah/${areaSlug(a)}`}
 const SIG_KEYS=["name","dev","area","state","purpose","type","status","tenure","furn","tod","pmin","pmax","mon","bmin","bmax","tmin","tmax","smin","smax","units","maint","completion","summary","hl","fac","layouts","towers","near","photos","metaTitle","metaDesc","keyword","mapUrl","geo","address","published","noindex","redirectTo"];
 function contentSig(p){return hash(JSON.stringify(SIG_KEYS.map(k=>p[k]??"")))}
@@ -1619,10 +1682,10 @@ function directoryModel(list){const m=new Map();for(const p of list.filter(lista
   return [...m.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([area,ps])=>({area,url:areaUrl(area),projects:ps.slice().sort((a,b)=>a.name.localeCompare(b.name))}))}
 const xmlEsc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[c]));
 const SM_NS="http://www.sitemaps.org/schemas/sitemap/0.9";
-function urlsetXml(es){return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="${SM_NS}">\n${es.map(e=>`  <url><loc>${xmlEsc(e.loc)}</loc>${e.lastmod?`<lastmod>${e.lastmod}</lastmod>`:""}</url>\n`).join("")}</urlset>\n`}
+function urlsetXml(es){const x=es.some(e=>e.alt&&e.alt.length);return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="${SM_NS}"${x?' xmlns:xhtml="http://www.w3.org/1999/xhtml"':""}>\n${es.map(e=>`  <url><loc>${xmlEsc(e.loc)}</loc>${e.lastmod?`<lastmod>${e.lastmod}</lastmod>`:""}${(e.alt||[]).map(a=>`<xhtml:link rel="alternate" hreflang="${xmlEsc(a.lang)}" href="${xmlEsc(a.href)}"/>`).join("")}</url>\n`).join("")}</urlset>\n`}
 function sitemapIndexXml(es){return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="${SM_NS}">\n${es.map(e=>`  <sitemap><loc>${xmlEsc(e.loc)}</loc>${e.lastmod?`<lastmod>${e.lastmod}</lastmod>`:""}</sitemap>\n`).join("")}</sitemapindex>\n`}
 function buildSitemaps(list,opt){
-  const max=(opt&&opt.max)||SM_MAX,ps=indexableProjects(list),pe=ps.map(p=>({loc:projUrl(p),lastmod:lastmodOf(p)}));
+  const max=(opt&&opt.max)||SM_MAX,ps=indexableProjects(list),pe=[];for(const p of ps){const alt=hreflangAlts(p).map(([lang,href])=>({lang,href}));pe.push({loc:projUrl(p),lastmod:lastmodOf(p),alt});if(alt.length)pe.push({loc:projUrl(p,"en"),lastmod:lastmodOf(p),alt})}
   const areas=new Map();for(const p of ps){const k=areaSlug(p.area);if(!areas.has(k))areas.set(k,{loc:areaUrl(p.area),ds:[]});areas.get(k).ds.push(lastmodOf(p))}
   const ae=[...areas.values()].map(a=>({loc:a.loc,lastmod:maxDay(a.ds)})).sort((a,b)=>a.loc<b.loc?-1:1);
   const latest=maxDay(pe.map(e=>e.lastmod)),pg=[{loc:SITE+"/",lastmod:latest},{loc:SITE+"/projek",lastmod:latest},{loc:SITE+"/co-living"},{loc:SITE+"/privasi"}];
@@ -1637,8 +1700,9 @@ function buildSitemaps(list,opt){
 }
 function robotsTxt(){return `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /simpanan\nDisallow: /api/\n\nSitemap: ${SITE}/${SM_FILES.index}\nSitemap: https://dttxithovvlmgeyahllk.supabase.co/functions/v1/sitemap/${SM_FILES.index}\n`}
 /* route <-> crawlable path mapping (#/p/x ↔ /listings/x, #/kawasan/x ↔ /hartanah/x) */
-function hashToPath(h){const [a="",b=""]=String(h||"").replace(/^#\/?/,"").split(/[?#]/)[0].split("/");if(a==="p"&&b)return "/listings/"+b;if(a==="kawasan"&&b)return "/hartanah/"+b;return a?"/"+a+(b?"/"+b:""):"/"}
-function pathToHash(path){const [a="",b=""]=String(path||"/").split(/[?#]/)[0].replace(/^\/+|\/+$/g,"").split("/");if(a==="listings"&&b)return "#/p/"+b;if(a==="hartanah"&&b)return "#/kawasan/"+b;return a?"#/"+a+(b?"/"+b:""):"#/"}
+function hashToPath(h,lang){const [a="",b=""]=String(h||"").replace(/^#\/?/,"").split(/[?#]/)[0].split("/");if(a==="p"&&b)return (lang==="en"?"/en/listings/":"/listings/")+b;if(a==="kawasan"&&b)return "/hartanah/"+b;return a?"/"+a+(b?"/"+b:""):"/"}
+function pathLang(path){return /^\/en\/listings\/[^/]+\/?$/.test(String(path||"").split(/[?#]/)[0])?"en":/^\/listings\/[^/]+\/?$/.test(String(path||"").split(/[?#]/)[0])?"ms":""}
+function pathToHash(path){path=String(path||"/").replace(/^\/en(\/listings\/[^/?#]+\/?)(?=$|[?#])/,"$1");const [a="",b=""]=String(path||"/").split(/[?#]/)[0].replace(/^\/+|\/+$/g,"").split("/");if(a==="listings"&&b)return "#/p/"+b;if(a==="hartanah"&&b)return "#/kawasan/"+b;return a?"#/"+a+(b?"/"+b:""):"#/"}
 
 /* ----- automated tests (isolated in-memory fixtures; never touch live data) ----- */
 function xmlWellFormed(x){
@@ -1687,6 +1751,22 @@ function seoSelfTest(){
   // K
   if(typeof filtered==="function"){const sv=S.f;try{S.f={...sv,q:"",area:"",type:"",status:"",dev:"",tenure:"",furn:"",bed:0,tod:false,maxMon:0,chip:"",maxPrice:500000,sort:"lo"};const L=[{slug:"x1",name:"X1",area:"A",dev:"",state:"",type:"condo",pmin:0},{slug:"x2",name:"X2",area:"A",dev:"",state:"",type:"condo",pmin:400000},{slug:"x3",name:"X3",area:"A",dev:"",state:"",type:"condo",pmin:300000}],r1=filtered(L);S.f={...S.f,maxPrice:0,sort:"lo"};const r2=filtered(L);
     ok("K","Missing prices are excluded from price filters and sorted last",r1.map(p=>p.slug).join()==="x3,x2"&&r2.map(p=>p.slug).join()==="x3,x2,x1")}finally{S.f=sv}}
+  // L–Q: English versions (Stage 2)
+  {const src={summary:"Kondominium di Setapak berhampiran LRT.",hl:["Dekat LRT"],fac:["Kolam"]},h0=trHash(trSrc(src));
+   const en={summary:"Condominium in Setapak near the LRT.",hl:["Near LRT"],fac:["Pool"]};
+   const auto=mk("gamma-auto",{...src,tr:{h:h0,ms:src,en}}),ver0=mk("delta-verified",{...src,tr:{h:h0,ms:src,en}});const ver={...ver0,trEnOk:enSig(ver0)};
+   const stale={...ver,slug:"eps-stale",summary:src.summary+" Baharu."},miss=mk("zeta-missing",{...src}),draftV={...ver,slug:"eta-draft",published:false},redirV={...ver,slug:"theta-redir",redirectTo:"alpha-residences"};
+   const editedEn={...ver,slug:"iota-edited",tr:{...ver.tr,en:{...en,summary:en.summary+" Edited."}}};
+   ok("L","Translation status: Missing / Auto-translated / Verified; any later source or English edit voids Verified",enStatus(miss)==="missing"&&enStatus(auto)==="auto"&&enStatus(ver)==="verified"&&enStatus(stale)==="missing"&&enStatus(editedEn)==="auto");
+   const list=[...base,auto,ver,stale,miss,draftV,redirV],b=buildSitemaps(list),locs=b.urls.map(u=>u.loc),px=b.files[SM_FILES.proj(1)];
+   const enLocs=locs.filter(u=>u.includes("/en/"));
+   ok("M","Sitemap: only verified, published, non-redirected English URLs are included; every BM listing stays",enLocs.length===1&&enLocs[0]===SITE+"/en/listings/delta-verified"&&["alpha-residences","beta-heights","gamma-auto","delta-verified","eps-stale","zeta-missing"].every(s=>locs.includes(SITE+"/listings/"+s))&&!locs.some(u=>/eta-draft|theta-redir/.test(u)),enLocs.join(" "));
+   const blk=u=>{const i=px.indexOf("<loc>"+u+"</loc>");return i<0?"":px.slice(i,px.indexOf("</url>",i))};
+   const bmB=blk(SITE+"/listings/delta-verified"),enB=blk(SITE+"/en/listings/delta-verified"),want=[`hreflang="ms" href="${SITE}/listings/delta-verified"`,`hreflang="en" href="${SITE}/en/listings/delta-verified"`,`hreflang="x-default" href="${SITE}/listings/delta-verified"`];
+   ok("N","Sitemap hreflang is reciprocal (BM ⇄ EN + x-default) and well-formed XML; unverified listings carry no alternates",want.every(w=>bmB.includes(w)&&enB.includes(w))&&!blk(SITE+"/listings/gamma-auto").includes("hreflang")&&xmlWellFormed(px)&&px.includes('xmlns:xhtml="http://www.w3.org/1999/xhtml"'));
+   ok("O","Routing: /en/listings/x ⇄ #/p/x; BM paths unchanged; other paths never gain /en",pathToHash("/en/listings/delta-verified")==="#/p/delta-verified"&&hashToPath("#/p/delta-verified","en")==="/en/listings/delta-verified"&&hashToPath("#/p/delta-verified","ms")==="/listings/delta-verified"&&hashToPath("#/kawasan/setapak","en")==="/hartanah/setapak"&&pathLang("/en/listings/x")==="en"&&pathLang("/listings/x")==="ms"&&pathLang("/hartanah/x")===""&&pathToHash("/en/blog")!=="#/blog");
+   ok("P","hreflang tags only for verified, listable projects",hreflangAlts(ver).length===3&&!hreflangAlts(auto).length&&!hreflangAlts(draftV).length&&!hreflangAlts(redirV).length&&!hreflangAlts({...ver,noindex:true}).length);
+   ok("Q","'en' cannot be used as a project slug",RESERVED_SLUGS.includes("en"))}
   return res;
 }
 /* ===== SEO-CORE:END ===== */
@@ -1695,7 +1775,7 @@ const PATHMODE=(()=>{try{if(window.RH_SITE)return true;return location.hostname.
 let CMS_HOME=false; // CMS edition: the dashboard is the start page until the user navigates to a site page
 window.addEventListener("hashchange",()=>{if(/^#\/.+/.test(location.hash)||location.hash==="#/")CMS_HOME=true});
 function curHash(){if(PATHMODE)return pathToHash(location.pathname);const h=location.hash||"#/";if(!CMS_HOME&&!window.RH_SITE&&(h==="#/"||!/^#\//.test(h)))return "#/admin";return h}
-function navTo(h,replace){if(!PATHMODE){if(replace)location.replace(h);else location.hash=h;return}const p=hashToPath(h);if(p!==location.pathname)history[replace?"replaceState":"pushState"](null,"",p);dispatchEvent(new HashChangeEvent("hashchange"))}
+function navTo(h,replace){if(!PATHMODE){if(replace)location.replace(h);else location.hash=h;return}const p=hashToPath(h,S.lang);if(p!==location.pathname)history[replace?"replaceState":"pushState"](null,"",p);dispatchEvent(new HashChangeEvent("hashchange"))}
 
 /* ============ DATA MERGE ============ */
 function projects(all){
@@ -1757,46 +1837,47 @@ function absUrl(u){try{return u?new URL(u,location.href).href:""}catch(e){return
 /* focus keyword check: case-insensitive, ignores punctuation; the main phrase (before any comma) must appear word for word in order-free form */
 function kwIn(kw,text){const norm=s=>String(s||"").toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
   const words=norm(String(kw||"").split(",")[0]).split(" ").filter(w=>w.length>1||/\d/.test(w)),t=" "+norm(text)+" ";return words.length>0&&words.every(w=>t.includes(" "+w+" "))}
-function seoFor(p){
-  const keep=S.lang;S.lang="ms"; // search content is always generated in BM (the page's default language), so titles never mix languages
+function seoFor(p,lang){
+  const EN=lang==="en",keep=S.lang;S.lang=EN?"en":"ms"; // BM by default; English only for the /en/ version of a listing
+  if(EN)p=locP(p);
   try{
   const name=String(p.name||p.slug||"").trim(),areaS=String(p.area||"").trim();
   const area=areaS+(p.state?", "+p.state:"");
   const typ=t("t_"+p.type)||"Hartanah";
   const kw=(p.keyword||"").trim()||(name.split("@")[0].trim()+" "+areaS).toLowerCase();
   const inName=areaS&&name.toLowerCase().includes(areaS.toLowerCase());
-  const price=p.pmin?" dari "+rm(p.pmin):"";
+  const price=p.pmin?(EN?" from ":" dari ")+rm(p.pmin):"",DI=EN?" in ":" di ";
   const BR=" | Rezeki Hartanah";
   const cands=[
-    `${name} | ${typ}${price}${inName?"":" di "+areaS}`,
+    `${name} | ${typ}${price}${inName?"":DI+areaS}`,
     `${name} | ${typ}${price}`,
-    p.pmin?`${name} | Harga dari ${rm(p.pmin)}`:"",
-    inName?"":`${name} | ${typ} di ${areaS}`,
+    p.pmin?`${name} | ${EN?"Price from":"Harga dari"} ${rm(p.pmin)}`:"",
+    inName?"":`${name} | ${typ}${DI}${areaS}`,
     `${name} | ${typ}`,
     name
   ].filter(Boolean);
-  let title=(p.metaTitle||"").trim();
+  let title=((EN?p.metaTitleEn:p.metaTitle)||"").trim();
   if(!title){title=cands.find(c=>c.length>=30&&c.length<=60)||cands.find(c=>c.length<=60)||clip(name,60);if(title.length+BR.length<=60&&title.length<30)title+=BR}
-  const mo=monthlyOf(p),devS=p.dev?" oleh "+p.dev:"";
-  const head=[[typ.toLowerCase()+devS,sizeTxt(p),bedTxt(p)],[typ.toLowerCase()+devS,sizeTxt(p)],[typ.toLowerCase(),sizeTxt(p)],[typ.toLowerCase()]].map(a=>`${name}${inName?(p.state?", "+p.state:""):" di "+area}: ${a.filter(Boolean).join(", ")}.`);
-  const tail=p.pmin?[` Harga dari ${rmFull(p.pmin)}, ansuran ~${rmFull(mo)}/bln.`,` Harga dari ${rmFull(p.pmin)}.`]:[""];
+  const mo=monthlyOf(p),devS=p.dev?(EN?" by ":" oleh ")+p.dev:"";
+  const head=[[typ.toLowerCase()+devS,sizeTxt(p),bedTxt(p)],[typ.toLowerCase()+devS,sizeTxt(p)],[typ.toLowerCase(),sizeTxt(p)],[typ.toLowerCase()]].map(a=>`${name}${inName?(p.state?", "+p.state:""):DI+area}: ${a.filter(Boolean).join(", ")}.`);
+  const tail=p.pmin?(EN?[` Priced from ${rmFull(p.pmin)}, about ${rmFull(mo)}/month.`,` Priced from ${rmFull(p.pmin)}.`]:[` Harga dari ${rmFull(p.pmin)}, ansuran ~${rmFull(mo)}/bln.`,` Harga dari ${rmFull(p.pmin)}.`]):[""];
   let auto="";for(const h of head){for(const tl of tail){if((h+tl).length<=160){auto=h+tl;break}}if(auto)break}
   if(!auto)auto=head[head.length-1];
-  for(const add of [" Semak unit & pembiayaan LPPSA."," WhatsApp kami untuk lawatan."])if(auto.length<110&&auto.length+add.length<=160)auto+=add;
-  const desc=clip((p.metaDesc||"").trim()||auto,160);
-  const url=projUrl(p);
-  const faqs=faqsFor(p,false);
+  for(const add of EN?[" Check units & LPPSA financing."," WhatsApp us to arrange a visit."]:[" Semak unit & pembiayaan LPPSA."," WhatsApp kami untuk lawatan."])if(auto.length<110&&auto.length+add.length<=160)auto+=add;
+  const desc=clip(((EN?p.metaDescEn:p.metaDesc)||"").trim()||auto,160);
+  const url=projUrl(p,EN?"en":"ms");
+  const faqs=faqsFor(p,EN);
   const imgs=photosOf(p).map(absUrl).filter(Boolean);
   const day=v=>v?new Date(v).toISOString().slice(0,10):undefined;
   const ld={"@context":"https://schema.org","@graph":[
-    {"@type":"RealEstateListing","@id":url+"#listing","url":url,"name":name,"description":desc,"inLanguage":"ms-MY","image":imgs.length?imgs:undefined,"datePosted":day(p.createdAt),"dateModified":day(p.contentAt||p.updatedAt||p.createdAt),
+    {"@type":"RealEstateListing","@id":url+"#listing","url":url,"name":name,"description":desc,"inLanguage":EN?"en-MY":"ms-MY","image":imgs.length?imgs:undefined,"datePosted":day(p.createdAt),"dateModified":day(p.contentAt||p.updatedAt||p.createdAt),
      "mainEntityOfPage":{"@type":"WebPage","@id":url,"url":url,"name":title,"breadcrumb":{"@id":url+"#crumbs"}},
      "offers":p.pmin?{"@type":"AggregateOffer","priceCurrency":"MYR","lowPrice":p.pmin,"highPrice":p.pmax||p.pmin,"availability":p.status==="soldout"?"https://schema.org/SoldOut":p.status==="upcoming"?"https://schema.org/PreOrder":"https://schema.org/InStock","offerCount":p.units||undefined,"seller":{"@id":SITE+"/#agent"}}:undefined,
      "about":{"@type":TYPES.com.includes(p.type)?"Place":"Residence","name":name,"image":imgs[0]||undefined,"address":{"@type":"PostalAddress","addressLocality":areaS,"addressRegion":p.state||undefined,"addressCountry":"MY"},
        "geo":(g=>g?{"@type":"GeoCoordinates","latitude":g.lat,"longitude":g.lng}:undefined)(typeof geoOf==="function"?geoOf(p):null),
        "floorSize":p.smin?{"@type":"QuantitativeValue","minValue":p.smin,"maxValue":p.smax||p.smin,"unitCode":"FTK"}:undefined,"numberOfRooms":p.bmax||undefined,"amenityFeature":(p.fac||[]).map(f=>({"@type":"LocationFeatureSpecification","name":f,"value":true}))},
      "provider":{"@id":SITE+"/#agent"}},
-    {"@type":"BreadcrumbList","@id":url+"#crumbs","itemListElement":[{"@type":"ListItem","position":1,"name":"Hartanah","item":SITE+"/"},{"@type":"ListItem","position":2,"name":areaS,"item":areaUrl(areaS)},{"@type":"ListItem","position":3,"name":name,"item":url}]}
+    {"@type":"BreadcrumbList","@id":url+"#crumbs","itemListElement":[{"@type":"ListItem","position":1,"name":EN?"Properties":"Hartanah","item":SITE+"/"},{"@type":"ListItem","position":2,"name":areaS,"item":areaUrl(areaS)},{"@type":"ListItem","position":3,"name":name,"item":url}]}
   ]};
   const checks=[
     [title.length>=30&&title.length<=60,`Meta title 30–60 characters (${title.length})`],
@@ -1821,7 +1902,9 @@ function seoFor(p){
 function faqBlock(p){const q=faqsFor(p,S.lang==="en");return `<div class="blk" id="faqSec"><h2>${L2("Soalan lazim","Frequently asked questions")}</h2><div class="faq">${q.map(([a,b],i)=>`<details${i?"":" open"}><summary>${esc(a)}</summary><p>${esc(b)}</p></details>`).join("")}</div></div>`}
 function scoreCls(s){return s>=80?"s-good":s>=55?"s-mid":"s-bad"}
 const OG_DEFAULT="https://rezekihartanah.com/og-image.jpg";
-function setHead({title,desc,canonical,ld,robots,image}){
+function setHead({title,desc,canonical,ld,robots,image,alts}){
+  document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(l=>l.remove());
+  for(const [lang,href] of alts||[]){const l=document.createElement("link");l.rel="alternate";l.hreflang=lang;l.href=href;document.head.appendChild(l)}
   const ab=image?absUrl(image):"",img=/^https:\/\//.test(ab)?ab:OG_DEFAULT;
   [['meta[property="og:image"]',img],['meta[name="twitter:image"]',img],['meta[name="twitter:title"]',title],['meta[name="twitter:description"]',desc||""],['meta[property="og:image:alt"]',title]].forEach(([s,v])=>{const m=$(s);if(m)m.setAttribute("content",v)});
   document.title=title;$('meta[name="robots"]').setAttribute("content",robots||"index, follow, max-image-preview:large");
@@ -1904,7 +1987,7 @@ function viewHome(){
       <p class="lead">${t("lead")}</p>
       <form class="searchbox sb2" id="searchForm" role="search" autocomplete="off">
         <button type="button" class="bud" data-bud><span class="bud-i" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 12 4l9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg></span><span class="bud-t"><b>${t("bud_t")}</b><small>${t("bud_s")}</small></span><span class="bud-a" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
-        <div class="sb-foot"><button type="button" class="sb-more" id="sbMore" aria-expanded="${!!S.sbOpen}" aria-controls="sbAdv"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>${t("more")}<span class="sb-caret" aria-hidden="true">${S.sbOpen?"▴":"▾"}</span>${[f.status,f.dev,f.tenure,f.furn,f.bed].filter(Boolean).length?` <span class="nbadge">${[f.status,f.dev,f.tenure,f.furn,f.bed].filter(Boolean).length}</span>`:""}</button><button type="button" class="sb-reset" data-resethero><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>${t("reset_all")}</button></div>
+        <div class="sb-foot"><button type="button" class="sb-more" id="sbMore" aria-expanded="${!!S.sbOpen}" aria-controls="sbAdv"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>${t("more")}<span class="sb-caret" aria-hidden="true"><svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></span>${[f.status,f.dev,f.tenure,f.furn,f.bed].filter(Boolean).length?` <span class="nbadge">${[f.status,f.dev,f.tenure,f.furn,f.bed].filter(Boolean).length}</span>`:""}</button><button type="button" class="sb-reset" data-resethero aria-label="${esc(t("reset_all"))}" title="${esc(t("reset_all"))}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span class="rs-long">${t("reset_all")}</span><span class="rs-short" aria-hidden="true">${t("reset_short")}</span></button></div>
         <div class="sb-adv" id="sbAdv" ${S.sbOpen?"":"hidden"}>
           <div class="field"><label for="fArea">${t("s_area")}</label><select id="fArea"><option value="">${t("s_all")}</option>${areas.map(a=>`<option ${f.area===a?"selected":""}>${esc(a)}</option>`).join("")}</select></div>
           <div class="field"><label for="fType">${t("s_type")}</label><select id="fType">${typeOptions(f.type)}</select></div>
@@ -2129,11 +2212,12 @@ function viewDirectory(g,n){
 }
 /* ============ CMS / ADMIN ============ */
 let admTab="overview",editing=null,slugTouched=false,edDirty=false,edIsNew=true,admQ="",admFilter="all",leadFilter="all",leadQ="";
-const LEAD_ST=[["new","New"],["contacted","Contacted"],["viewing","Viewing"],["booked","Booked"],["closed","Closed"],["lost","Not interested"]];
+const LEAD_ST=[["new","New"],["contacted","Contacted"],["hot","Hot"],["cold","Cold"],["noresp","No Response"],["booked","Booked"],["spa","SPA Signed"],["lost","Deal Lost"]];
 const ICON={overview:'<path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/>',projects:'<path d="M3 21V10l6-4v15M9 21V3l8 5v13M17 21v-8l4 2v6M2 21h20"/>',leads:'<path d="M4 4h16v12H6l-2 3z"/><path d="M8 9h8M8 12h5"/>',seo:'<path d="M3 17l5-5 4 4 8-8"/><path d="M15 8h5v5"/>',blog:'<path d="M5 3h10l4 4v14H5z"/><path d="M9 9h6M9 13h6M9 17h4"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'};
 const ic=(k,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]||""}</svg>`;
 const bySlugAll=s=>projects(true).find(p=>p.slug===s);
-const leadSt=l=>l.status||"new";
+const LEAD_LEGACY={viewing:"hot",closed:"spa"}; // earlier status names, read as their new equivalent (no data change needed)
+const leadSt=l=>{const s=LEAD_LEGACY[l.status]||l.status||"new";return LEAD_ST.some(x=>x[0]===s)?s:"new"};
 function ago(ts){if(!ts)return"";const m=Math.round((Date.now()-ts)/6e4);if(m<1)return"just now";if(m<60)return m+" min ago";const h=Math.round(m/60);if(h<24)return h+" h ago";const d=Math.round(h/24);return d<30?d+" days ago":new Date(ts).toLocaleDateString("en-MY")}
 const kpi=(l,v,s)=>`<div class="kpi"><span class="fine">${l}</span><b>${v}</b>${s?`<small>${s}</small>`:""}</div>`;
 function pendingChanges(){const st=S.settings||{},last=num(st.lastExportAt),ch=[];
@@ -2160,7 +2244,7 @@ function viewAdmin(){
   if(!S.isAdmin) return `<div class="cms-lock"><div class="panel"><span class="logo-mark" style="margin:0 auto 14px;background:#F2B54F" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A1226" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><h1 style="font-size:1.6rem">RH CMS</h1><p class="sub" style="margin:10px auto 18px">This area is only for the site owner and editors. Sign in with the owner account to manage projects, enquiries and SEO.</p><a class="btn btn-brand" href="#/">Back to site</a></div></div>`;
   if(admTab==="editor") return admShell(edIsNew?"New project":"Edit project",`<button class="btn btn-ghost btn-sm" data-cancel>Cancel</button>`,editorView());
   if(admTab==="projects") return admShell("Projects",`${S.sample?`<button class="btn btn-ghost btn-sm" data-trproj title="Translate descriptions, highlights & facilities of all projects into BM and English">🌐 Translate all</button> `:""}<button class="btn btn-brand btn-sm" data-new>+ New project</button>`,admProjects());
-  if(admTab==="leads") return admShell("Enquiries",`<button class="btn btn-ghost btn-sm" data-addlead>${S.addLead?"Close form":"+ Add"}</button><button class="btn btn-ghost btn-sm" data-csv>Download CSV</button>`,admLeads());
+  if(admTab==="leads") return admShell("Enquiries",`<button class="btn btn-ghost btn-sm" data-addlead>${S.addLead?"Close form":"+ Add"}</button><button class="btn btn-ghost btn-sm" data-xlsx title="Excel file of the leads shown with the current view and filters">Excel</button><button class="btn btn-ghost btn-sm" data-csv title="CSV of the leads shown with the current view and filters">CSV</button>`,admLeads());
   if(admTab==="blog") return admShell("Blog",`<button class="btn btn-brand btn-sm" data-bnew>+ New article</button>`,admBlog());
   if(admTab==="post") return admShell(postIsNew?"New article":"Edit article",`<button class="btn btn-ghost btn-sm" data-bcancel>Cancel</button>`,postEditorView());
   if(admTab==="seo") return admShell("SEO",`<button class="btn btn-ghost btn-sm" data-dl="sitemap">Sitemap files</button>`,admSeo()+staticPanel());
@@ -2195,34 +2279,170 @@ function admProjects(){
   list.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0)||a.name.localeCompare(b.name));
   return `<div class="cms-bar"><div class="sb-row cms-q">${ic("search",18)}<input id="admQ" type="search" value="${esc(admQ)}" aria-label="Search projects, areas or developers" placeholder="Search projects, areas or developers"></div>
    <div class="chips">${[["all","All"],["pub","Published"],["draft","Drafts"],["feat","Featured"]].map(([k,l])=>`<button class="chip" data-af="${k}" aria-pressed="${admFilter===k}">${l}<span class="n">${cnt[k]}</span></button>`).join("")}</div></div>
+   ${S.jsSb?`<p class="fine" style="margin:0 0 8px;text-align:right"><button type="button" class="btn btn-ghost btn-sm" data-histdel>↺ Recently deleted projects</button></p>`:""}
    <div class="plist">${list.map(p=>{const s=seoFor(p).score,pub=p.published!==false;return `<article class="prow">
      <div class="pthumb">${art(p)}</div>
      <div class="pinfo"><b>${esc(p.name)}</b><span>${esc(p.area)}, ${esc(tE("t_"+p.type))}</span><span>${esc(priceRange(p))}</span></div>
-     <div class="pmeta"><span class="pill ${pub?"on":"off"}">${pub?"Published":"Draft"}</span><span class="score ${scoreCls(s)}" title="SEO score">SEO ${s}</span>${p.featured?`<span class="pill gold">★ Featured</span>`:""}<small>${p.updatedAt?"Updated "+ago(p.updatedAt):"Original listing"}</small></div>
+     <div class="pmeta"><span class="pill ${pub?"on":"off"}">${pub?"Published":"Draft"}</span><span class="score ${scoreCls(s)}" title="SEO score">SEO ${s}</span>${p.featured?`<span class="pill gold">★ Featured</span>`:""}${enPill(enStatus(p))}<small>${p.updatedAt?"Updated "+ago(p.updatedAt):"Original listing"}</small></div>
      <div class="pacts"><button class="btn btn-ghost btn-sm" data-edit="${esc(p.slug)}">Edit</button>
       <details class="menu"><summary class="icon-btn" aria-label="More actions for ${esc(p.name)}">⋯</summary><div>
        <a href="#/p/${esc(p.slug)}">View page</a>
        <button data-pub="${esc(p.slug)}">${pub?"Make draft":"Publish"}</button>
        <button data-feat="${esc(p.slug)}">${p.featured?"Remove from featured":"Make featured"}</button>
        <button data-dup="${esc(p.slug)}">Duplicate project</button>
+       ${S.jsSb?`<button data-hist="${esc(p.slug)}">Version history</button>`:""}
        <button data-del="${esc(p.slug)}" class="danger">Delete</button></div></details></div>
     </article>`}).join("")||`<div class="empty"><p>No matching projects.</p><button class="btn btn-brand" data-new>+ New project</button></div>`}</div>`;
 }
+/* ===================== LEADS CRM ===================== */
+const LEAD_SRC=[["website","Website"],["manual","Manual entry"],["whatsapp","WhatsApp"],["call","Phone call"],["walkin","Walk-in"],["facebook","Facebook"],["instagram","Instagram"],["tiktok","TikTok"],["referral","Referral"],["other","Other"]];
+const LEAD_FU=[["","Any follow-up"],["overdue","Overdue"],["today","Due today"],["upcoming","Upcoming"],["none","No follow-up"]];
+const LEAD_RECV=[["","Any date"],["7","Last 7 days"],["30","Last 30 days"],["90","Last 90 days"]];
+const LF={view:"list",arch:false,proj:"",src:"",fu:"",recv:"",limit:50};const LEAD_BUSY=new Set();
+const stLabel=k=>(LEAD_ST.find(x=>x[0]===k)||LEAD_ST[0])[1];
+const srcLabel=k=>(LEAD_SRC.find(x=>x[0]===k)||[0,k||"Website"])[1];
+const pad2=n=>String(n).padStart(2,"0");
+const localDay=d=>`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+function fuState(l,now=new Date()){const f=String(l.followAt||"");if(!f)return "none";const t=new Date(f);if(isNaN(t))return "none";if(t<now)return "overdue";return localDay(t)===localDay(now)?"today":"upcoming"}
+function fuText(l){const f=String(l.followAt||"");if(!f)return "";const t=new Date(f);if(isNaN(t))return "";const s=fuState(l),hm=`${pad2(t.getHours())}:${pad2(t.getMinutes())}`;
+  return s==="today"?`Today ${hm}`:s==="overdue"&&localDay(t)===localDay(new Date())?`Today ${hm} · overdue`:t.toLocaleDateString("en-MY",{day:"numeric",month:"short"})+" "+hm}
+function lcDate(v){if(!v)return "";const d=new Date(typeof v==="number"?v:String(v));return isNaN(d)?"":d.toLocaleDateString("en-MY",{day:"numeric",month:"short",year:"numeric"})}
+function leadProj(l){const p=bySlugAll(l.project);return p?p.name:(l.project?l.project:"Not sure")}
+function leadPool(arch){return S.leads.filter(l=>!!l.archived===!!arch)}
+function leadMatch(l,o={}){const f={...LF,status:leadFilter,q:leadQ,...o};
+  if(f.status&&f.status!=="all"&&leadSt(l)!==f.status)return false;
+  if(f.proj&&(f.proj==="__none"?!!l.project:l.project!==f.proj))return false;
+  if(f.src&&(l.source||"website")!==f.src)return false;
+  if(f.fu&&fuState(l)!==f.fu)return false;
+  if(f.recv&&!(num(l.at)>=Date.now()-num(f.recv)*864e5))return false;
+  const q=String(f.q||"").trim().toLowerCase();if(q){const digits=q.replace(/\D/g,"");const hay=[l.name,l.phone,l.email,l.msg,l.note,leadProj(l)].join(" ").toLowerCase();
+    if(!hay.includes(q)&&!(digits.length>=3&&String(l.phone||"").replace(/\D/g,"").includes(digits)))return false}
+  return true}
+function leadsFiltered(){return leadPool(LF.arch).filter(l=>leadMatch(l)).sort((a,b)=>{const fa=fuState(a),fb=fuState(b),r={overdue:0,today:1,upcoming:2,none:3};return LF.arch?num(b.archivedAt||b.at)-num(a.archivedAt||a.at):(r[fa]-r[fb])||(fa!=="none"&&fb!=="none"?new Date(a.followAt)-new Date(b.followAt):0)||num(b.at)-num(a.at)})}
+const leadWa=l=>String(l.phone||"").replace(/\D/g,"").replace(/^0/,"60");
+function stBadge(l,menu=true){const k=leadSt(l);return menu?`<button type="button" class="stb st-${k}" data-stmenu="${esc(l.id)}" aria-haspopup="menu" aria-expanded="false" aria-label="Status: ${stLabel(k)}. Change status" ${LEAD_BUSY.has(l.id)?"disabled":""}><i aria-hidden="true"></i>${LEAD_BUSY.has(l.id)?"Saving…":stLabel(k)}<svg viewBox="0 0 12 12" width="9" height="9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button>`:`<span class="stb st-${k} static"><i aria-hidden="true"></i>${stLabel(k)}</span>`}
+function fuChip(l){const s=fuState(l);return s==="none"?"":`<span class="fuc fu-${s}" title="Next follow-up">${s==="overdue"?"⚠︎ ":"⏰ "}${esc(fuText(l))}</span>`}
+function leadCard(l,compact){const p=leadProj(l),ph=leadWa(l);
+  return `<article class="crm-c st-${leadSt(l)}${compact?" compact":""}" data-lid="${esc(l.id)}">
+   <div class="crm-h"><div class="crm-who"><button type="button" class="crm-name" data-ldetail="${esc(l.id)}">${esc(l.name||"(no name)")}</button><small>${ago(l.at)} · ${esc(srcLabel(l.source))}</small></div>
+    <div class="crm-ctl">${stBadge(l)}<button type="button" class="crm-more" data-lmenu="${esc(l.id)}" aria-haspopup="menu" aria-expanded="false" aria-label="Actions for ${esc(l.name)}"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button></div></div>
+   <div class="crm-meta"><span>🏢 ${esc(p)}</span>${l.budget&&!compact?`<span>💰 ${esc(l.budget)}</span>`:""}${fuChip(l)}</div>
+   ${!compact&&l.msg?`<p class="crm-msg">${esc(l.msg)}</p>`:""}${!compact&&l.note?`<p class="crm-note">📝 ${esc(l.note)}</p>`:""}
+   <div class="crm-acts"><a class="crm-btn wa" href="https://wa.me/${esc(ph)}?text=${encodeURIComponent(`Hi ${l.name||""}, terima kasih atas pertanyaan anda${bySlugAll(l.project)?" tentang "+p:""}. `)}" target="_blank" rel="noopener noreferrer" data-lcontact="${esc(l.id)}" aria-label="WhatsApp ${esc(l.name)}">WhatsApp</a><a class="crm-btn" href="tel:+${esc(ph)}" data-lcontact="${esc(l.id)}" aria-label="Call ${esc(l.name)}">📞 ${esc(l.phone||"")}</a>${compact?"":`<button type="button" class="crm-btn ghost" data-ldetail="${esc(l.id)}">Details</button>`}</div>
+  </article>`}
 function admLeads(){
-  const counts=Object.fromEntries(LEAD_ST.map(([k])=>[k,S.leads.filter(l=>leadSt(l)===k).length]));
-  let list=S.leads.filter(l=>leadFilter==="all"||leadSt(l)===leadFilter);const q=leadQ.trim().toLowerCase();
-  if(q)list=list.filter(l=>[l.name,l.phone,l.msg,l.note,(bySlugAll(l.project)||{}).name].join(" ").toLowerCase().includes(q));
-  return `${S.addLead?addLeadForm():""}<div class="cms-bar"><div class="sb-row cms-q">${ic("search",18)}<input id="leadQ" type="search" value="${esc(leadQ)}" aria-label="Search name, phone or project" placeholder="Search name, phone or project"></div></div>
-  <div class="chips pipe"><button class="chip" data-lf="all" aria-pressed="${leadFilter==="all"}">All<span class="n">${S.leads.length}</span></button>${LEAD_ST.map(([k,l])=>`<button class="chip" data-lf="${k}" aria-pressed="${leadFilter===k}">${l}<span class="n">${counts[k]}</span></button>`).join("")}</div>
-  <div class="llist">${list.map(l=>{const ph=String(l.phone||"").replace(/\D/g,"").replace(/^0/,"60"),p=bySlugAll(l.project);return `<article class="lrow st-${leadSt(l)}">
-   <div class="lhead"><div><b>${esc(l.name)}</b><small>${ago(l.at)}${l.source==="manual"?", added manually":""}</small></div>
-    <select data-lst="${esc(l.id)}" aria-label="Status ${esc(l.name)}">${LEAD_ST.map(([k,lab])=>`<option value="${k}" ${leadSt(l)===k?"selected":""}>${lab}</option>`).join("")}</select></div>
-   <div class="ldet"><span>📞 ${esc(l.phone)}</span>${l.email?`<span>✉️ ${esc(l.email)}</span>`:""}<span>🏢 ${esc(p?p.name:"Not sure")}</span>${l.budget?`<span>💰 ${esc(l.budget)}</span>`:""}</div>
-   ${l.msg?`<p class="lmsg">${esc(l.msg)}</p>`:""}
-   <label class="sr" for="n_${esc(l.id)}">Internal note</label><textarea class="lnote" id="n_${esc(l.id)}" data-lnote="${esc(l.id)}" placeholder="Internal note (saved when you leave the box)" maxlength="1000">${esc(l.note||"")}</textarea>
-   <div class="lacts"><a class="btn btn-wa btn-sm" data-wa-lead="${esc(l.id)}" target="_blank" rel="noopener noreferrer" href="https://wa.me/${esc(ph)}?text=${encodeURIComponent(`Hi ${l.name}, terima kasih atas pertanyaan anda${p?" tentang "+p.name:""}. `)}">WhatsApp</a><a class="btn btn-ghost btn-sm" href="tel:+${esc(ph)}">Call</a></div></article>`}).join("")||`<div class="empty"><p>${S.leads.length?"No enquiries with this status.":"No enquiries yet. They will appear here as soon as the site form is submitted, or add one manually."}</p></div>`}</div>
-  <p class="fine" style="margin-top:12px">Personal data is protected under the PDPA. Only the owner and editors can read this list.</p>`;
+  const pool=leadPool(LF.arch),act=leadPool(false),list=leadsFiltered(),shown=LF.view==="list"?list.slice(0,LF.limit):list;
+  const counts=Object.fromEntries(LEAD_ST.map(([k])=>[k,pool.filter(l=>leadMatch(l,{status:"all"})&&leadSt(l)===k).length]));const allN=pool.filter(l=>leadMatch(l,{status:"all"})).length;
+  const projs=[...new Set(S.leads.map(l=>l.project).filter(Boolean))].map(s=>[s,(bySlugAll(s)||{}).name||s]).sort((a,b)=>a[1].localeCompare(b[1]));
+  const srcs=[...new Set(S.leads.map(l=>l.source||"website"))];
+  const anyF=leadFilter!=="all"||LF.proj||LF.src||LF.fu||LF.recv||leadQ.trim();
+  const k=(l,v,s,cls="")=>`<div class="crm-k ${cls}"><b>${v}</b><span>${l}</span>${s?`<small>${s}</small>`:""}</div>`;
+  const od=act.filter(l=>fuState(l)==="overdue").length,td=act.filter(l=>fuState(l)==="today").length;
+  const sel=(id,opts,val,lab)=>`<label class="lf"><span class="sr">${lab}</span><select id="${id}" aria-label="${lab}">${opts.map(([v,t])=>`<option value="${esc(v)}" ${String(val)===String(v)?"selected":""}>${esc(t)}</option>`).join("")}</select></label>`;
+  const empty=!S.leadsLoaded?`<div class="empty"><p>Loading enquiries…</p></div>`:`<div class="empty"><p>${!S.leads.length?"No enquiries yet. They appear here as soon as the website form is submitted, or add one manually.":LF.arch&&!pool.length?"No archived enquiries.":"No enquiries match these filters."}</p>${anyF?`<button type="button" class="btn btn-ghost btn-sm" data-lclear>Clear filters</button>`:""}</div>`;
+  return `${S.addLead?addLeadForm():""}
+  <div class="crm-kpis">${k("Active",act.length,"")}${k("New",act.filter(l=>leadSt(l)==="new").length,"")}${k("Hot",act.filter(l=>leadSt(l)==="hot").length,"")}${k("Overdue",od,"follow-ups",od?"warn":"")}${k("Due today",td,"follow-ups",td?"gold":"")}${k("Booked / SPA",act.filter(l=>leadSt(l)==="booked").length+" / "+act.filter(l=>leadSt(l)==="spa").length,"")}</div>
+  <div class="lbar">
+   <div class="sb-row cms-q">${ic("search",18)}<input id="leadQ" type="search" value="${esc(leadQ)}" aria-label="Search name, phone or project" placeholder="Search name, phone or project"></div>
+   <div class="lseg" role="group" aria-label="View"><button type="button" data-lview="list" aria-pressed="${LF.view==="list"}">List</button><button type="button" data-lview="pipe" aria-pressed="${LF.view==="pipe"}">Pipeline</button></div>
+   <div class="lseg" role="group" aria-label="Active or archived"><button type="button" data-larchv="0" aria-pressed="${!LF.arch}">Active <span class="n">${act.length}</span></button><button type="button" data-larchv="1" aria-pressed="${LF.arch}">Archived <span class="n">${S.leads.length-act.length}</span></button></div>
+  </div>
+  <div class="lfilters">${sel("lfProj",[["","All projects"],["__none","Not sure"],...projs],LF.proj,"Project")}${sel("lfSrc",[["","All sources"],...LEAD_SRC.filter(([v])=>srcs.includes(v))],LF.src,"Lead source")}${sel("lfFu",LEAD_FU,LF.fu,"Follow-up")}${sel("lfRecv",LEAD_RECV,LF.recv,"Date received")}${anyF?`<button type="button" class="lclear" data-lclear>✕ Clear filters</button>`:""}</div>
+  ${LF.view==="list"?`<div class="chips pipe" role="group" aria-label="Status"><button class="chip" data-lf="all" aria-pressed="${leadFilter==="all"}">All<span class="n">${allN}</span></button>${LEAD_ST.map(([s,l])=>`<button class="chip" data-lf="${s}" aria-pressed="${leadFilter===s}">${l}<span class="n">${counts[s]}</span></button>`).join("")}</div>
+  <p class="fine lcount" role="status">${list.length} ${list.length===1?"enquiry":"enquiries"}${LF.arch?" archived":""}${anyF?" match":""}${list.length>shown.length?` · showing ${shown.length}`:""}</p>
+  <div class="llist">${shown.map(l=>leadCard(l)).join("")||empty}</div>${list.length>shown.length?`<button type="button" class="btn btn-ghost btn-sm" style="margin:12px auto;display:block" data-lmore>Show ${Math.min(50,list.length-shown.length)} more</button>`:""}`
+  :`<p class="fine lcount" role="status">${list.length} ${list.length===1?"enquiry":"enquiries"} in the pipeline${anyF?" (filtered)":""}</p><div class="lpipe" tabindex="0" aria-label="Pipeline">${LEAD_ST.map(([s,lab])=>{const col=list.filter(l=>leadSt(l)===s);return `<section class="lcol st-${s}" aria-label="${lab}"><h4><i aria-hidden="true"></i>${lab}<span class="n">${col.length}</span></h4>${col.map(l=>leadCard(l,true)).join("")||`<p class="fine lcol-empty">—</p>`}</section>`}).join("")}</div>`}
+  <p class="fine" style="margin-top:12px">Personal data is protected under the PDPA. Only signed-in admins can read this list. Excel and CSV exports contain what is shown with the current view and filters.</p>`;
 }
+/* ---------- anchored popover menu (stays attached, kept inside the screen) ---------- */
+let LPOP=null;
+function closeLPop(){if(!LPOP)return;const {el,anchor}=LPOP;el.remove();anchor&&anchor.setAttribute("aria-expanded","false");document.removeEventListener("keydown",LPOP.key,true);LPOP=null;try{anchor&&anchor.focus({preventScroll:true})}catch(e){}}
+function openLPop(anchor,html,label){closeLPop();const el=document.createElement("div");el.className="lpop";el.setAttribute("role","menu");el.setAttribute("aria-label",label);el.innerHTML=html;document.body.appendChild(el);anchor.setAttribute("aria-expanded","true");
+  const place=()=>{const r=anchor.getBoundingClientRect(),w=el.offsetWidth,h=el.offsetHeight,vw=document.documentElement.clientWidth,vh=window.innerHeight,m=8;
+    let left=Math.min(Math.max(m,r.right-w),vw-w-m),top=r.bottom+6;if(top+h>vh-m&&r.top-6-h>=m)top=r.top-6-h;if(top+h>vh-m)top=Math.max(m,vh-h-m);
+    el.style.left=left+"px";el.style.top=top+"px"};place();
+  const items=()=>[...el.querySelectorAll('[role^="menuitem"]:not([disabled])')];
+  const key=e=>{if(e.key==="Escape"){e.preventDefault();closeLPop();return}const it=items(),i=it.indexOf(document.activeElement);if(e.key==="ArrowDown"){e.preventDefault();(it[i+1]||it[0])?.focus()}if(e.key==="ArrowUp"){e.preventDefault();(it[i-1]||it[it.length-1])?.focus()}if(e.key==="Tab")closeLPop()};
+  document.addEventListener("keydown",key,true);LPOP={el,anchor,key,place};(el.querySelector('[aria-checked="true"]')||items()[0])?.focus({preventScroll:true})}
+window.addEventListener("resize",()=>LPOP&&LPOP.place());window.addEventListener("scroll",()=>LPOP&&LPOP.place(),{passive:true,capture:true});
+document.addEventListener("pointerdown",e=>{if(LPOP&&!LPOP.el.contains(e.target)&&!LPOP.anchor.contains(e.target))closeLPop()},true);
+function statusMenu(l){return LEAD_ST.map(([k,lab])=>`<button type="button" role="menuitemradio" aria-checked="${leadSt(l)===k}" data-setst="${k}" data-for="${esc(l.id)}"><i class="dot st-${k}" aria-hidden="true"></i>${lab}${leadSt(l)===k?`<span class="ck" aria-hidden="true">✓</span>`:""}</button>`).join("")}
+function actionMenu(l){const fu=!!l.followAt;return `<button type="button" role="menuitem" data-la="detail" data-for="${esc(l.id)}">Details & history</button><button type="button" role="menuitem" data-la="edit" data-for="${esc(l.id)}">Edit lead</button><button type="button" role="menuitem" data-la="status" data-for="${esc(l.id)}">Change status…</button><button type="button" role="menuitem" data-la="follow" data-for="${esc(l.id)}">${fu?"Change follow-up…":"Schedule follow-up…"}</button>${fu?`<button type="button" role="menuitem" data-la="fudone" data-for="${esc(l.id)}">Mark follow-up done</button>`:""}<hr>${l.archived?`<button type="button" role="menuitem" data-la="restore" data-for="${esc(l.id)}">Restore to active</button>`:`<button type="button" role="menuitem" data-la="archive" data-for="${esc(l.id)}">Archive</button>`}${S.isOwner?`<button type="button" role="menuitem" class="danger" data-la="delete" data-for="${esc(l.id)}">Delete permanently…</button>`:""}`}
+/* ---------- safe writes: one at a time per lead, success only when the database confirms ---------- */
+async function leadWrite(id,patch,okMsg){if(!S.db){toast("Not connected to the database");return false}if(LEAD_BUSY.has(id))return false;LEAD_BUSY.add(id);render();
+  try{await S.db.collection("leads").doc(id).update({...patch,updatedAt:Date.now()});const i=S.leads.findIndex(x=>x.id===id);if(i>=0)S.leads[i]={...S.leads[i],...patch};if(okMsg)toast(okMsg);return true}
+  catch(x){toast("Not saved: "+String(x&&x.message||"database error").slice(0,90)+". Nothing was changed.");return false}
+  finally{LEAD_BUSY.delete(id);render()}}
+async function leadDelete(id){const l=S.leads.find(x=>x.id===id);if(!l||!S.db)return false;LEAD_BUSY.add(id);
+  try{await S.db.collection("leads").doc(id).delete();const chk=await S.db.collection("leads").doc(id).get();if(chk&&chk.exists)throw new Error("you don't have permission to delete enquiries");
+    S.leads=S.leads.filter(x=>x.id!==id);toast(`“${l.name}” was permanently deleted`);return true}
+  catch(x){toast("Not deleted: "+String(x&&x.message||"database error").slice(0,90));return false}finally{LEAD_BUSY.delete(id);render()}}
+/* ---------- activity timeline (lead_events) ---------- */
+async function leadEvents(id){try{if(S.jsSb){const r=await S.jsSb.from("lead_events").select("id,at,actor,type,data").eq("lead_id",id).order("at",{ascending:false}).limit(200);if(r.error)throw r.error;return r.data||[]}
+  if(S.sbDb)return await S.sbDb.run(`select id,at,actor,type,data from public.lead_events where lead_id=${sbLit(id)} order by at desc limit 200`)}catch(e){return null}return []}
+async function leadAddEvent(id,type,data){if(S.jsSb){const em=(S.cms&&S.cms.email||"").toLowerCase();const r=await S.jsSb.from("lead_events").insert({lead_id:id,type,data,actor:em});if(r.error)throw r.error;return}
+  if(S.sbDb){await S.sbDb.run(`insert into public.lead_events(lead_id,type,data,actor) values (${sbLit(id)},${sbLit(type)},${sbJson(data)},'cms (connector)')`);return}throw new Error("not connected")}
+const EV_TXT={created:e=>`Lead created${e.data&&e.data.source?` · ${srcLabel(e.data.source)}`:""}`,status:e=>`Status: ${stLabel(e.data.from)} → <b>${stLabel(e.data.to)}</b>`,edited:e=>`Edited ${(e.data.fields||[]).join(", ")}`,note:e=>e.data.redacted?"Note (removed)":`Note: ${esc(e.data.text||"")}`,
+  outcome:e=>e.data.redacted?"Contact logged (details removed)":`${({call:"📞 Call",wa:"💬 WhatsApp",meet:"🤝 Meeting"})[e.data.channel]||"Contact"}: ${esc(e.data.text||"")}`,followup_set:e=>e.data.redacted?"Follow-up scheduled":`Follow-up scheduled for ${esc(fmtDT(e.data.when))}${e.data.note?` · ${esc(e.data.note)}`:""}`,
+  followup_done:()=>"Follow-up completed",followup_cleared:()=>"Follow-up removed",archived:()=>"Archived",restored:()=>"Restored to active",deleted:()=>"Permanently deleted"};
+function fmtDT(v){const d=new Date(v);return isNaN(d)?String(v||""):d.toLocaleString("en-MY",{day:"numeric",month:"short",year:"numeric",hour:"numeric",minute:"2-digit"})}
+/* ---------- dialogs ---------- */
+function leadDlg(html,cls=""){let d=$("#leadDlg");if(!d){d=document.createElement("dialog");d.id="leadDlg";document.body.appendChild(d);d.addEventListener("click",e=>{if(e.target===d||e.target.closest("[data-ldclose]"))d.close()})}d.className="shd site ldlg "+cls;d.innerHTML=`<div class="shd-in">${html}</div>`;if(!d.open)d.showModal();return d}
+const dlgHead=(t,s)=>`<div class="shd-h"><div><b>${esc(t)}</b>${s?`<small>${esc(s)}</small>`:""}</div><button type="button" class="dbtn x" data-ldclose aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>`;
+async function openLeadDetail(id){const l=S.leads.find(x=>x.id===id);if(!l)return;const ph=leadWa(l);
+  const row=(k,v)=>v?`<div><dt>${k}</dt><dd>${v}</dd></div>`:"";
+  const d=leadDlg(`${dlgHead(l.name||"Enquiry",`${leadProj(l)} · received ${lcDate(l.at)}`)}<div class="ld-body">
+   <div class="ld-top">${stBadge(l)}${fuChip(l)}${l.archived?`<span class="pill off">Archived</span>`:""}</div>
+   <div class="crm-acts"><a class="crm-btn wa" href="https://wa.me/${esc(ph)}" target="_blank" rel="noopener noreferrer" data-lcontact="${esc(l.id)}">WhatsApp</a><a class="crm-btn" href="tel:+${esc(ph)}" data-lcontact="${esc(l.id)}">📞 Call</a><button type="button" class="crm-btn ghost" data-la="edit" data-for="${esc(l.id)}">Edit</button><button type="button" class="crm-btn ghost" data-la="follow" data-for="${esc(l.id)}">${l.followAt?"Follow-up":"Schedule follow-up"}</button></div>
+   <dl class="ld-grid">${row("Phone",esc(l.phone))}${row("Email",esc(l.email))}${row("Project",esc(leadProj(l)))}${row("Budget",esc(l.budget))}${row("Source",esc(srcLabel(l.source)))}${row("Received",fmtDT(l.at))}${row("Last contacted",l.lastContactAt?fmtDT(l.lastContactAt):"—")}${row("Next follow-up",l.followAt?esc(fmtDT(l.followAt))+(l.followNote?` · ${esc(l.followNote)}`:""):"—")}</dl>
+   ${l.msg?`<div class="ld-sec"><h5>Customer message</h5><p class="crm-msg">${esc(l.msg)}</p></div>`:""}
+   <div class="ld-sec"><h5><label for="n_${esc(l.id)}">Internal note</label></h5><textarea class="lnote" id="n_${esc(l.id)}" data-lnote="${esc(l.id)}" placeholder="Saved when you leave the box" maxlength="1000">${esc(l.note||"")}</textarea></div>
+   <form class="ld-sec ld-log" data-llog="${esc(l.id)}"><h5>Log contact or add a note</h5><div class="ld-logrow"><select name="channel" aria-label="Type"><option value="call">📞 Call</option><option value="wa">💬 WhatsApp</option><option value="meet">🤝 Meeting</option><option value="note">📝 Note only</option></select><input name="text" maxlength="500" required placeholder="Outcome, e.g. interested in Type B, call back Friday" aria-label="Outcome or note"><button class="btn btn-brand btn-sm">Add</button></div><small class="fine">Calls, WhatsApp and meetings also update “Last contacted”.</small></form>
+   <div class="ld-sec"><h5>Activity</h5><ol class="ld-tl" id="ldTl"><li class="fine">Loading history…</li></ol></div></div>`,"wide");
+  const ev=await leadEvents(id),tl=d.querySelector("#ldTl");if(!tl)return;
+  tl.innerHTML=ev===null?`<li class="fine">History could not be loaded. Check your connection.</li>`:ev.length?ev.map(e=>`<li class="ev-${esc(e.type)}"><span>${(EV_TXT[e.type]||(()=>esc(e.type)))({...e,data:e.data||{}})}</span><small>${fmtDT(e.at)} · ${esc(e.actor||"")}</small></li>`).join(""):`<li class="fine">No activity recorded yet.</li>`}
+function openLeadEdit(id){const l=S.leads.find(x=>x.id===id);if(!l)return;const projs=projects(true).map(p=>[p.slug,p.name]);
+  leadDlg(`${dlgHead("Edit lead",l.name)}<form class="ld-body ld-form" data-ledit="${esc(id)}" novalidate><div class="edgrid">
+   <div class="field"><label for="le_name">Name *</label><input id="le_name" name="name" maxlength="80" value="${esc(l.name||"")}" required></div>
+   <div class="field"><label for="le_phone">Phone *</label><input id="le_phone" name="phone" inputmode="tel" maxlength="20" value="${esc(l.phone||"")}" required></div>
+   <div class="field"><label for="le_email">Email</label><input id="le_email" name="email" type="email" maxlength="120" value="${esc(l.email||"")}"></div>
+   <div class="field"><label for="le_proj">Project</label><select id="le_proj" name="project"><option value="">Not sure</option>${projs.map(([v,t])=>`<option value="${esc(v)}" ${l.project===v?"selected":""}>${esc(t)}</option>`).join("")}${l.project&&!projs.some(([v])=>v===l.project)?`<option value="${esc(l.project)}" selected>${esc(l.project)}</option>`:""}</select></div>
+   <div class="field"><label for="le_budget">Budget</label><input id="le_budget" name="budget" maxlength="60" value="${esc(l.budget||"")}"></div>
+   <div class="field"><label for="le_src">Lead source</label><select id="le_src" name="source">${LEAD_SRC.map(([v,t])=>`<option value="${v}" ${(l.source||"website")===v?"selected":""}>${t}</option>`).join("")}</select></div>
+   <div class="field w3"><label for="le_msg">Customer message</label><textarea id="le_msg" name="msg" maxlength="1000">${esc(l.msg||"")}</textarea></div></div>
+   <div class="cms-save"><button class="btn btn-brand btn-sm">Save changes</button><button type="button" class="btn btn-ghost btn-sm" data-ldclose>Cancel</button><span class="msg" id="leMsg" role="alert"></span></div></form>`)}
+function openLeadFollow(id){const l=S.leads.find(x=>x.id===id);if(!l)return;const now=new Date(Date.now()+864e5);now.setHours(10,0,0,0);const def=`${localDay(now)}T10:00`;
+  leadDlg(`${dlgHead(l.followAt?"Follow-up":"Schedule follow-up",l.name)}<form class="ld-body ld-form" data-lfollow="${esc(id)}" novalidate>
+   <div class="edgrid"><div class="field"><label for="lfu_at">Date & time *</label><input id="lfu_at" name="at" type="datetime-local" value="${esc(String(l.followAt||def).slice(0,16))}" required></div>
+   <div class="field w3"><label for="lfu_note">What to follow up</label><input id="lfu_note" name="note" maxlength="200" value="${esc(l.followNote||"")}" placeholder="e.g. send Type B floor plan, check LPPSA"></div></div>
+   <div class="qd" role="group" aria-label="Quick dates">${[["Tomorrow",1],["In 3 days",3],["Next week",7]].map(([t,n])=>`<button type="button" class="chip" data-fuq="${n}">${t}</button>`).join("")}</div>
+   <div class="cms-save"><button class="btn btn-brand btn-sm">Save follow-up</button>${l.followAt?`<button type="button" class="btn btn-ghost btn-sm" data-la="fudone" data-for="${esc(id)}">Mark done</button><button type="button" class="btn btn-ghost btn-sm" data-fuclear="${esc(id)}">Remove</button>`:""}<span class="msg" id="lfuMsg" role="alert"></span></div></form>`)}
+function openLeadDelete(id){const l=S.leads.find(x=>x.id===id);if(!l)return;
+  leadDlg(`${dlgHead("Delete enquiry permanently?","This cannot be undone")}<div class="ld-body">
+   <p>You are about to permanently delete <b>${esc(l.name)}</b> (${esc(l.phone||"no phone")}${l.project?`, ${esc(leadProj(l))}`:""}).</p>
+   <ul class="fine" style="margin:0 0 12px;padding-left:18px"><li>The enquiry and its personal details are removed from the database. Excel/CSV exports will no longer include it.</li><li>The activity history keeps only an anonymous record (what happened and when, by whom) with all notes removed, as required for audit under the PDPA.</li><li>Prefer <b>Archive</b> if you may need it again: it hides the lead but keeps everything.</li></ul>
+   <label class="chk" style="display:flex;gap:10px;align-items:flex-start"><input type="checkbox" id="ldelOk"><span>I understand this permanently deletes ${esc(l.name)}.</span></label>
+   <div class="cms-save" style="margin-top:12px"><button type="button" class="btn btn-sm ldanger" data-ldelgo="${esc(id)}" disabled>Delete permanently</button><button type="button" class="btn btn-ghost btn-sm" data-la="archive" data-for="${esc(id)}">Archive instead</button><button type="button" class="btn btn-ghost btn-sm" data-ldclose>Cancel</button></div></div>`,"danger")}
+/* ---------- exports (current view + filters) ---------- */
+function leadExportRows(){const H=["Name","Phone","Email","Project","Status","Lead source","Date received","Last contacted","Next follow-up","Follow-up note","Budget","Customer message","Internal note","Archived"];
+  return [H,...leadsFiltered().map(l=>[l.name||"",l.phone||"",l.email||"",leadProj(l),stLabel(leadSt(l)),srcLabel(l.source),fmtDT(l.at),l.lastContactAt?fmtDT(l.lastContactAt):"",l.followAt?fmtDT(l.followAt):"",l.followNote||"",l.budget||"",l.msg||"",l.note||"",l.archived?"Yes":"No"])]}
+function csvLeads(){const q=v=>'"'+String(v??"").replace(/"/g,'""').replace(/^[=+\-@\t\r]/,"'$&")+'"';return "\ufeff"+leadExportRows().map(r=>r.map(q).join(",")).join("\r\n")}
+function lcCrc32(b){let c,t=lcCrc32.t;if(!t){t=lcCrc32.t=new Uint32Array(256);for(let n=0;n<256;n++){c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}}c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=t[(c^b[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+function lcZip(files){const enc=new TextEncoder(),parts=[],cen=[];let off=0;const u16=n=>[n&255,(n>>>8)&255],u32=n=>[n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255];
+  for(const [name,str] of files){const nb=enc.encode(name),db=enc.encode(str),cr=lcCrc32(db);const lh=new Uint8Array([...u32(0x04034b50),...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(cr),...u32(db.length),...u32(db.length),...u16(nb.length),...u16(0)]);
+    parts.push(lh,nb,db);cen.push(new Uint8Array([...u32(0x02014b50),...u16(20),...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(cr),...u32(db.length),...u32(db.length),...u16(nb.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(off)]),nb);off+=lh.length+nb.length+db.length}
+  const cs=cen.reduce((a,x)=>a+x.length,0),end=new Uint8Array([...u32(0x06054b50),...u16(0),...u16(0),...u16(files.length),...u16(files.length),...u32(cs),...u32(off),...u16(0)]);return new Blob([...parts,...cen,end],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})}
+function xlsxLeads(){const rows=leadExportRows(),x=s=>String(s??"").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  const col=i=>{let s="";i++;while(i){const m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=Math.floor((i-1)/26)}return s};
+  const widths=[22,15,24,26,13,14,20,20,20,28,16,40,32,9];
+  const sheet=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>${widths.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join("")}</cols><sheetData>${rows.map((r,ri)=>`<row r="${ri+1}">${r.map((v,ci)=>`<c r="${col(ci)}${ri+1}" t="inlineStr"${ri===0?' s="1"':""}><is><t xml:space="preserve">${x(v)}</t></is></c>`).join("")}</row>`).join("")}</sheetData>${rows.length>1?`<autoFilter ref="A1:${col(rows[0].length-1)}${rows.length}"/>`:""}</worksheet>`;
+  return lcZip([["[Content_Types].xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`],
+    ["_rels/.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`],
+    ["xl/workbook.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="${LF.arch?"Archived enquiries":"Enquiries"}" sheetId="1" r:id="rId1"/></sheets>${rows.length>1?`<definedNames><definedName name="_xlnm._FilterDatabase" localSheetId="0" hidden="1">'${LF.arch?"Archived enquiries":"Enquiries"}'!$A$1:$${col(rows[0].length-1)}$${rows.length}</definedName></definedNames>`:""}</workbook>`],
+    ["xl/_rels/workbook.xml.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`],
+    ["xl/styles.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF0E1A3A"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`],
+    ["xl/worksheets/sheet1.xml",sheet]])}
+
 function addLeadForm(){return `<form id="leadForm" class="panel" style="margin-bottom:14px" novalidate><h3>Add manual enquiry</h3><p class="fine" style="margin:-6px 0 10px">For enquiries from calls, walk-ins or social media.</p><div class="edgrid">
  <div class="field"><label for="ml_name">Name *</label><input id="ml_name" name="name" maxlength="80" autocomplete="off"></div>
  <div class="field"><label for="ml_phone">Phone *</label><input id="ml_phone" name="phone" inputmode="tel" maxlength="20" autocomplete="off"></div>
@@ -2319,13 +2539,14 @@ function editorView(){
     <section class="panel"><h3>Card preview</h3><div class="edprev" id="edPrev" aria-hidden="true"></div></section>
     <section class="panel"><h3>SEO</h3>
      <div class="field"><label for="ed_keyword">Focus keyword</label><input id="ed_keyword" name="keyword" value="${esc(p.keyword||"")}" placeholder="e.g. m aria sentul"></div>
-     <div class="field" style="margin-top:8px"><label for="ed_metaTitle">Meta title <span class="counter" id="cntT"></span></label><input id="ed_metaTitle" name="metaTitle" maxlength="70" value="${esc(p.metaTitle||"")}" placeholder="Leave empty to generate automatically"></div>
-     <div class="field" style="margin-top:8px"><label for="ed_metaDesc">Meta description <span class="counter" id="cntD"></span></label><textarea id="ed_metaDesc" name="metaDesc" maxlength="170" placeholder="Leave empty to generate automatically">${esc(p.metaDesc||"")}</textarea></div>
+     <div class="field" style="margin-top:8px"><label for="ed_metaTitle">Meta title (BM page) <span class="counter" id="cntT"></span></label><input id="ed_metaTitle" name="metaTitle" maxlength="70" value="${esc(p.metaTitle||"")}" placeholder="Leave empty to generate automatically"></div>
+     <div class="field" style="margin-top:8px"><label for="ed_metaDesc">Meta description (BM page) <span class="counter" id="cntD"></span></label><textarea id="ed_metaDesc" name="metaDesc" maxlength="170" placeholder="Leave empty to generate automatically">${esc(p.metaDesc||"")}</textarea></div>
      <p class="fine" style="margin:14px 0 6px">Google preview</p><div class="serp" id="serp"></div>
      <div style="display:flex;align-items:center;gap:10px;margin-top:14px"><b>SEO score</b><span class="score" id="seoScore"></span></div>
      <ul class="checks" id="seoChecks"></ul>
      <details style="margin-top:12px"><summary class="fine" style="cursor:pointer">Schema JSON-LD</summary><pre class="code" id="ldOut"></pre></details>
     </section>
+    ${enPanel(p)}
    </div>
    <div class="ed-bar"><label class="switch"><input type="checkbox" name="published" ${p.published!==false?"checked":""}><span>Published on site</span></label><span class="msg" id="edMsg" role="alert"></span><button type="button" class="btn btn-ghost btn-sm" data-cancel>Cancel</button><button class="btn btn-brand btn-sm" ${S.db?"":"disabled"}>${edIsNew?"Save project":"Save changes"}</button></div>
   </form>`;
@@ -2366,6 +2587,33 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-tw-add],[d
   if(b.hasAttribute("data-tw-add")){$("#twRows").insertAdjacentHTML("beforeend",twRow(""));$("#twRows .tw-row:last-child .tw-i").focus()}
   else b.closest(".tw-row").remove();
   edDirty=true;updateSeoPanel()});
+/* ===== English version panel: status, editable English text, explicit verification ===== */
+const EN_LBL={verified:["Verified","on"],auto:["Auto-translated","gold"],missing:["Missing","off"]};
+function enPill(st){const [l,c]=EN_LBL[st]||EN_LBL.missing;return `<span class="pill ${c}" title="English version status">EN · ${l}</span>`}
+function enPanel(p){const st=enStatus(p),e=(p.tr&&p.tr.h===trHash(trSrc(p))&&p.tr.en)||{};
+  return `<section class="panel" id="enPanel"><h3 style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">English version <span id="enStat">${enPill(st)}</span></h3>
+   <p class="fine" style="margin:0 0 10px">The BM page is always indexed. The English page <code>/en/listings/${esc(p.slug||"…")}</code> is indexed by Google <b>only when Verified</b>. Auto-translations stay visible to visitors but are kept out of search. Any later change to the source or to this English text resets the status to Auto-translated.</p>
+   <div class="field"><label for="ed_enSummary">English description</label><textarea id="ed_enSummary" name="enSummary" rows="6" placeholder="Saved automatically by Auto-translate, or write it yourself">${esc(e.summary||"")}</textarea></div>
+   <div class="field" style="margin-top:8px"><label for="ed_enHl">English highlights, one per line <span class="counter" id="cntEnHl"></span></label><textarea id="ed_enHl" name="enHl" rows="4">${esc((e.hl||[]).join("\n"))}</textarea></div>
+   <div class="field" style="margin-top:8px"><label for="ed_enFac">English facilities, one per line <span class="counter" id="cntEnFac"></span></label><textarea id="ed_enFac" name="enFac" rows="4">${esc((e.fac||[]).join("\n"))}</textarea></div>
+   <div class="field" style="margin-top:8px"><label for="ed_metaTitleEn">Meta title (English page)</label><input id="ed_metaTitleEn" name="metaTitleEn" maxlength="70" value="${esc(p.metaTitleEn||"")}" placeholder="Leave empty to generate automatically"></div>
+   <div class="field" style="margin-top:8px"><label for="ed_metaDescEn">Meta description (English page)</label><textarea id="ed_metaDescEn" name="metaDescEn" maxlength="170" placeholder="Leave empty to generate automatically">${esc(p.metaDescEn||"")}</textarea></div>
+   <label class="chk" style="margin-top:12px;display:flex;gap:10px;align-items:flex-start"><input type="checkbox" name="enVerified" ${st==="verified"?"checked":""}><span><b>I have reviewed this English text: mark as Verified</b><br><small class="fine">Only tick this after a person has read and corrected the English. Machine translation is never verified automatically.</small></span></label>
+   <p class="msg" id="enMsg" style="margin:8px 0 0"></p>
+  </section>`}
+function readEnFields(o,fm){
+  const lines=v=>String(v||"").split("\n").map(s=>s.trim()).filter(Boolean).slice(0,40);
+  const enIn={summary:String(o.enSummary||"").trim().slice(0,6000),hl:lines(o.enHl),fac:lines(o.enFac)},verify=!!(fm.elements.enVerified&&fm.elements.enVerified.checked);
+  delete o.enSummary;delete o.enHl;delete o.enFac;delete o.enVerified;
+  for(const k of ["metaTitleEn","metaDescEn"]){o[k]=String(o[k]||"").trim();if(!o[k])delete o[k]}
+  const srcH=trHash(trSrc(o)),prev=editing&&editing.tr,hasEn=!!(enIn.summary||enIn.hl.length||enIn.fac.length);
+  let warn="";
+  if(prev&&prev.h===srcH){const pe=prev.en||{};if(hasEn&&JSON.stringify(enIn)!==JSON.stringify({summary:String(pe.summary||""),hl:(pe.hl||[]).map(String),fac:(pe.fac||[]).map(String)}))o.tr={...prev,en:enIn};else o.tr=prev}
+  else if(!prev&&hasEn)o.tr={h:srcH,ms:JSON.parse(trSrc(o)),en:enIn};
+  else if(prev&&prev.h!==srcH&&verify)warn="The BM/source text changed, so the English will be re-translated on save. Review it again afterwards and tick Verified.";
+  if(verify&&!warn){if((o.hl||[]).length!==enIn.hl.length||(o.fac||[]).length!==enIn.fac.length)warn=`English highlights/facilities must match the source count (highlights ${(o.hl||[]).length}, facilities ${(o.fac||[]).length}) before it can be Verified.`;else if(enStatus(o)==="missing")warn="Add the English description before marking it Verified.";}
+  if(verify&&!warn)o.trEnOk=enSig(o);else delete o.trEnOk;
+  o._enWarn=verify?warn:"";return o}
 function readEditor(){
   const fm=$("#edForm");if(!fm)return null;syncLay();syncTw();const fd=new FormData(fm),o={...(editing||blank())};
   for(const [k,v] of fd.entries()) if(typeof v==="string") o[k]=v.trim();
@@ -2375,10 +2623,13 @@ function readEditor(){
   for(const k of ["hl","fac","layouts","towers","near","photos"]) o[k]=String(fd.get(k)||"").split("\n").map(s=>s.trim()).filter(Boolean).slice(0,40);
   o.image=o.photos[0]||"";
   if(!o.slug||(edIsNew&&!slugTouched)) o.slug=slugify(o.name+(o.area&&!o.name.toLowerCase().includes(o.area.toLowerCase())?" "+o.area:""));
+  readEnFields(o,fm);
   return o;
 }
 function updateSeoPanel(){
-  const o=readEditor();if(!o)return;const pv={...o,name:o.name||"Project name",area:o.area||"Area",slug:o.slug||"new-project"};
+  const o=readEditor();if(!o)return;
+  {const es=$("#enStat");if(es)es.innerHTML=enPill(enStatus(o));const m=$("#enMsg");if(m){m.className="msg"+(o._enWarn?" err":"");m.textContent=o._enWarn||""}
+   const c=(id,a,b)=>{const x=$(id);if(x){x.textContent=`${a}/${b}`;x.style.color=a===b?"":"#C98A1B"}};c("#cntEnHl",String($("#ed_enHl")?.value||"").split("\n").filter(s=>s.trim()).length,(o.hl||[]).length);c("#cntEnFac",String($("#ed_enFac")?.value||"").split("\n").filter(s=>s.trim()).length,(o.fac||[]).length)}const pv={...o,name:o.name||"Project name",area:o.area||"Area",slug:o.slug||"new-project"};
   const s=seoFor(pv);
   $("#cntT").textContent=s.title.length+"/60";$("#cntD").textContent=s.desc.length+"/160";$("#cntSum").textContent=(o.summary||"").length;
   $("#serp").innerHTML=`<div class="u">rezekihartanah.com › listings › ${esc(o.slug||"slug")}</div><div class="t">${esc(s.title.slice(0,62))}${s.title.length>62?"…":""}</div><div class="d">${esc(s.desc.slice(0,160))}</div>`;
@@ -2393,13 +2644,19 @@ async function putProject(p,msg){
   try{const now=Date.now(),stp=stampContent(bySlugAll(p.slug),p,now);await S.db.collection("projects").doc(p.slug).set(JSON.parse(JSON.stringify({...p,...stp,updatedAt:now})));if(msg)toast(msg);return true}
   catch(x){toast(x&&x.code==="permission_denied"?"You don't have permission to edit":"Save failed. Try again.");return false}
 }
+let SAVING=false;
 async function saveProject(e){
-  e.preventDefault();const out=$("#edMsg");let o=readEditor();
+  e.preventDefault();if(SAVING)return;const out=$("#edMsg");let o=readEditor();
   const err=!o.name?"Enter the project name.":!o.area?"Enter the area.":!o.pmin?"Enter the starting price.":slugError(projects(true),o.slug,o.name,edIsNew)||(o.redirectTo&&(o.redirectTo===o.slug||!listable(bySlugAll(o.redirectTo)))?"The redirect target must be another published project.":"");
   if(err){out.className="msg err";out.textContent=err;return}
-  o.createdAt=o.createdAt||Date.now();delete o.deleted;
-  if(S.sample&&needsTr(o)){out.className="msg";out.textContent="Translating content into BM & English…";try{o=await translateProject(o)}catch(x){toast("Translation failed; project saved without translation")}}
-  if(await putProject(o,o.published?"Project published":"Saved as draft")){edDirty=false;editing=null;admTab="projects";render();window.scrollTo(0,0)}
+  o.createdAt=o.createdAt||Date.now();delete o.deleted;const enWarn=o._enWarn;delete o._enWarn;if(enWarn)toast(enWarn);
+  SAVING=true;const btns=[...document.querySelectorAll('#edForm button.btn-brand')],lbl=btns.map(b=>b.textContent);btns.forEach(b=>{b.disabled=true;b.textContent="Saving…"});
+  try{
+    if(S.sample&&needsTr(o)){out.className="msg";out.textContent="Translating content into BM & English…";try{o=await translateProject(o)}catch(x){toast("Translation failed; project saved without translation")}}
+    out.className="msg";out.textContent="Saving to the database…";
+    if(await putProject(o,o.published?"Saved · live on the website":"Saved as draft · not public")){edDirty=false;editing=null;admTab="projects";render();window.scrollTo(0,0)}
+    else{out.className="msg err";out.textContent="Not saved. Check your connection and try again; nothing was lost in this form."}
+  }finally{SAVING=false;btns.forEach((b,i)=>{if(b.isConnected){b.disabled=false;b.textContent=lbl[i]}})}
 }
 function galHtml(a){return a.map((u,i)=>`<div class="eg-it${i?"":" cover"}" data-i="${i}"><img src="${esc(u)}" alt="Photo ${i+1}">${i?"":`<span class="eg-tag">Cover</span>`}<div class="eg-act"><button type="button" data-gal="left" ${i?"":"disabled"} aria-label="Move left" title="Move left">←</button><button type="button" data-gal="cover" ${i?"":"disabled"} aria-label="Make cover" title="Make cover">★</button><button type="button" data-gal="right" ${i<a.length-1?"":"disabled"} aria-label="Move right" title="Move right">→</button><button type="button" data-gal="del" aria-label="Remove photo" title="Remove photo">✕</button></div></div>`).join("")}
 function galGet(){const h=$("#edForm [name=photos]");return h?h.value.split("\n").filter(Boolean):[]}
@@ -2830,8 +3087,6 @@ document.addEventListener("click",e=>{
   if(e.target.closest("[data-popimgdel]")){$("#setForm [name=popImg]").value="";$("#popThumb").innerHTML="<span>No image</span>";e.target.closest("[data-popimgdel]").hidden=true}
 });
 /* ============ PROJECT CONTENT TRANSLATION (stored BM + EN, shown in the page language) ============ */
-function trSrc(p){return JSON.stringify({summary:String(p.summary||""),hl:(p.hl||[]).map(String),fac:(p.fac||[]).map(String)})}
-function trHash(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return String(h>>>0)}
 function needsTr(p){const s=trSrc(p);return !!(p.summary||(p.hl||[]).length||(p.fac||[]).length)&&!(p.tr&&p.tr.h===trHash(s))}
 /* ============ NEARBY PROJECTS (distance-based) ============ */
 const NEAR_KM=10;
@@ -2857,7 +3112,7 @@ async function translateProject(p){
   const ok=v=>v&&typeof v.summary==="string"&&Array.isArray(v.hl)&&Array.isArray(v.fac)&&v.hl.length===inp.hl.length&&v.fac.length===inp.fac.length;
   if(!r||!ok(r.ms)||!ok(r.en))throw {code:"bad"};
   const clean=v=>({summary:v.summary.slice(0,6000),hl:v.hl.map(s=>String(s).slice(0,300)),fac:v.fac.map(s=>String(s).slice(0,120))});
-  return {...p,tr:{h,ms:clean(r.ms),en:clean(r.en)}};
+  const out={...p,tr:{h,ms:clean(r.ms),en:clean(r.en)}};delete out.trEnOk;return out; // fresh machine translation is never "Verified"
 }
 document.addEventListener("click",async e=>{const b=e.target.closest("[data-trproj]");if(!b||!S.db||!S.sample)return;
   const list=projects(true).filter(needsTr);if(!list.length){toast("All projects are already translated");return}
@@ -2900,8 +3155,7 @@ async function download(filename,data,fallbackMsg){
   if(!S.downloads){toast(fallbackMsg||"Downloads are not available here");return}
   try{await S.downloads.save({filename,data})}catch(e){}
 }
-function csvLeads(){const h=["at","name","phone","email","budget","project","status","note","source","msg"];const q=v=>'"'+String(v??"").replace(/"/g,'""').replace(/^[=+\-@]/,"'$&")+'"';
-  return [h.join(","),...S.leads.map(l=>h.map(k=>q(k==="at"?new Date(l.at).toISOString():k==="status"?leadSt(l):l[k])).join(","))].join("\n")}
+/* csvLeads(): see LEADS CRM */
 
 /* KL blue-hour panorama (zoomed out): Menara Telekom, Menara KL on Bukit Nanas, Petronas Twin Towers (KLCC), Menara Maybank, Merdeka 118, The Exchange 106 (TRX), layered haze, horizon glow and light trails */
 function skylineSVG(seed){
@@ -2988,7 +3242,7 @@ function render(){
   {const s=document.getElementById("ld-ssr");if(s)s.remove()} // server-rendered structured data is replaced by the live page's own
   siteLd();const {a,b}=route(),app=$("#app"),reBud=!!$("#budDlg")?.open;if($("#cmpDlg").open)$("#cmpDlg").close();
   document.documentElement.lang=S.lang==="ms"?"ms":"en";document.body.classList.toggle("adm",a==="admin");
-  if(a==="p"){const rs=resolveSlug(projects(true),b,S.isAdmin);if(rs.status===301){navTo("#/p/"+rs.p.slug,true);return}app.innerHTML=viewDetail(b);if(rs.status===200)app.insertAdjacentHTML("beforeend",relatedPostsHtml(rs.p.slug));const p=rs.status===200?rs.p:null;if(p){const s=seoFor(p);setHead({title:s.title,desc:s.desc,canonical:s.url,ld:s.ld,image:p.image,robots:p.noindex||p.published===false?"noindex, follow":""})}else setHead({title:"Projek tidak dijumpai | Rezeki Hartanah",desc:"Projek ini tiada atau telah dikeluarkan.",canonical:SITE+"/",ld:null,robots:"noindex, follow"});initCalc();initPElig();initLoc();initEnq();window.scrollTo(0,0)}
+  if(a==="p"){const rs=resolveSlug(projects(true),b,S.isAdmin);if(rs.status===301){navTo("#/p/"+rs.p.slug,true);return}app.innerHTML=viewDetail(b);if(rs.status===200)app.insertAdjacentHTML("beforeend",relatedPostsHtml(rs.p.slug));const p=rs.status===200?rs.p:null;if(p){const L=S.lang==="en"?"en":"ms",s=seoFor(p,L);setHead({title:s.title,desc:s.desc,canonical:s.url,ld:s.ld,image:p.image,alts:hreflangAlts(p),robots:p.noindex||p.published===false||(L==="en"&&!enIndexable(p))?"noindex, follow":""})}else setHead({title:"Projek tidak dijumpai | Rezeki Hartanah",desc:"Projek ini tiada atau telah dikeluarkan.",canonical:SITE+"/",ld:null,robots:"noindex, follow"});initCalc();initPElig();initLoc();initEnq();window.scrollTo(0,0)}
   else if(a==="kawasan"){const ps=projects(),area=uniq(ps.map(p=>p.area)).find(x=>areaSlug(x)===b)||b,list=ps.filter(p=>p.area===area);
     app.innerHTML=viewList(`${t("area_t")} ${area}`,`${list.length} ${t("area_s")}`,list,"",area,areaIntro(area,list));
     setHead({title:[`Hartanah di ${area} (${list.length} Projek) | Rezeki Hartanah`,`Hartanah di ${area}: ${list.length} Projek Baharu & Siap`,`Projek Hartanah di ${area} (${list.length})`].find(x=>x.length<=60)||clip(`Hartanah di ${area}`,60),desc:`Senarai ${list.length} projek hartanah di ${area}: harga, saiz, ansuran bulanan dan pembiayaan. Bandingkan dan tanya terus melalui WhatsApp.`,canonical:areaUrl(area),robots:list.length?"":"noindex, follow",ld:{"@context":"https://schema.org","@type":"CollectionPage","name":`Hartanah di ${area}`,"url":areaUrl(area),"inLanguage":"ms-MY","isPartOf":{"@id":SITE+"/#site"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Hartanah","item":SITE+"/"},{"@type":"ListItem","position":2,"name":area,"item":areaUrl(area)}]},"mainEntity":{"@type":"ItemList","itemListElement":list.map((p,i)=>({"@type":"ListItem","position":i+1,"url":projUrl(p),"name":p.name}))}}});window.scrollTo(0,0)}
@@ -3331,7 +3585,10 @@ document.addEventListener("click",async e=>{
   if(d.pop||d.sga){S.f.q="";S.f.status="";S.f.area=d.pop||d.sga;render();$("#listings").scrollIntoView({behavior:"smooth"});return}
   if(d.sgd){S.f.q=d.sgd;S.f.area="";render();$("#listings").scrollIntoView({behavior:"smooth"});return}
   if(d.go){e.preventDefault();if(route().a){navTo("#/");setTimeout(()=>$("#"+d.go)?.scrollIntoView({behavior:"smooth"}),30)}else $("#"+d.go)?.scrollIntoView({behavior:"smooth"});return}
-  if(d.lang){if(d.lang===S.lang)return;const y=window.scrollY||document.documentElement.scrollTop||0;S.lang=d.lang;store.set("lang",S.lang);render();window.scrollTo(0,y);requestAnimationFrame(()=>window.scrollTo(0,y));return}
+  if(d.lang){if(d.lang===S.lang)return;const y=window.scrollY||document.documentElement.scrollTop||0;S.lang=d.lang;store.set("lang",S.lang);
+    if(PATHMODE&&pathLang(location.pathname)){const np=hashToPath(pathToHash(location.pathname),S.lang);if(np!==location.pathname)history.replaceState(null,"",np)}
+    document.querySelectorAll('a[href^="/listings/"],a[href^="/en/listings/"]').forEach(a=>{const hh=pathToHash(a.getAttribute("href"));if(hh.startsWith("#/p/"))a.setAttribute("href",hashToPath(hh,S.lang))});
+    render();window.scrollTo(0,y);requestAnimationFrame(()=>window.scrollTo(0,y));return}
   if(d.save!==undefined){const s=d.save;S.saved.has(s)?(S.saved.delete(s),toast(t("saved_off"))):(S.saved.add(s),toast(t("saved_on")));store.set("saved",[...S.saved]);
     document.querySelectorAll(`[data-save="${CSS.escape(s)}"]`).forEach(b=>{b.setAttribute("aria-pressed",S.saved.has(s));const on=S.saved.has(s);if(b.closest(".pc-acts"))return;b.textContent=b.classList.contains("icon-btn")?(on?"♥":"♡"):(on?"♥ ":"♡ ")+t("save")});return}
   if(d.cmp!==undefined){const s=d.cmp;if(S.cmp.has(s))S.cmp.delete(s);else if(S.cmp.size>=3){toast(t("cmp_full"));return}else S.cmp.add(s);
@@ -3345,7 +3602,7 @@ document.addEventListener("click",async e=>{
   if(d.tn){S.f.tenure=S.f.tenure===d.tn?"":d.tn;render();$("#listings").scrollIntoView();return}
   if(d.chip){S.f.chip=S.f.chip===d.chip?"":d.chip;render();$("#listings").scrollIntoView();return}
   if(d.reset!==undefined){S.f={q:"",area:"",type:"",purpose:"",status:"",dev:"",tenure:"",furn:"",bed:0,tod:false,maxMon:0,maxPrice:0,sort:"feat",chip:""};render();$("#listings")?.scrollIntoView();return}
-  if(el.id==="sbMore"){S.sbOpen=!S.sbOpen;const a=$("#sbAdv");a.hidden=!S.sbOpen;el.setAttribute("aria-expanded",S.sbOpen);el.querySelector("span").textContent=S.sbOpen?"▴":"▾";return}
+  if(el.id==="sbMore"){S.sbOpen=!S.sbOpen;const a=$("#sbAdv");a.hidden=!S.sbOpen;el.setAttribute("aria-expanded",S.sbOpen);return}
   if(d.resethero!==undefined){S.f={q:"",area:"",type:"",purpose:"",status:"",dev:"",tenure:"",furn:"",bed:0,tod:false,maxMon:0,maxPrice:0,sort:"feat",chip:""};render();toast(t("reset_done"));return}
   if(d.bud!==undefined){const g=$("#budDlg");if(g&&!g.open){g.showModal();updateDial()}return}
   if(d.budclose!==undefined){$("#budDlg")?.close();return}
@@ -3362,10 +3619,11 @@ document.addEventListener("click",async e=>{
   if(d.feat){const p=bySlugAll(d.feat);el.closest("details")?.removeAttribute("open");if(p)await putProject({...p,featured:!p.featured},p.featured?"Removed from featured":"Made featured");return}
   if(d.del){const p=bySlugAll(d.del);el.closest("details")?.removeAttribute("open");if(!p||!S.db||!confirm(`Delete "${p.name}"? The project page will be removed from the site and sitemap.`))return;try{await S.db.collection("projects").doc(p.slug).set({slug:p.slug,deleted:true,updatedAt:Date.now()});toast("Project deleted")}catch(x){toast("Delete failed")}return}
   if(d.af){admFilter=d.af;render();return}
-  if(d.lf){leadFilter=d.lf;render();return}
+  if(d.lf){leadFilter=d.lf;LF.limit=50;render();return}
   if(d.addlead!==undefined){S.addLead=!S.addLead;render();return}
   if(d.waLead){const l=S.leads.find(x=>x.id===d.waLead);if(l&&leadSt(l)==="new")updLead(l.id,{status:"contacted",statusAt:Date.now()});return}
-  if(d.csv!==undefined){download(`enquiries-${new Date().toISOString().slice(0,10)}.csv`,csvLeads());return}
+  if(d.csv!==undefined){download(`enquiries${LF.arch?"-archived":""}-${new Date().toISOString().slice(0,10)}.csv`,csvLeads());return}
+  if(d.xlsx!==undefined){download(`enquiries${LF.arch?"-archived":""}-${new Date().toISOString().slice(0,10)}.xlsx`,xlsxLeads());return}
   if(d.dl==="sitemap"){const b=sitemap();(async()=>{for(const n of Object.keys(b.files))await download(n,b.files[n])})();return}
   if(d.dlf){const b=sitemap();if(b.files[d.dlf])download(d.dlf,b.files[d.dlf]);return}
   if(d.seotest!==undefined){const r=seoSelfTest(),ul=$("#seoTestOut");if(ul)ul.innerHTML=r.map(x=>`<li class="${x.ok?"pass":""}">${x.ok?"PASS":"FAIL"} · Test ${esc(x.id)}: ${esc(x.name)}</li>`).join("")+`<li class="${r.every(x=>x.ok)?"pass":""}"><b>${r.filter(x=>x.ok).length}/${r.length} passed</b></li>`;return}
@@ -3399,8 +3657,8 @@ document.addEventListener("submit",e=>{
 window.addEventListener("hashchange",render);
 /* Production domain: every internal link is a real <a href="/listings/..."> path Google can crawl; clicks stay in-app via the History API */
 if(PATHMODE){
-  if(/^#\//.test(location.hash))history.replaceState(null,"",hashToPath(location.hash));
-  const fixA=a=>{const h=a.getAttribute("href")||"";if(h.startsWith("#/"))a.setAttribute("href",hashToPath(h))},fix=r=>{if(r.matches&&r.matches("a[href]"))fixA(r);r.querySelectorAll&&r.querySelectorAll('a[href^="#/"]').forEach(fixA)};
+  if(/^#\//.test(location.hash))history.replaceState(null,"",hashToPath(location.hash,S.lang));
+  const fixA=a=>{const h=a.getAttribute("href")||"";if(h.startsWith("#/"))a.setAttribute("href",hashToPath(h,S.lang))},fix=r=>{if(r.matches&&r.matches("a[href]"))fixA(r);r.querySelectorAll&&r.querySelectorAll('a[href^="#/"]').forEach(fixA)};
   fix(document);
   new MutationObserver(ms=>{for(const m of ms){if(m.type==="attributes")fixA(m.target);else m.addedNodes.forEach(n=>{if(n.nodeType===1)fix(n)})}}).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:["href"]});
   document.addEventListener("click",e=>{if(e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;const a=e.target.closest("a[href]");if(!a||a.target==="_blank"||a.hasAttribute("download"))return;let u;try{u=new URL(a.getAttribute("href"),location.href)}catch(x){return}if(u.origin!==location.origin)return;const h=pathToHash(u.pathname);if(!/^#\/(|p\/[^/]+|kawasan\/[^/]+|blog|blog\/[^/]+|projek|simpanan|privasi|co-living|admin)$/.test(h))return;e.preventDefault();navTo(h)});
@@ -3842,11 +4100,32 @@ async function sbSyncSitemap(){if(!S.sbDb)return;const sm=sitemap(),files=Object
   await S.sbDb.run(`delete from public.sitemap_files where name not in (${files.map(f=>sbLit(f[0])).join(",")})`)}
 /* production domain: always show the latest content from Supabase, and send enquiries there */
 async function sbLead(lead){try{await fetch(SB_URL+"/rest/v1/leads",{method:"POST",headers:{apikey:SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({data:{...lead,source:"website"}})})}catch(e){console.error("lead save failed",e)}}
-if(PATHMODE&&!window.RH_CMS)(async()=>{try{
-  const r=await fetch(SB_URL+"/rest/v1/rpc/public_seed",{method:"POST",headers:{apikey:SB_KEY,"Content-Type":"application/json"},body:"{}",cache:"no-store"});if(!r.ok)return;const d=await r.json();if(!d||!Array.isArray(d.projects)||(!d.projects.length&&!Object.keys(d.settings||{}).length))return; // empty database: keep the pre-rendered content
-  const sig=()=>stableStr([[...S.remote.values()].sort((a,b)=>String(a.slug).localeCompare(String(b.slug))),[...S.posts.values()].sort((a,b)=>String(a.slug).localeCompare(String(b.slug))),S.settings||{}]);
-  const before=sig();applySeed(d);if(sig()===before)return;siteLd();
-  const go=()=>{const ae=document.activeElement;if(ae&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)){ae.addEventListener("blur",go,{once:true});return}const y=window.scrollY;render();window.scrollTo(0,y)};go()}catch(e){}})();
+/* ===== Live content on the public site =====
+   Root cause of "stale until refresh": the page fetched Supabase once at load and never again.
+   Now: fetch on load, then check a tiny version fingerprint every 30 s (only while the tab is visible), whenever the tab
+   regains focus, and instantly when the CMS saves in another tab of the same browser. The full data is re-downloaded only
+   when the fingerprint changes, and the page re-renders only when the content actually differs, never while the visitor
+   is typing in a form or has a dialog open. */
+const LIVE={ver:"",busy:false,timer:0};
+function liveSig(){return stableStr([[...S.remote.values()].sort((a,b)=>String(a.slug).localeCompare(String(b.slug))),[...S.posts.values()].sort((a,b)=>String(a.slug).localeCompare(String(b.slug))),S.settings||{}])}
+function liveSafeToRender(){const ae=document.activeElement;if(ae&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName))return false;if(document.querySelector("dialog[open]"))return false;
+  return ![...document.querySelectorAll('#app input[type=text],#app input[type=tel],#app input[type=email],#app textarea')].some(x=>String(x.value||"").trim())}
+function liveRender(){if(!liveSafeToRender()){clearTimeout(LIVE.timer);LIVE.timer=setTimeout(liveRender,4000);return}const y=window.scrollY;render();window.scrollTo(0,y)}
+async function liveRefresh(force){if(LIVE.busy)return;LIVE.busy=true;try{
+  const hd={apikey:SB_KEY,"Content-Type":"application/json"};
+  if(!force&&LIVE.ver){const v=await fetch(SB_URL+"/rest/v1/rpc/content_version",{method:"POST",headers:hd,body:"{}",cache:"no-store"});if(v.ok){const nv=await v.json();if(nv===LIVE.ver)return;LIVE.ver=nv}}
+  else{fetch(SB_URL+"/rest/v1/rpc/content_version",{method:"POST",headers:hd,body:"{}",cache:"no-store"}).then(v=>v.ok?v.json():"").then(v=>{if(v)LIVE.ver=v}).catch(()=>{})}
+  const r=await fetch(SB_URL+"/rest/v1/rpc/public_seed",{method:"POST",headers:hd,body:"{}",cache:"no-store"});if(!r.ok)return;const d=await r.json();
+  if(!d||!Array.isArray(d.projects)||(!d.projects.length&&!Object.keys(d.settings||{}).length))return; // empty database: keep the pre-rendered content
+  const before=liveSig();applySeed(d);if(liveSig()===before)return;siteLd();liveRender();
+ }catch(e){}finally{LIVE.busy=false}}
+if(PATHMODE&&!window.RH_CMS){
+  liveRefresh(true);
+  setInterval(()=>{if(!document.hidden)liveRefresh(false)},30000);
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)liveRefresh(false)});
+  window.addEventListener("focus",()=>liveRefresh(false));
+  try{const bc=new BroadcastChannel("rh-content");bc.onmessage=()=>liveRefresh(true)}catch(e){}
+}
 
 /* ============ SELF-HOSTED CMS (Netlify) — signs in with Supabase Auth, saves through supabase-js under admin-only security rules ============ */
 S.cms={state:window.RH_CMS?"loading":"off",email:"",msg:""};
@@ -3870,7 +4149,7 @@ function makeJsDb(sb){
   const chk=r=>{if(r.error){const e=new Error(r.error.message||"Supabase error");e.code=r.error.code;sbSetState("error","Couldn’t save: "+String(r.error.message||"").slice(0,140));throw e}if(S.sb.state!=="ok")sbSetState("ok");return r.data};
   const tbl=c=>{if(!SB_TABLE[c])throw new Error("Unknown collection "+c);return SB_TABLE[c]};
   const snap=(id,d)=>({id,exists:d!=null,data:()=>d==null?undefined:d});
-  const notify=t=>{(subs.get(t)||new Set()).forEach(f=>f());clearTimeout(wTimer);wTimer=setTimeout(()=>{rhSyncSitemap().catch(()=>{})},3000)};
+  const notify=t=>{(subs.get(t)||new Set()).forEach(f=>f());try{new BroadcastChannel("rh-content").postMessage({t,at:Date.now()})}catch(e){}if(t==="projects"||t==="posts"||t==="settings"){clearTimeout(wTimer);wTimer=setTimeout(()=>{rhSyncSitemap(true).catch(()=>{})},3000)}}; // leads never affect the public site or sitemap
   const listen=(t,load)=>{if(!subs.has(t))subs.set(t,new Set());subs.get(t).add(load);load();const iv=setInterval(()=>{if(!document.hidden)load()},45000);return()=>{clearInterval(iv);subs.get(t).delete(load)}};
   const docRef=(c,id)=>{const t=tbl(c);return {id,
     async get(){const d=chk(await sb.from(t).select("data").eq("id",id).maybeSingle());return snap(id,d?d.data:null)},
@@ -3914,9 +4193,15 @@ function makeJsAssets(sb){
     async list(){const r=await sb.storage.from("media").list("",{limit:1000});if(r.error)throw new Error(r.error.message);const a=(r.data||[]).filter(x=>x.id&&/^[a-f0-9]{32}$/.test(x.name));
       return {assets:a.map(x=>({id:x.name,url:"/_blob/"+x.name,sizeBytes:(x.metadata&&x.metadata.size)||0,contentType:x.metadata&&x.metadata.mimetype})),usage:{files:a.length,bytes:a.reduce((s,x)=>s+((x.metadata&&x.metadata.size)||0),0),maxFiles:20000,maxBytes:1024*1024*1024}}},
     async delete(id){const r=await sb.storage.from("media").remove([String(id).replace(/^\/_blob\//,"")]);if(r.error)throw new Error(r.error.message)}}}
-async function rhSyncSitemap(){if(!S.jsSb||!S.isAdmin)return;const sm=sitemap(),files=Object.entries(sm.files);if(!files.length)return;
-  let r=await S.jsSb.from("sitemap_files").upsert(files.map(([name,xml])=>({name,xml:String(xml),updated_at:new Date().toISOString()})));if(r.error)return;
-  await S.jsSb.from("sitemap_files").delete().not("name","in",`(${files.map(f=>'"'+f[0]+'"').join(",")})`)}
+async function rhSyncSitemap(report){if(!S.jsSb||!S.isAdmin)return;
+  // build from what is actually in the database right now, not from the dashboard's in-memory copy (which may still be reloading)
+  {const fr=await S.jsSb.from("projects").select("id,data");if(fr.error){if(report)toast("Saved, but the sitemap could not be updated: "+String(fr.error.message||"").slice(0,80)+". It will retry on your next save.");return}
+   S.remote=new Map((fr.data||[]).filter(r=>r&&r.data).map(r=>[r.id,r.data]))}
+  const sm=sitemap(),files=Object.entries(sm.files);if(!files.length)return;
+  let r=await S.jsSb.from("sitemap_files").upsert(files.map(([name,xml])=>({name,xml:String(xml),updated_at:new Date().toISOString()})));
+  if(r.error){if(report)toast("Saved, but the sitemap could not be updated: "+String(r.error.message||"").slice(0,80)+". It will retry on your next save.");return}
+  await S.jsSb.from("sitemap_files").delete().not("name","in",`(${files.map(f=>'"'+f[0]+'"').join(",")})`);
+  if(report)toast(`Website & sitemap updated · ${sm.urls.length} URLs`)}
 function makeJsSample(sb){
   const call=async(texts,target)=>{const r=await sb.functions.invoke("translate",{body:{texts,target}});if(r.error||!r.data||!Array.isArray(r.data.translations))throw {code:"bad",message:r.error&&r.error.message};return r.data};
   const s=async()=>{throw {code:"bad"}};
@@ -3930,6 +4215,77 @@ function makeJsSample(sb){
     const [ms,en]=await Promise.all([call([txt],"ms"),call([txt],"en")]);
     const d=String(en.detected[0]||"");return {lang:/^en/i.test(d)?"en":"ms",ms:ms.translations[0]||txt,en:en.translations[0]||txt}};
   return s}
+/* ===== Version history & restore (Supabase content_history, admins only) ===== */
+const HIST_FIELDS=[["name","Name"],["pmin","Price from"],["pmax","Price to"],["summary","Description"],["published","Published"],["status","Status"],["dev","Developer"],["area","Area"],["photos","Photos"],["layouts","Layouts"],["fac","Facilities"],["hl","Highlights"],["metaTitle","Meta title"],["metaDesc","Meta description"],["geo","Pin"],["mapUrl","Map link"],["redirectTo","Redirect"],["featured","Featured"]];
+function histDiff(a,b){a=a||{};b=b||{};const out=[];for(const [k,l] of HIST_FIELDS){if(JSON.stringify(a[k]??null)!==JSON.stringify(b[k]??null))out.push(l)}
+  const other=new Set([...Object.keys(a),...Object.keys(b)].filter(k=>!HIST_FIELDS.some(f=>f[0]===k)&&!/^(updatedAt|contentAt|tr|sig|createdAt)$/.test(k)&&JSON.stringify(a[k]??null)!==JSON.stringify(b[k]??null)));
+  if(other.size)out.push(`${other.size} other field${other.size>1?"s":""}`);return out}
+function histDlg(){let d=$("#histDlg");if(!d){d=document.createElement("dialog");d.id="histDlg";d.className="shd site hist";document.body.appendChild(d);d.addEventListener("click",e=>{if(e.target===d||e.target.closest("[data-histclose]"))d.close()})}return d}
+function histShell(title,sub,body){return `<div class="shd-in"><div class="shd-h"><div><b>${esc(title)}</b><small>${esc(sub)}</small></div><button type="button" class="dbtn x" data-histclose aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div class="hist-body">${body}</div></div>`}
+const fmtWhen=t=>new Date(t).toLocaleString("en-MY",{day:"numeric",month:"short",year:"numeric",hour:"numeric",minute:"2-digit"});
+async function openHistory(slug){if(!S.jsSb)return;const d=histDlg(),cur=S.remote.get(slug)||{};d.innerHTML=histShell("Version history",cur.name||slug,`<p class="fine">Loading…</p>`);if(!d.open)d.showModal();
+  const r=await S.jsSb.from("content_history").select("id,action,changed_by,changed_at,old_data").eq("tbl","projects").eq("row_id",slug).order("changed_at",{ascending:false}).limit(60);
+  if(r.error){d.querySelector(".hist-body").innerHTML=`<p class="msg err">${esc(r.error.message)}</p>`;return}
+  const rows=r.data||[];if(!rows.length){d.querySelector(".hist-body").innerHTML=`<p class="fine">No earlier versions yet. From now on, every save keeps the previous version here for 180 days.</p>`;return}
+  let newer=cur;const items=rows.map(v=>{const ch=histDiff(v.old_data,newer);newer=v.old_data;return {v,ch}});
+  d.querySelector(".hist-body").innerHTML=`<p class="fine" style="margin:0 0 10px">Each entry is how the project looked <b>before</b> that change. Restoring keeps the current version in history too, so nothing is lost.</p><ol class="hist-list">${items.map(({v,ch})=>`<li><div><b>${fmtWhen(v.changed_at)}</b><small>${v.action==="delete"?"Deleted":"Changed"} by ${esc(v.changed_by||"unknown")}${ch.length?" · changed: "+esc(ch.slice(0,5).join(", "))+(ch.length>5?"…":""):""}</small><small>${esc(v.old_data.name||"")} · ${esc(priceRange(normalize(v.old_data)))} · ${v.old_data.published===false?"Draft":"Published"}</small></div><button type="button" class="btn btn-ghost btn-sm" data-histrestore="${v.id}">Restore</button></li>`).join("")}</ol>`;
+  d._rows=rows;d._slug=slug}
+async function openDeleted(){if(!S.jsSb)return;const d=histDlg();d.innerHTML=histShell("Recently deleted projects","Last 180 days",`<p class="fine">Loading…</p>`);if(!d.open)d.showModal();
+  // the CMS "Delete" keeps a hidden marker; the full project is the last history version before that marker
+  const gone=[...S.remote.entries()].filter(([,x])=>x&&x.deleted).map(([k])=>k);
+  const r=await S.jsSb.from("content_history").select("id,row_id,action,changed_by,changed_at,old_data").eq("tbl","projects").order("changed_at",{ascending:false}).limit(1000);
+  if(r.error){d.querySelector(".hist-body").innerHTML=`<p class="msg err">${esc(r.error.message)}</p>`;return}
+  const seen=new Set(),rows=(r.data||[]).filter(v=>v.old_data&&!v.old_data.deleted&&v.old_data.name&&(gone.includes(v.row_id)||(v.action==="delete"&&!S.remote.has(v.row_id)))&&!seen.has(v.row_id)&&seen.add(v.row_id));
+  d.querySelector(".hist-body").innerHTML=rows.length?`<ol class="hist-list">${rows.map(v=>`<li><div><b>${esc(v.old_data.name||v.row_id)}</b><small>Deleted ${fmtWhen(v.changed_at)} by ${esc(v.changed_by||"unknown")}</small><small>${esc(v.old_data.area||"")} · ${esc(priceRange(normalize(v.old_data)))}</small></div><button type="button" class="btn btn-ghost btn-sm" data-histrestore="${v.id}">Restore as draft</button></li>`).join("")}</ol>`:`<p class="fine">No deleted projects to restore.</p>`;
+  d._rows=r.data||[];d._slug=null}
+document.addEventListener("click",async e=>{
+  const h1=e.target.closest("[data-hist]");if(h1){e.preventDefault();h1.closest("details")?.removeAttribute("open");openHistory(h1.dataset.hist);return}
+  if(e.target.closest("[data-histdel]")){e.preventDefault();openDeleted();return}
+  const rb=e.target.closest("[data-histrestore]");if(!rb)return;e.preventDefault();const d=$("#histDlg"),v=(d&&d._rows||[]).find(x=>String(x.id)===rb.dataset.histrestore);if(!v)return;
+  const restoringDeleted=!d._slug,slug=d._slug||v.row_id,data={...v.old_data};if(restoringDeleted)data.published=false;delete data.deleted;
+  if(!confirm(restoringDeleted?`Restore “${data.name||slug}” as a draft? You can review it and publish it again.`:`Restore the version from ${fmtWhen(v.changed_at)}? The current version stays in history.`))return;
+  rb.disabled=true;rb.textContent="Restoring…";
+  try{await S.db.collection("projects").doc(slug).set(data);toast(restoringDeleted?"Project restored as a draft":"Version restored");d.close()}catch(x){rb.disabled=false;rb.textContent="Restore";toast("Restore failed: "+(x.message||x))}});
+document.addEventListener("click",async e=>{
+  const t=e.target;let b;
+  if((b=t.closest("[data-stmenu]"))){e.preventDefault();const l=S.leads.find(x=>x.id===b.dataset.stmenu);if(!l||LEAD_BUSY.has(l.id))return;if(LPOP&&LPOP.anchor===b){closeLPop();return}openLPop(b,statusMenu(l),"Change status of "+(l.name||""));return}
+  if((b=t.closest("[data-lmenu]"))){e.preventDefault();const l=S.leads.find(x=>x.id===b.dataset.lmenu);if(!l)return;if(LPOP&&LPOP.anchor===b){closeLPop();return}openLPop(b,actionMenu(l),"Actions for "+(l.name||""));return}
+  if((b=t.closest("[data-setst]"))){e.preventDefault();const id=b.dataset.for,st=b.dataset.setst,l=S.leads.find(x=>x.id===id);closeLPop();if(!l||leadSt(l)===st)return;
+    await leadWrite(id,{status:st,statusAt:Date.now()},`${l.name}: ${stLabel(st)}`);return}
+  if((b=t.closest("[data-la]"))){e.preventDefault();const id=b.dataset.for,a=b.dataset.la,l=S.leads.find(x=>x.id===id);closeLPop();if(!l)return;const dl=$("#leadDlg");
+    if(a==="detail")return openLeadDetail(id);if(a==="edit")return openLeadEdit(id);if(a==="follow")return openLeadFollow(id);if(a==="delete"){if(!S.isOwner){toast("Only the owner can permanently delete enquiries");return}return openLeadDelete(id)}
+    if(a==="status"){const card=document.querySelector(`[data-lid="${CSS.escape(id)}"] [data-stmenu]`)||document.querySelector(`#leadDlg [data-stmenu]`);if(card)openLPop(card,statusMenu(l),"Change status of "+(l.name||""));return}
+    if(a==="fudone"){if(await leadWrite(id,{followAt:"",followNote:"",followDone:new Date().toISOString()},"Follow-up marked done")&&dl&&dl.open)dl.close();return}
+    if(a==="archive"){if(await leadWrite(id,{archived:true,archivedAt:Date.now()},`${l.name} archived · find it under Archived`)&&dl&&dl.open)dl.close();return}
+    if(a==="restore"){if(await leadWrite(id,{archived:false,archivedAt:0},`${l.name} restored to active`)&&dl&&dl.open)dl.close();return}
+    return}
+  if((b=t.closest("[data-ldetail]"))){e.preventDefault();return openLeadDetail(b.dataset.ldetail)}
+  if((b=t.closest("[data-lview]"))){LF.view=b.dataset.lview;render();return}
+  if((b=t.closest("[data-larchv]"))){LF.arch=b.dataset.larchv==="1";LF.limit=50;render();return}
+  if(t.closest("[data-lclear]")){leadFilter="all";leadQ="";Object.assign(LF,{proj:"",src:"",fu:"",recv:"",limit:50});render();toast("Filters cleared");return}
+  if(t.closest("[data-lmore]")){LF.limit+=50;render();return}
+  if((b=t.closest("[data-fuq]"))){const i=$("#lfu_at");if(i){const d=new Date(Date.now()+864e5*num(b.dataset.fuq));i.value=`${localDay(d)}T10:00`}return}
+  if((b=t.closest("[data-fuclear]"))){const id=b.dataset.fuclear;if(await leadWrite(id,{followAt:"",followNote:""},"Follow-up removed"))$("#leadDlg")?.close();return}
+  if((b=t.closest("[data-ldelgo]"))){const id=b.dataset.ldelgo;if(!$("#ldelOk")?.checked)return;b.disabled=true;b.textContent="Deleting…";if(await leadDelete(id))$("#leadDlg")?.close();else{b.disabled=false;b.textContent="Delete permanently"}return}
+});
+document.addEventListener("change",e=>{const id=e.target.id;
+  if(id==="ldelOk"){const b=document.querySelector("[data-ldelgo]");if(b)b.disabled=!e.target.checked;return}
+  const m={lfProj:"proj",lfSrc:"src",lfFu:"fu",lfRecv:"recv"}[id];if(m){LF[m]=e.target.value;LF.limit=50;render();$("#"+id)?.focus()}});
+document.addEventListener("submit",async e=>{const f=e.target;
+  if(f.dataset.ledit){e.preventDefault();const id=f.dataset.ledit,g=k=>String(new FormData(f).get(k)||"").trim(),out=f.querySelector("#leMsg");
+    if(g("name").length<2){out.className="msg err";out.textContent="Enter a name.";return}if(!/^\+?[\d\s-]{9,16}$/.test(g("phone"))){out.className="msg err";out.textContent="Enter a valid phone number.";return}
+    if(g("email")&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(g("email"))){out.className="msg err";out.textContent="Enter a valid email or leave it empty.";return}
+    const btn=f.querySelector(".btn-brand");btn.disabled=true;btn.textContent="Saving…";
+    if(await leadWrite(id,{name:g("name").slice(0,80),phone:g("phone").slice(0,20),email:g("email").slice(0,120),project:g("project"),budget:g("budget").slice(0,60),source:g("source"),msg:g("msg").slice(0,1000)},"Lead updated"))$("#leadDlg")?.close();else{btn.disabled=false;btn.textContent="Save changes"}return}
+  if(f.dataset.lfollow){e.preventDefault();const id=f.dataset.lfollow,fd=new FormData(f),at=String(fd.get("at")||""),out=f.querySelector("#lfuMsg");
+    if(!at||isNaN(new Date(at))){out.className="msg err";out.textContent="Choose a date and time.";return}
+    const btn=f.querySelector(".btn-brand");btn.disabled=true;
+    if(await leadWrite(id,{followAt:at,followNote:String(fd.get("note")||"").trim().slice(0,200)},"Follow-up scheduled for "+fmtDT(at)))$("#leadDlg")?.close();else btn.disabled=false;return}
+  if(f.dataset.llog){e.preventDefault();const id=f.dataset.llog,fd=new FormData(f),ch=String(fd.get("channel")),txt=String(fd.get("text")||"").trim().slice(0,500);if(!txt)return;
+    const btn=f.querySelector(".btn-brand");btn.disabled=true;
+    try{await leadAddEvent(id,ch==="note"?"note":"outcome",ch==="note"?{text:txt}:{channel:ch,text:txt});if(ch!=="note")await leadWrite(id,{lastContactAt:Date.now()});toast(ch==="note"?"Note added":"Contact logged");openLeadDetail(id)}
+    catch(x){toast("Not saved: "+String(x&&x.message||"database error").slice(0,90));btn.disabled=false}return}
+});
 const rhDownloads={async save({filename,data}){const b=data instanceof Blob?data:new Blob([data]);const u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}};
 async function rhCmsBoot(startSubs){
   if(!window.supabase||!window.supabase.createClient){S.cms.state="out";S.cms.msg="Couldn’t load the sign-in library. Check your connection and reload.";render();return}
@@ -3938,7 +4294,7 @@ async function rhCmsBoot(startSubs){
   const apply=async session=>{
     if(!session){S.isAdmin=false;S.cms={state:"out",email:S.cms.email||"",msg:S.cms.msg||"",msgOk:S.cms.msgOk};sbSetState("off");render();return}
     S.cms.email=session.user.email||"";
-    const r=await sb.rpc("is_admin");S.isAdmin=!r.error&&r.data===true;
+    const r=await sb.rpc("is_admin");S.isAdmin=!r.error&&r.data===true;if(S.isAdmin){const o=await sb.rpc("is_owner");S.isOwner=!o.error&&o.data===true}
     if(!S.isAdmin){S.cms.state="denied";render();return}
     S.cms.state="in";S.db=makeJsDb(sb);S.assets=makeJsAssets(sb);S.sample=makeJsSample(sb);sbSetState("ok");
     {const b=$("#admBtn");if(b)b.hidden=false}
@@ -3962,6 +4318,8 @@ async function rhCmsBoot(startSubs){
     if(e.target.closest("[data-cmsreset]")){e.preventDefault();const email=($("#cmsEmail")||{}).value||"";if(!email){toast("Type your email first");return}const r=await sb.auth.resetPasswordForEmail(email.trim(),{redirectTo:location.origin+location.pathname});const m=$("#cmsMsg");if(m){m.className="msg "+(r.error?"err":"ok");m.textContent=r.error?r.error.message:"Check your email for a reset link."}}});
 }
 /* ============ BOOT ============ */
+if(PATHMODE){const L=pathLang(location.pathname);if(L)S.lang=L}
+window.addEventListener("popstate",()=>{if(PATHMODE){const L=pathLang(location.pathname);if(L&&L!==S.lang){S.lang=L;render()}}});
 if(!PATHMODE&&!window.RH_SITE&&(!location.hash||location.hash==="#"||location.hash==="#/")){try{history.replaceState(null,"","#/admin")}catch(e){}} // CMS edition: open on the dashboard
 (function(){const th=store.get("theme",null);if(th)document.documentElement.dataset.theme=th})();
 siteLd();render();schedulePop();scheduleSpot();
@@ -3972,7 +4330,7 @@ new MutationObserver(()=>{fillCap();const f=$("#setForm");if(f&&!f.dataset.popsy
     db.doc("settings/site").onSnapshot(d=>{S.settings=d.exists?(d.data()||{}):{};applySettings();if(!busy())render()},()=>{});
     db.collection("projects").onSnapshot(snap=>{S.remote=new Map(snap.docs.filter(d=>d.exists).map(d=>[d.id,d.data()]));siteLd();if(!busy())render()},()=>{});
     db.collection("posts").onSnapshot(snap=>{S.posts=new Map(snap.docs.filter(d=>d.exists).map(d=>[d.id,d.data()]));if(!busy())render()},()=>{});
-    if(S.isAdmin) db.collection("leads").orderBy("at","desc").limit(1000).onSnapshot(snap=>{S.leads=snap.docs.map(d=>({id:d.id,...d.data()}));if(route().a==="admin"&&!busy())render()},()=>{});};
+    if(S.isAdmin) db.collection("leads").orderBy("at","desc").limit(1000).onSnapshot(snap=>{S.leadsLoaded=true;S.leads=snap.docs.map(d=>({id:d.id,...d.data()}));if(route().a==="admin"&&!busy())render()},()=>{});};
   if(window.RH_CMS){await rhCmsBoot(startSubs);return}
   if(!window.claude||!window.claude.use)return;
   let [db,user,assets,downloads,sample]=await Promise.all(["db","user","assets","downloads","sample"].map(n=>window.claude.use(n).catch(()=>null)));
@@ -3980,7 +4338,7 @@ new MutationObserver(()=>{fillCap();const f=$("#setForm");if(f&&!f.dataset.popsy
   try{S.isAdmin=!!(user&&(await user.isOwner()))}catch(e){S.isAdmin=false}
   {const b=$("#admBtn");if(b)b.hidden=!S.isAdmin}
   if(S.isAdmin){const mcp=await window.claude.use("mcp").catch(()=>null);
-    if(mcp){sbSetState("connecting");S.sbDb=makeSupaDb(mcp);try{await sbMigrate(S.sbDb,db)}catch(e){}S.adb=db;S.db=S.sbDb;db=S.sbDb;setTimeout(()=>{sbSyncMedia().catch(()=>{});sbSyncSitemap().catch(()=>{})},6000)}
+    if(mcp){S.isOwner=true;sbSetState("connecting");S.sbDb=makeSupaDb(mcp);try{await sbMigrate(S.sbDb,db)}catch(e){}S.adb=db;S.db=S.sbDb;db=S.sbDb;setTimeout(()=>{sbSyncMedia().catch(()=>{});sbSyncSitemap().catch(()=>{})},6000)}
     else {S.db=null;db=null;sbSetState("error","Supabase isn’t available in this view. Open the dashboard in claude.ai with the Supabase connector connected; changes can’t be saved here.")}}
   startSubs(db);
   if(route().a==="admin")render();

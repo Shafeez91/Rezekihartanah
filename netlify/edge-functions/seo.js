@@ -16,7 +16,7 @@ const DEFAULT_DESC = "Bandingkan projek hartanah baharu, siap & komersial di Kla
 
 let cache = { at: 0, seed: null };
 async function seed() {
-  if (cache.seed && Date.now() - cache.at < 60000) return cache.seed;
+  if (cache.seed && Date.now() - cache.at < 10000) return cache.seed; // short server cache: a saved change reaches Google-visible HTML within ~10 s
   const r = await fetch(SB + "/rest/v1/rpc/public_seed", { method: "POST", headers: { apikey: KEY, "Content-Type": "application/json" }, body: "{}" });
   if (!r.ok) throw new Error("seed " + r.status);
   const d = await r.json();
@@ -44,48 +44,82 @@ function visible(d) {
 }
 const crumbs = (items) => ({ "@type": "BreadcrumbList", "itemListElement": items.map(([n, u], i) => ({ "@type": "ListItem", "position": i + 1, "name": n, "item": u })) });
 
-function projectPage(p, d) {
+// ----- English versions (must match the website's SEO core exactly) -----
+const trSrc = (p) => JSON.stringify({ summary: String(p.summary || ""), hl: (p.hl || []).map(String), fac: (p.fac || []).map(String) });
+const trHash = (s) => { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return String(h >>> 0); };
+const enSig = (p) => { const e = (p.tr && p.tr.en) || {}; return trHash(String((p.tr && p.tr.h) || "") + "|" + JSON.stringify({ s: String(e.summary || ""), hl: (e.hl || []).map(String), fac: (e.fac || []).map(String), mt: String(p.metaTitleEn || ""), md: String(p.metaDescEn || "") })); };
+const enStatus = (p) => { if (!p || !p.tr || !p.tr.en || p.tr.h !== trHash(trSrc(p))) return "missing"; if (String(p.summary || "").trim() && !String(p.tr.en.summary || "").trim()) return "missing"; return p.trEnOk && p.trEnOk === enSig(p) ? "verified" : "auto"; };
+const enIndexable = (p) => !p.deleted && p.published !== false && !p.redirectTo && !p.noindex && enStatus(p) === "verified";
+const pUrl = (p, lang) => SITE + (lang === "en" ? "/en/listings/" : "/listings/") + p.slug;
+const alts = (p) => (enIndexable(p) ? [["ms", pUrl(p)], ["en", pUrl(p, "en")], ["x-default", pUrl(p)]] : []);
+// text shown on a page in a language: the stored translation when it belongs to the current source text
+function textFor(p, lang) {
+  const v = p.tr && p.tr.h === trHash(trSrc(p)) && p.tr[lang]; const o = { summary: p.summary, hl: p.hl || [], fac: p.fac || [] };
+  if (!v) return o;
+  if (typeof v.summary === "string" && v.summary.trim()) o.summary = v.summary;
+  if (Array.isArray(v.hl) && v.hl.length === (p.hl || []).length) o.hl = v.hl.map(String);
+  if (Array.isArray(v.fac) && v.fac.length === (p.fac || []).length) o.fac = v.fac.map(String);
+  return o;
+}
+const TYPE_EN = { condo: "Condominium", serviced: "Serviced Residence", apartment: "Apartment", terrace: "Terrace House", semid: "Semi-D", bungalow: "Bungalow", townhouse: "Townhouse", soho: "SOHO / SOVO", affordable: "Affordable Home", land: "Land", shop: "Shop / Shoplot", office: "Office", factory: "Factory / Warehouse" };
+const STATUS_EN = { new: "New launch", construction: "Under construction", completed: "Completed", upcoming: "Upcoming", soldout: "Sold out" };
+
+function projectPage(p, d, lang) {
+  const EN = lang === "en", L = (ms, en) => (EN ? en : ms);
   const rate = num(d.settings && d.settings.rate) || 3.6;
   const name = String(p.name || p.slug).trim(), areaS = String(p.area || "").trim(), area = areaS + (p.state ? ", " + p.state : "");
-  const typ = TYPE[p.type] || "Hartanah", inName = areaS && name.toLowerCase().includes(areaS.toLowerCase());
-  const price = p.pmin ? " dari " + rmShort(p.pmin) : "", BR = " | Rezeki Hartanah";
-  const cands = [`${name} | ${typ}${price}${inName ? "" : " di " + areaS}`, `${name} | ${typ}${price}`, p.pmin ? `${name} | Harga dari ${rmShort(p.pmin)}` : "", inName ? "" : `${name} | ${typ} di ${areaS}`, `${name} | ${typ}`, name].filter(Boolean);
-  let title = String(p.metaTitle || "").trim();
+  const typ = (EN ? TYPE_EN : TYPE)[p.type] || L("Hartanah", "Property"), inName = areaS && name.toLowerCase().includes(areaS.toLowerCase());
+  const st = (EN ? STATUS_EN : STATUS)[p.status] || "", DI = L(" di ", " in ");
+  const sz = sizeTxt(p), bd = !p.bmax ? "" : ((p.bmin === 0 ? "Studio" : p.bmin) + (p.bmin === p.bmax ? "" : "–" + p.bmax) + L(" bilik", " bed"));
+  const price = p.pmin ? L(" dari ", " from ") + rmShort(p.pmin).replace(/j$/, EN ? "m" : "j") : "", BR = " | Rezeki Hartanah";
+  const cands = [`${name} | ${typ}${price}${inName ? "" : DI + areaS}`, `${name} | ${typ}${price}`, p.pmin ? `${name} | ${L("Harga dari", "Price from")} ${rmShort(p.pmin).replace(/j$/, EN ? "m" : "j")}` : "", inName ? "" : `${name} | ${typ}${DI}${areaS}`, `${name} | ${typ}`, name].filter(Boolean);
+  let title = String((EN ? p.metaTitleEn : p.metaTitle) || "").trim();
   if (!title) { title = cands.find((c) => c.length >= 30 && c.length <= 60) || cands.find((c) => c.length <= 60) || clip(name, 60); if (title.length < 30 && title.length + BR.length <= 60) title += BR; }
-  const mo = monthly(p, rate), devS = p.dev ? " oleh " + p.dev : "";
-  const head = [[typ.toLowerCase() + devS, sizeTxt(p), bedTxt(p)], [typ.toLowerCase() + devS, sizeTxt(p)], [typ.toLowerCase(), sizeTxt(p)], [typ.toLowerCase()]].map((a) => `${name}${inName ? (p.state ? ", " + p.state : "") : " di " + area}: ${a.filter(Boolean).join(", ")}.`);
-  const tail = p.pmin ? [` Harga dari ${rm(p.pmin)}, ansuran ~${rm(mo)}/bln.`, ` Harga dari ${rm(p.pmin)}.`] : [""];
+  const mo = monthly(p, rate), devS = p.dev ? L(" oleh ", " by ") + p.dev : "";
+  const head = [[typ.toLowerCase() + devS, sz, bd], [typ.toLowerCase() + devS, sz], [typ.toLowerCase(), sz], [typ.toLowerCase()]].map((a) => `${name}${inName ? (p.state ? ", " + p.state : "") : DI + area}: ${a.filter(Boolean).join(", ")}.`);
+  const tail = p.pmin ? (EN ? [` Priced from ${rm(p.pmin)}, about ${rm(mo)}/month.`, ` Priced from ${rm(p.pmin)}.`] : [` Harga dari ${rm(p.pmin)}, ansuran ~${rm(mo)}/bln.`, ` Harga dari ${rm(p.pmin)}.`]) : [""];
   let auto = ""; for (const h of head) { for (const t of tail) { if ((h + t).length <= 160) { auto = h + t; break; } } if (auto) break; }
   if (!auto) auto = head[head.length - 1];
-  for (const add of [" Semak unit & pembiayaan LPPSA.", " WhatsApp kami untuk lawatan."]) if (auto.length < 110 && auto.length + add.length <= 160) auto += add;
-  const desc = clip(String(p.metaDesc || "").trim() || auto, 160);
-  const url = SITE + "/listings/" + p.slug, imgs = photos(p), share = imgs.length ? imgs[0] + "-og" : undefined;
-  const hl = (p.hl || []).map(String).filter(Boolean), fac = (p.fac || []).map(String).filter(Boolean);
+  for (const add of EN ? [" Check units & LPPSA financing.", " WhatsApp us to arrange a visit."] : [" Semak unit & pembiayaan LPPSA.", " WhatsApp kami untuk lawatan."]) if (auto.length < 110 && auto.length + add.length <= 160) auto += add;
+  const desc = clip(String((EN ? p.metaDescEn : p.metaDesc) || "").trim() || auto, 160);
+  const url = pUrl(p, EN ? "en" : "ms"), imgs = photos(p), share = imgs.length ? imgs[0] + "-og" : undefined;
+  const tx = textFor(p, EN ? "en" : "ms");
+  const hl = (tx.hl || []).map(String).filter(Boolean), fac = (tx.fac || []).map(String).filter(Boolean);
   const faqs = [];
-  if (p.pmin) faqs.push([`Berapa harga ${name}?`, `Harga ${name} bermula dari ${rm(p.pmin)}${p.pmax && p.pmax > p.pmin ? " hingga " + rm(p.pmax) : ""}. Harga tertakluk kepada perubahan dan unit tersedia.`]);
-  faqs.push([`Di mana ${name}?`, `${name} terletak di ${area}.${p.tod ? " Projek ini berdekatan dengan transit awam." : ""}`]);
-  if (p.smin) faqs.push([`Berapa saiz unit ${name}?`, `Saiz unit ${name} ialah ${sizeTxt(p)}${bedTxt(p) ? " dengan " + bedTxt(p) : ""}.`]);
-  if (p.pmin) faqs.push([`Berapa ansuran bulanan ${name}?`, `Anggaran ansuran ${name} ialah sekitar ${rm(mo)} sebulan bagi harga ${rm(p.pmin)} (anggaran pembiayaan penuh ${rate}% setahun, 35 tahun). Hubungi kami untuk semakan kelayakan bank & LPPSA.`]);
+  if (EN) {
+    if (p.pmin) faqs.push([`How much is ${name}?`, `${name} starts from ${rm(p.pmin)}${p.pmax && p.pmax > p.pmin ? " up to " + rm(p.pmax) : ""}. Prices are subject to change and availability.`]);
+    faqs.push([`Where is ${name}?`, `${name} is located in ${area}.${p.tod ? " The project is close to public transport." : ""}`]);
+    if (p.smin) faqs.push([`What are the unit sizes at ${name}?`, `Units at ${name} are ${sz}${bd ? " with " + bd : ""}.`]);
+    if (p.pmin) faqs.push([`What is the monthly instalment for ${name}?`, `The estimated instalment for ${name} is about ${rm(mo)} a month for a price of ${rm(p.pmin)} (estimate based on full financing at ${rate}% a year over 35 years). Contact us for a bank & LPPSA eligibility check.`]);
+  } else {
+    if (p.pmin) faqs.push([`Berapa harga ${name}?`, `Harga ${name} bermula dari ${rm(p.pmin)}${p.pmax && p.pmax > p.pmin ? " hingga " + rm(p.pmax) : ""}. Harga tertakluk kepada perubahan dan unit tersedia.`]);
+    faqs.push([`Di mana ${name}?`, `${name} terletak di ${area}.${p.tod ? " Projek ini berdekatan dengan transit awam." : ""}`]);
+    if (p.smin) faqs.push([`Berapa saiz unit ${name}?`, `Saiz unit ${name} ialah ${sz}${bd ? " dengan " + bd : ""}.`]);
+    if (p.pmin) faqs.push([`Berapa ansuran bulanan ${name}?`, `Anggaran ansuran ${name} ialah sekitar ${rm(mo)} sebulan bagi harga ${rm(p.pmin)} (anggaran pembiayaan penuh ${rate}% setahun, 35 tahun). Hubungi kami untuk semakan kelayakan bank & LPPSA.`]);
+  }
   const day = (v) => (v ? new Date(v).toISOString().slice(0, 10) : undefined);
+  const areaUrl = SITE + "/hartanah/" + slugify(areaS);
   const graph = [
-    { "@type": "RealEstateListing", "@id": url + "#listing", "url": url, "name": name, "description": desc, "inLanguage": "ms-MY", "image": imgs.length ? imgs : undefined, "datePosted": day(p.createdAt), "dateModified": day(p.contentAt || p.updatedAt || p.createdAt),
-      "mainEntityOfPage": { "@type": "WebPage", "@id": url, "url": url, "name": title },
+    { "@type": "RealEstateListing", "@id": url + "#listing", "url": url, "name": name, "description": desc, "inLanguage": EN ? "en-MY" : "ms-MY", "image": imgs.length ? imgs : undefined, "datePosted": day(p.createdAt), "dateModified": day(p.contentAt || p.updatedAt || p.createdAt),
+      "mainEntityOfPage": { "@type": "WebPage", "@id": url, "url": url, "name": title, "inLanguage": EN ? "en-MY" : "ms-MY" },
       "offers": p.pmin ? { "@type": "AggregateOffer", "priceCurrency": "MYR", "lowPrice": p.pmin, "highPrice": p.pmax || p.pmin, "availability": p.status === "soldout" ? "https://schema.org/SoldOut" : p.status === "upcoming" ? "https://schema.org/PreOrder" : "https://schema.org/InStock", "offerCount": p.units || undefined, "seller": { "@id": SITE + "/#agent" } } : undefined,
       "about": { "@type": COM.includes(p.type) ? "Place" : "Residence", "name": name, "image": imgs[0], "address": { "@type": "PostalAddress", "addressLocality": areaS, "addressRegion": p.state || undefined, "addressCountry": "MY" }, "floorSize": p.smin ? { "@type": "QuantitativeValue", "minValue": p.smin, "maxValue": p.smax || p.smin, "unitCode": "FTK" } : undefined, "numberOfRooms": p.bmax ? { "@type": "QuantitativeValue", "minValue": p.bmin, "maxValue": p.bmax } : undefined, "amenityFeature": fac.slice(0, 20).map((f) => ({ "@type": "LocationFeatureSpecification", "name": f, "value": true })) } },
-    { "@type": "FAQPage", "@id": url + "#faq", "mainEntity": faqs.map(([q, a]) => ({ "@type": "Question", "name": q, "acceptedAnswer": { "@type": "Answer", "text": a } })) },
-    crumbs([["Rezeki Hartanah", SITE + "/"], ["Hartanah", SITE + "/projek"], [areaS, SITE + "/hartanah/" + slugify(areaS)], [name, url]]),
+    { "@type": "FAQPage", "@id": url + "#faq", "inLanguage": EN ? "en-MY" : "ms-MY", "mainEntity": faqs.map(([q, a]) => ({ "@type": "Question", "name": q, "acceptedAnswer": { "@type": "Answer", "text": a } })) },
+    crumbs([["Rezeki Hartanah", SITE + "/"], [L("Hartanah", "Properties"), SITE + "/projek"], [areaS, areaUrl], [name, url]]),
   ];
-  const facts = [["Pemaju", p.dev], ["Jenis", typ], ["Kawasan", area], ["Status", STATUS[p.status] || ""], ["Harga", p.pmin ? rm(p.pmin) + (p.pmax && p.pmax > p.pmin ? " – " + rm(p.pmax) : "") : ""], ["Ansuran / bulan (anggaran)", p.pmin ? "~" + rm(mo) : ""], ["Saiz", sizeTxt(p)], ["Bilik", bedTxt(p)], ["Jumlah unit", p.units ? num(p.units).toLocaleString() : ""], ["Jangkaan siap", p.completion]].filter((f) => f[1]);
-  const body = `<article class="ssr"><nav aria-label="Breadcrumb"><a href="/">Utama</a> › <a href="/projek">Hartanah</a> › <a href="/hartanah/${esc(slugify(areaS))}">${esc(areaS)}</a> › ${esc(name)}</nav>
-<h1>${esc(name)}</h1><p>${esc(typ)}${p.dev ? " oleh " + esc(p.dev) : ""} · ${esc(area)}${STATUS[p.status] ? " · " + esc(STATUS[p.status]) : ""}</p>
+  const facts = [[L("Pemaju", "Developer"), p.dev], [L("Jenis", "Type"), typ], [L("Kawasan", "Area"), area], ["Status", st], [L("Harga", "Price"), p.pmin ? rm(p.pmin) + (p.pmax && p.pmax > p.pmin ? " – " + rm(p.pmax) : "") : ""], [L("Ansuran / bulan (anggaran)", "Instalment / month (estimate)"), p.pmin ? "~" + rm(mo) : ""], [L("Saiz", "Size"), sz], [L("Bilik", "Bedrooms"), bd], [L("Jumlah unit", "Total units"), p.units ? num(p.units).toLocaleString() : ""], [L("Jangkaan siap", "Expected completion"), p.completion]].filter((f) => f[1]);
+  const other = enIndexable(p) ? `<p><a href="${esc(EN ? pUrl(p) : pUrl(p, "en"))}" hreflang="${EN ? "ms" : "en"}" lang="${EN ? "ms" : "en"}">${EN ? "Baca dalam Bahasa Malaysia" : "Read in English"}</a></p>` : "";
+  const body = `<article class="ssr" lang="${EN ? "en" : "ms"}"><nav aria-label="Breadcrumb"><a href="/">${L("Utama", "Home")}</a> › <a href="/projek">${L("Hartanah", "Properties")}</a> › <a href="/hartanah/${esc(slugify(areaS))}">${esc(areaS)}</a> › ${esc(name)}</nav>
+<h1>${esc(name)}</h1><p>${esc(typ)}${p.dev ? L(" oleh ", " by ") + esc(p.dev) : ""} · ${esc(area)}${st ? " · " + esc(st) : ""}</p>
 ${imgs[0] ? `<img src="${esc(imgs[0])}" alt="${esc(name + ", " + area)}" width="1200" height="800" loading="eager">` : ""}
-${p.summary ? `<p>${esc(p.summary)}</p>` : ""}
-<h2>Fakta utama</h2><dl>${facts.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
-${hl.length ? `<h2>Kenapa projek ini</h2><ul>${hl.map((h) => `<li>${esc(h)}</li>`).join("")}</ul>` : ""}
-${fac.length ? `<h2>Kemudahan</h2><ul>${fac.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}
-<h2>Soalan lazim</h2>${faqs.map(([q, a]) => `<h3>${esc(q)}</h3><p>${esc(a)}</p>`).join("")}
-<p><a href="https://wa.me/${WA}?text=${encodeURIComponent("Hi, saya berminat dengan " + name + ".")}">WhatsApp kami tentang ${esc(name)}</a></p></article>`;
-  return { title, desc, url, image: share, graph, body, robots: p.noindex ? "noindex, follow" : "" };
+${tx.summary ? `<p>${esc(tx.summary)}</p>` : ""}
+<h2>${L("Fakta utama", "Key facts")}</h2><dl>${facts.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
+${hl.length ? `<h2>${L("Kenapa projek ini", "Why this project")}</h2><ul>${hl.map((h) => `<li>${esc(h)}</li>`).join("")}</ul>` : ""}
+${fac.length ? `<h2>${L("Kemudahan", "Facilities")}</h2><ul>${fac.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}
+<h2>${L("Soalan lazim", "Frequently asked questions")}</h2>${faqs.map(([q, a]) => `<h3>${esc(q)}</h3><p>${esc(a)}</p>`).join("")}
+${other}<p><a href="https://wa.me/${WA}?text=${encodeURIComponent(L("Hi, saya berminat dengan ", "Hi, I'm interested in ") + name + ".")}">${L("WhatsApp kami tentang ", "WhatsApp us about ")}${esc(name)}</a></p></article>`;
+  const robots = p.noindex || (EN && !enIndexable(p)) ? "noindex, follow" : "";
+  return { title, desc, url, image: share, graph, body, robots, lang: EN ? "en" : "ms", alts: alts(p) };
 }
 
 function listBody(h1, intro, list, d) {
@@ -105,12 +139,18 @@ function resolve(pathname, d) {
     const postsHtml = posts.length ? `<h2>Blog & panduan</h2><ul>${posts.slice(0, 20).map((a) => `<li><a href="/blog/${esc(a.slug)}">${esc(a.title || a.slug)}</a></li>`).join("")}</ul>` : "";
     return ok({ title: DEFAULT_TITLE, desc: DEFAULT_DESC, url: SITE + "/", body: listBody("Semua hartanah Klang Valley, satu tempat.", "Bandingkan harga, saiz, susun atur dan ansuran bulanan projek baharu, siap, tanah dan komersial — kemudian terus berbincang dengan kami.", ps, d).replace("</section>", areasHtml + postsHtml + "</section>"), graph: [itemList(SITE + "/", ps, "Projek hartanah Rezeki Hartanah")] });
   }
-  if (seg[0] === "listings" && seg[1]) {
-    const p = all.find((x) => x.slug === seg[1]) || ps.find((x) => slugify(String(x.name || "").replace(/@/g, " ")) === seg[1]);
-    if (p && p.redirectTo) { const t = ps.find((x) => x.slug === p.redirectTo && x.slug !== p.slug); if (t) return { status: 301, location: "/listings/" + t.slug }; return { status: 404, title: "Projek tidak dijumpai | Rezeki Hartanah", desc: "Projek ini tiada atau telah dikeluarkan.", url: SITE + "/", robots: "noindex, follow", body: `<section class="ssr"><h1>Projek tidak dijumpai</h1><p><a href="/projek">Lihat semua projek</a></p></section>`, graph: [] }; }
-    if (!p) return { status: 404, title: "Projek tidak dijumpai | Rezeki Hartanah", desc: "Projek ini tiada atau telah dikeluarkan.", url: SITE + "/", robots: "noindex, follow", body: `<section class="ssr"><h1>Projek tidak dijumpai</h1><p><a href="/projek">Lihat semua projek</a></p></section>`, graph: [] };
-    if (p.slug !== seg[1]) return { status: 301, location: "/listings/" + p.slug };
-    return ok(projectPage(p, d));
+  // /listings/:slug (BM, default) and /en/listings/:slug (English). Redirects go straight to the final URL in the same language.
+  const isEn = seg[0] === "en" && seg[1] === "listings" && seg[2] && seg.length === 3;
+  if ((seg[0] === "listings" && seg[1] && seg.length === 2) || isEn) {
+    const slug = isEn ? seg[2] : seg[1], base = isEn ? "/en/listings/" : "/listings/";
+    const nf = isEn
+      ? { status: 404, title: "Project not found | Rezeki Hartanah", desc: "This project is not available or has been removed.", url: SITE + "/", robots: "noindex, follow", lang: "en", body: `<section class="ssr" lang="en"><h1>Project not found</h1><p><a href="/projek">See all projects</a></p></section>`, graph: [] }
+      : { status: 404, title: "Projek tidak dijumpai | Rezeki Hartanah", desc: "Projek ini tiada atau telah dikeluarkan.", url: SITE + "/", robots: "noindex, follow", body: `<section class="ssr"><h1>Projek tidak dijumpai</h1><p><a href="/projek">Lihat semua projek</a></p></section>`, graph: [] };
+    const p = all.find((x) => x.slug === slug) || ps.find((x) => slugify(String(x.name || "").replace(/@/g, " ")) === slug);
+    if (p && p.redirectTo) { const t = ps.find((x) => x.slug === p.redirectTo && x.slug !== p.slug); return t ? { status: 301, location: base + t.slug } : nf; }
+    if (!p) return nf;
+    if (p.slug !== slug) return { status: 301, location: base + p.slug };
+    return ok(projectPage(p, d, isEn ? "en" : "ms"));
   }
   if (seg[0] === "hartanah" && seg[1]) {
     const area = areas.find((a) => slugify(a) === seg[1]);
@@ -133,7 +173,7 @@ function resolve(pathname, d) {
   }
   if (seg[0] === "blog") return ok({ title: "Blog & Panduan Hartanah Klang Valley | Rezeki Hartanah", desc: "Panduan membeli rumah, pembiayaan bank & LPPSA, co-living dan berita projek hartanah di Klang Valley.", url: SITE + "/blog", body: `<section class="ssr"><h1>Blog & panduan</h1><ul>${posts.map((a) => `<li><a href="/blog/${esc(a.slug)}">${esc(a.title || a.slug)}</a></li>`).join("")}</ul></section>`, graph: [] });
   if (seg[0] === "co-living") return ok({ title: "Pengurusan Co-Living & Sewa Bilik di KL & Selangor | Rezeki Hartanah", desc: "Kami uruskan rumah anda sebagai co-living: persediaan bilik, saringan penyewa, kutipan sewa dan laporan bulanan. Pulangan sewa hingga 40% lebih tinggi.", url: SITE + "/co-living", body: `<section class="ssr"><h1>Pengurusan co-living & sewa bilik</h1><p>Rezeki Hartanah menguruskan rumah anda bilik demi bilik: persediaan & perabot, saringan penyewa, perjanjian sewa, kutipan sewa & bil utiliti, pembersihan & pembaikan dan laporan bulanan pemilik.</p></section>`, graph: [] });
-  if (seg[0] === "privasi") return ok({ title: "Notis Privasi | Rezeki Hartanah", desc: "Cara Rezeki Hartanah mengumpul, menggunakan dan melindungi data peribadi anda di bawah PDPA 2010.", url: SITE + "/privasi", robots: "noindex, follow", body: "", graph: [] });
+  if (seg[0] === "privasi") return ok({ title: "Notis Privasi | Rezeki Hartanah", desc: "Cara Rezeki Hartanah mengumpul, menggunakan dan melindungi data peribadi anda di bawah PDPA 2010.", url: SITE + "/privasi", body: "", graph: [] });
   if (seg[0] === "simpanan") return ok({ title: "Simpanan | Rezeki Hartanah", desc: "", url: SITE + "/simpanan", robots: "noindex, follow", body: "", graph: [] });
   return { status: 404, title: "Halaman tidak dijumpai | Rezeki Hartanah", desc: "Halaman ini tiada atau telah dikeluarkan.", url: SITE + "/", robots: "noindex, follow", body: `<section class="ssr"><h1>404</h1><p>Halaman ini tidak dijumpai. <a href="/">Kembali ke laman utama</a></p></section>`, graph: [] };
 }
@@ -157,6 +197,9 @@ export default async (request, context) => {
   set(/<meta name="description"[^>]*>/, `<meta name="description" content="${esc(page.desc)}">`);
   set(/<meta name="robots"[^>]*>/, `<meta name="robots" content="${esc(robots)}">`);
   set(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${esc(page.url)}">`);
+  html = html.replace(/<link rel="alternate" hreflang="[^"]*" href="[^"]*">\n?/g, "");
+  if (page.alts && page.alts.length) html = html.replace("</head>", page.alts.map(([l, u]) => `<link rel="alternate" hreflang="${l}" href="${esc(u)}">`).join("\n") + "\n</head>");
+  if (page.lang === "en") { html = html.replace(/<html lang="[^"]*"/, '<html lang="en"'); set(/<meta property="og:locale"[^>]*>/, '<meta property="og:locale" content="en_MY">'); }
   for (const [k, v] of [["og:title", page.title], ["og:description", page.desc], ["og:url", page.url], ["og:image", image], ["og:image:secure_url", image], ["og:image:type", "image/jpeg"], ["og:image:width", "1200"], ["og:image:height", "630"], ["og:image:alt", page.title]]) set(new RegExp(`<meta property="${k}"[^>]*>`), `<meta property="${k}" content="${esc(v)}">`);
   for (const [k, v] of [["twitter:title", page.title], ["twitter:description", page.desc], ["twitter:image", image]]) set(new RegExp(`<meta name="${k}"[^>]*>`), `<meta name="${k}" content="${esc(v)}">`);
   const graph = page.graph && page.graph.length ? ld({ "@context": "https://schema.org", "@graph": page.graph }) : "";
