@@ -1191,7 +1191,7 @@ body.adm::before{background:#0A1226}
 .cms-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
 .cms-top h1{font-size:clamp(1.5rem,4vw,2rem);font-weight:800}
 .cms-acts{display:flex;gap:8px;flex-wrap:wrap}
-.cms-tabbar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));background:#0A1226;padding:6px 2px calc(6px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(255,255,255,.08)}
+.cms-tabbar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));background:#0A1226;padding:6px 2px calc(6px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(255,255,255,.08)}
 .cms-tabbar button{border:0;background:none;color:#9AA5C0;display:grid;justify-items:center;gap:2px;font:600 10.5px var(--body);padding:4px 0;position:relative;cursor:pointer;min-width:0}.cms-tabbar button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cms-tabbar button[aria-current="page"]{color:#FFC86B}
 .cms-tabbar em{position:absolute;top:-2px;left:56%;margin:0}
@@ -1219,6 +1219,33 @@ body.adm::before{background:#0A1226}
 .cms-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
 .cms-q{flex:1 1 260px;max-width:440px;background:var(--surface)}
 .plist,.llist{display:grid;gap:10px}
+/* ---- Appointments & Reminders ---- */
+.agd-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:12px}
+.agd-k{display:grid;gap:2px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;color:var(--ink);font:inherit}.agd-k b{font-size:20px;line-height:1.1}.agd-k span{font-size:12.5px;font-weight:700}.agd-k small{font-size:11.5px;color:var(--muted)}
+.agd-k:hover{border-color:var(--gold)}.agd-k.gold{border-color:color-mix(in srgb,var(--gold) 45%,var(--line))}.agd-k.gold b{color:var(--gold)}.agd-k.bad{border-color:color-mix(in srgb,var(--danger) 45%,var(--line))}.agd-k.bad b{color:var(--danger)}
+.agd-k:focus-visible,.agd-b:focus-visible,.agd-day:focus-visible,.agd-nb:focus-visible,.agd-lead:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.agd-tabs{flex-wrap:wrap;border-radius:14px;margin-bottom:8px;max-width:100%}.agd-tabs button{flex:0 0 auto}
+.agd-filters input[type=date]{padding:7px 9px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 13px var(--body);max-width:100%}
+.agd-list{display:grid;gap:8px}
+.agd-c{--fc:var(--line);background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--fc);border-radius:14px;padding:11px 13px;display:grid;gap:7px;min-width:0}
+.agd-c.f-overdue,.agd-c.f-passed{--fc:var(--danger)}.agd-c.f-soon{--fc:#D9480F}.agd-c.f-today{--fc:var(--gold)}.agd-c.f-upcoming{--fc:#7048E8}.agd-c.f-completed{--fc:#2F9E44;opacity:.85}.agd-c.f-cancelled,.agd-c.f-no_show{--fc:#9AA5C0;opacity:.75}
+.agd-h{display:flex;gap:10px;align-items:flex-start}.agd-ic{font-size:20px;line-height:1.2}.agd-tt{flex:1;min-width:0;display:grid}.agd-tt b{font-size:15px;overflow-wrap:anywhere}.agd-tt small{font-size:12.5px;color:var(--muted)}.agd-hi{font-style:normal;color:var(--danger);font-weight:700}
+.agd-tags{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.agd-f,.agd-s{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;font:700 11.5px var(--body);white-space:nowrap}
+.agd-f.bad{background:color-mix(in srgb,var(--danger) 13%,transparent);color:var(--danger)}.agd-f.warn{background:var(--gold-soft);color:var(--gold)}.agd-f.info{background:color-mix(in srgb,#7048E8 10%,transparent);color:#7048E8}.agd-f.ok{background:color-mix(in srgb,#2F9E44 13%,transparent);color:#2F9E44}.agd-f.mute,.agd-s{background:var(--surface-2);color:var(--muted)}
+.agd-m{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13.5px;align-items:center}.agd-m a{color:inherit}.agd-lead{border:0;background:none;padding:0;font:700 13.5px var(--body);color:var(--ink);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.agd-n{margin:0;font-size:13px;color:var(--muted);padding:7px 9px;background:var(--paper);border-radius:9px}
+.agd-a{display:flex;gap:6px;flex-wrap:wrap}.agd-a[aria-busy="true"]{opacity:.55;pointer-events:none}
+.agd-b{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:700 13px var(--body);text-decoration:none;cursor:pointer;white-space:nowrap}.agd-b.ok{background:#2F9E44;border-color:#2F9E44;color:#fff}.agd-b.wa{background:#1FAF5A;border-color:#1FAF5A;color:#fff}
+.agd-c.compact{padding:9px 11px}.agd-c.compact .agd-b{min-height:32px;padding:0 10px;font-size:12.5px}
+.agd-bell{position:relative}.agd-bell em{position:absolute;top:-6px;right:-6px;background:var(--danger);color:#fff;font:700 10.5px/1.6 var(--body);font-style:normal;border-radius:999px;padding:0 6px}
+.agd-np{margin-bottom:12px}.agd-nph{display:flex;justify-content:space-between;align-items:center;gap:8px}.agd-nph h3{display:flex;gap:8px;align-items:center;margin:0}
+.agd-nl{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px;max-height:340px;overflow:auto}.agd-nb{display:grid;gap:2px;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 10px;cursor:pointer;font:inherit}
+.agd-nl li.unread .agd-nb{border-color:color-mix(in srgb,var(--gold) 55%,var(--line));background:color-mix(in srgb,var(--gold) 6%,var(--surface))}.agd-nl li.k-failed .agd-nb{border-color:color-mix(in srgb,var(--danger) 50%,var(--line))}.agd-nb span{font-size:13px}.agd-nb small{font-size:11.5px;color:var(--muted)}
+.agd-cal{display:grid;gap:8px}.agd-calh{display:flex;align-items:center;justify-content:space-between}.agd-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}.agd-wd{font:700 11px var(--body);color:var(--muted);text-align:center;padding:2px 0}
+.agd-day{min-height:58px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);display:grid;align-content:space-between;justify-items:start;padding:5px 6px;cursor:pointer;font:600 13px var(--body);min-width:0}.agd-day.out{opacity:.4}.agd-day.now{border-color:var(--gold)}.agd-day.sel{background:var(--ink);color:var(--surface)}
+.agd-day i{display:flex;gap:3px;flex-wrap:wrap}.agd-day em{font:700 10.5px/1.5 var(--body);font-style:normal;border-radius:999px;padding:0 5px;color:#fff}.agd-day em.a{background:#7048E8}.agd-day em.t{background:var(--gold)}.agd-dh{margin:6px 0 0;font-size:14px}
+.agd-rem{border:1px solid var(--line);border-radius:12px;padding:8px 12px;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center}.agd-rem legend{font:700 12.5px var(--body);padding:0 4px}.agd-rem .chk{display:inline-flex;gap:6px;align-items:center;font-size:13.5px}
+@media(max-width:600px){.agd-day{min-height:46px;padding:4px}.agd-day span{font-size:12px}.agd-h{flex-wrap:wrap}.agd-tags{width:100%;justify-content:flex-start}.cms-tabbar button span{font-size:9.5px}}
 /* ---- Leads CRM ---- */
 .crm-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}.crm-k{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:2px}.crm-k b{font-size:20px;line-height:1.1}.crm-k span{font-size:12.5px;font-weight:700}.crm-k small{font-size:11.5px;color:var(--muted)}.crm-k.warn{border-color:color-mix(in srgb,var(--danger) 45%,var(--line))}.crm-k.warn b{color:var(--danger)}.crm-k.gold{border-color:color-mix(in srgb,var(--gold) 45%,var(--line))}.crm-k.gold b{color:var(--gold)}
 .lbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px}.lbar .cms-q{flex:1 1 220px;margin:0}.lseg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--surface)}.lseg button{border:0;background:none;border-radius:999px;padding:7px 12px;font:600 13px var(--body);color:var(--muted);cursor:pointer;white-space:nowrap}.lseg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}.lseg .n{opacity:.7;font-size:11.5px}
@@ -2216,7 +2243,7 @@ function viewDirectory(g,n){
 /* ============ CMS / ADMIN ============ */
 let admTab="overview",editing=null,slugTouched=false,edDirty=false,edIsNew=true,admQ="",admFilter="all",leadFilter="all",leadQ="";
 const LEAD_ST=[["new","New"],["contacted","Contacted"],["hot","Hot"],["cold","Cold"],["noresp","No Response"],["booked","Booked"],["spa","SPA Signed"],["lost","Deal Lost"]];
-const ICON={overview:'<path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/>',projects:'<path d="M3 21V10l6-4v15M9 21V3l8 5v13M17 21v-8l4 2v6M2 21h20"/>',leads:'<path d="M4 4h16v12H6l-2 3z"/><path d="M8 9h8M8 12h5"/>',seo:'<path d="M3 17l5-5 4 4 8-8"/><path d="M15 8h5v5"/>',blog:'<path d="M5 3h10l4 4v14H5z"/><path d="M9 9h6M9 13h6M9 17h4"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'};
+const ICON={appts:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h3"/>',overview:'<path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/>',projects:'<path d="M3 21V10l6-4v15M9 21V3l8 5v13M17 21v-8l4 2v6M2 21h20"/>',leads:'<path d="M4 4h16v12H6l-2 3z"/><path d="M8 9h8M8 12h5"/>',seo:'<path d="M3 17l5-5 4 4 8-8"/><path d="M15 8h5v5"/>',blog:'<path d="M5 3h10l4 4v14H5z"/><path d="M9 9h6M9 13h6M9 17h4"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'};
 const ic=(k,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]||""}</svg>`;
 const bySlugAll=s=>projects(true).find(p=>p.slug===s);
 const LEAD_LEGACY={viewing:"hot",closed:"spa"}; // earlier status names, read as their new equivalent (no data change needed)
@@ -2233,13 +2260,13 @@ function pendingBanner(){if(S.sb.state!=="off"){const st=S.settings||{},last=num
   return `<div class="pend" role="status"><b>${ch.length} change${ch.length>1?"s are":" is"} not on your live website yet</b><span>${esc(ch.slice(0,4).join(" · "))}${ch.length>4?` · +${ch.length-4} more`:""}${last?` · last upload package ${esc(ago(last))}`:" · never exported"}</span><button class="btn btn-brand btn-sm" data-tab="seo">Update live site</button></div>`}
 function admShell(title,actions,body){
   const nNew=S.leads.filter(l=>leadSt(l)==="new").length,cur=admTab==="editor"?"projects":admTab==="post"?"blog":admTab;
-  const nav=[["overview","Overview"],["projects","Projects"],["blog","Blog"],["leads","Enquiries",nNew],["seo","SEO"],["settings","Settings"]];
+  const nav=[["overview","Overview"],["projects","Projects"],["blog","Blog"],["leads","Enquiries",nNew],["appts","Appointments",apBadge()],["seo","SEO"],["settings","Settings"]];
   return `<div class="cms">
    <aside class="cms-side"><a class="cms-logo" href="#/admin"><span class="logo-mark" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A1226" stroke-width="2"><path d="M3 21V10l6-4v15M9 21V3l8 5v13M17 21v-8l4 2v6M2 21h20"/></svg></span><span><b>RH CMS</b><small>Rezeki Hartanah</small></span></a>
     <nav aria-label="CMS">${nav.map(([k,l,n])=>`<button class="cms-nav" data-tab="${k}" aria-current="${cur===k?"page":"false"}">${ic(k)}<span>${l}</span>${n?`<em>${n}</em>`:""}</button>`).join("")}</nav>
     <a class="cms-out" href="#/">← View public site</a></aside>
    <div class="cms-main"><header class="cms-top"><h1>${title}</h1><div class="cms-acts">${actions||""}</div></header>${pendingBanner()}${body}</div>
-   <nav class="cms-tabbar" aria-label="CMS">${nav.map(([k,l,n])=>`<button data-tab="${k}" aria-current="${cur===k?"page":"false"}">${ic(k,22)}<span>${l}</span>${n?`<em>${n}</em>`:""}</button>`).join("")}</nav>
+   <nav class="cms-tabbar" aria-label="CMS">${nav.map(([k,l,n])=>`<button data-tab="${k}" aria-current="${cur===k?"page":"false"}" aria-label="${l}">${ic(k,22)}<span>${k==="appts"?"Appts":l}</span>${n?`<em>${n}</em>`:""}</button>`).join("")}</nav>
   </div>`;
 }
 function viewAdmin(){
@@ -2248,11 +2275,12 @@ function viewAdmin(){
   if(admTab==="editor") return admShell(edIsNew?"New project":"Edit project",`<button class="btn btn-ghost btn-sm" data-cancel>Cancel</button>`,editorView());
   if(admTab==="projects") return admShell("Projects",`${S.sample?`<button class="btn btn-ghost btn-sm" data-trproj title="Translate descriptions, highlights & facilities of all projects into BM and English">🌐 Translate all</button> `:""}<button class="btn btn-brand btn-sm" data-new>+ New project</button>`,admProjects());
   if(admTab==="leads") return admShell("Enquiries",`<button class="btn btn-ghost btn-sm" data-addlead>${S.addLead?"Close form":"+ Add"}</button><button class="btn btn-ghost btn-sm" data-xlsx title="Excel file of the leads shown with the current view and filters">Excel</button><button class="btn btn-ghost btn-sm" data-csv title="CSV of the leads shown with the current view and filters">CSV</button>`,admLeads());
+  if(admTab==="appts") return admShell("Appointments & Reminders",`<button type="button" class="btn btn-ghost btn-sm agd-bell" data-apbell aria-pressed="${AP.showNotifs}" aria-label="Notifications">🔔${S.notifs.some(n=>!n.read_at)?`<em>${S.notifs.filter(n=>!n.read_at).length}</em>`:""}</button><button class="btn btn-ghost btn-sm" data-tknew>+ Follow-up</button><button class="btn btn-brand btn-sm" data-apnew>+ Appointment</button>`,admAppts());
   if(admTab==="blog") return admShell("Blog",`<button class="btn btn-brand btn-sm" data-bnew>+ New article</button>`,admBlog());
   if(admTab==="post") return admShell(postIsNew?"New article":"Edit article",`<button class="btn btn-ghost btn-sm" data-bcancel>Cancel</button>`,postEditorView());
   if(admTab==="seo") return admShell("SEO",`<button class="btn btn-ghost btn-sm" data-dl="sitemap">Sitemap files</button>`,admSeo()+staticPanel());
-  if(admTab==="settings") return admShell("Settings","",admSettings()+backupPanel());
-  return admShell("Overview",`<button class="btn btn-brand btn-sm" data-new>+ New project</button>`,admOverview());
+  if(admTab==="settings") return admShell("Settings","",admSettings()+apTplPanel()+backupPanel());
+  return admShell("Overview",`<button class="btn btn-brand btn-sm" data-new>+ New project</button>`,apSummary(true)+admOverview());
 }
 function admOverview(){
   const all=projects(true),pub=all.filter(p=>p.published!==false),dr=all.length-pub.length;
@@ -2306,8 +2334,8 @@ const stLabel=k=>(LEAD_ST.find(x=>x[0]===k)||LEAD_ST[0])[1];
 const srcLabel=k=>(LEAD_SRC.find(x=>x[0]===k)||[0,k||"Website"])[1];
 const pad2=n=>String(n).padStart(2,"0");
 const localDay=d=>`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
-function fuState(l,now=new Date()){const f=String(l.followAt||"");if(!f)return "none";const t=new Date(f);if(isNaN(t))return "none";if(t<now)return "overdue";return localDay(t)===localDay(now)?"today":"upcoming"}
-function fuText(l){const f=String(l.followAt||"");if(!f)return "";const t=new Date(f);if(isNaN(t))return "";const s=fuState(l),hm=`${pad2(t.getHours())}:${pad2(t.getMinutes())}`;
+function fuState(l,now=new Date()){const tk=S.apLoaded?leadNextTask(l):null;const f=tk?tk.due_at:String(l.followAt||"");if(!f)return "none";const t=new Date(f);if(isNaN(t))return "none";if(t<now)return "overdue";return localDay(t)===localDay(now)?"today":"upcoming"}
+function fuText(l){const tk=S.apLoaded?leadNextTask(l):null;const f=tk?tk.due_at:String(l.followAt||"");if(!f)return "";const t=new Date(f);if(isNaN(t))return "";const s=fuState(l),hm=`${pad2(t.getHours())}:${pad2(t.getMinutes())}`;
   return s==="today"?`Today ${hm}`:s==="overdue"&&localDay(t)===localDay(new Date())?`Today ${hm} · overdue`:t.toLocaleDateString("en-MY",{day:"numeric",month:"short"})+" "+hm}
 function lcDate(v){if(!v)return "";const d=new Date(typeof v==="number"?v:String(v));return isNaN(d)?"":d.toLocaleDateString("en-MY",{day:"numeric",month:"short",year:"numeric"})}
 function leadProj(l){const p=bySlugAll(l.project);return p?p.name:(l.project?l.project:"Not sure")}
@@ -2326,10 +2354,10 @@ const leadWa=l=>String(l.phone||"").replace(/\D/g,"").replace(/^0/,"60");
 function stBadge(l,menu=true){const k=leadSt(l);return menu?`<button type="button" class="stb st-${k}" data-stmenu="${esc(l.id)}" aria-haspopup="menu" aria-expanded="false" aria-label="Status: ${stLabel(k)}. Change status" ${LEAD_BUSY.has(l.id)?"disabled":""}><i aria-hidden="true"></i>${LEAD_BUSY.has(l.id)?"Saving…":stLabel(k)}<svg viewBox="0 0 12 12" width="9" height="9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button>`:`<span class="stb st-${k} static"><i aria-hidden="true"></i>${stLabel(k)}</span>`}
 const APPT_T=[["viewing","Viewing"],["meeting","Meeting"],["signing","Signing / SPA"],["other","Other"]];
 const apptLabel=k=>(APPT_T.find(x=>x[0]===k)||APPT_T[0])[1];
-function apptState(l,now=new Date()){const v=String(l.apptAt||"");if(!v)return "none";const t=new Date(v);if(isNaN(t))return "none";return t<now?"passed":localDay(t)===localDay(now)?"today":"upcoming"}
+function apptState(l,now=new Date()){const na=S.apLoaded&&l.id?leadNextAppt(l):null;const v=na?na.starts_at:String(l.apptAt||"");if(!v)return "none";const t=new Date(v);if(isNaN(t))return "none";return t<now?"passed":localDay(t)===localDay(now)?"today":"upcoming"}
 function apptText(l){const t=new Date(String(l.apptAt||""));if(isNaN(t))return "";const s=apptState(l),hm=t.toLocaleTimeString("en-MY",{hour:"numeric",minute:"2-digit"});
   return `${apptLabel(l.apptType)} · ${s==="today"?"Today "+hm:t.toLocaleDateString("en-MY",{weekday:"short",day:"numeric",month:"short"})+", "+hm}${s==="passed"?" · passed":""}`}
-function apptChip(l){const s=apptState(l);return s==="none"?"":`<span class="fuc ap-${s}" title="Appointment${l.apptPlace?" at "+esc(l.apptPlace):""}">📅 ${esc(apptText(l))}</span>`}
+function apptChip(l){const na=S.apLoaded?leadNextAppt(l):null;if(na){const t=new Date(na.starts_at),s=apptState(l);return `<span class="fuc ap-${s}" title="${esc(na.title)}">📅 ${esc(apKind(na.kind)[1])} · ${esc(localDay(t)===localDay(new Date())?"Today "+apTime(t):apDate(t)+", "+apTime(t))}</span>`}const s=apptState(l);return s==="none"?"":`<span class="fuc ap-${s}" title="Appointment${l.apptPlace?" at "+esc(l.apptPlace):""}">📅 ${esc(apptText(l))}</span>`}
 function fuChip(l){const s=fuState(l);return s==="none"?"":`<span class="fuc fu-${s}" title="Next follow-up">${s==="overdue"?"⚠︎ ":"⏰ "}${esc(fuText(l))}</span>`}
 function leadCard(l,compact){const p=leadProj(l),ph=leadWa(l);
   return `<article class="crm-c st-${leadSt(l)}${compact?" compact":""}" data-lid="${esc(l.id)}">
@@ -2339,6 +2367,162 @@ function leadCard(l,compact){const p=leadProj(l),ph=leadWa(l);
    ${!compact&&l.msg?`<p class="crm-msg">${esc(l.msg)}</p>`:""}${!compact&&l.note?`<p class="crm-note">📝 ${esc(l.note)}</p>`:""}
    <div class="crm-acts"><a class="crm-btn wa" href="https://wa.me/${esc(ph)}?text=${encodeURIComponent(`Hi ${l.name||""}, terima kasih atas pertanyaan anda${bySlugAll(l.project)?" tentang "+p:""}. `)}" target="_blank" rel="noopener noreferrer" data-lcontact="${esc(l.id)}" aria-label="WhatsApp ${esc(l.name)}">WhatsApp</a><a class="crm-btn" href="tel:+${esc(ph)}" data-lcontact="${esc(l.id)}" aria-label="Call ${esc(l.name)}">📞 ${esc(l.phone||"")}</a>${compact?"":`<button type="button" class="crm-btn ghost" data-ldetail="${esc(l.id)}">Details</button>`}</div>
   </article>`}
+/* ===================== APPOINTMENTS & REMINDERS ===================== */
+const APK=[["viewing","Property viewing","🏠"],["showroom","Showroom visit","🏢"],["consult","Sales consultation","💼"],["call","Phone call","📞"],["whatsapp","WhatsApp follow-up","💬"],["online","Online meeting","💻"],["loan","Loan eligibility consultation","🏦"],["booking","Booking discussion","📝"],["spa","SPA signing","✍️"],["other","Other","📌"]];
+const TSK=[["call","Call buyer","📞"],["whatsapp","WhatsApp buyer","💬"],["brochure","Send project brochure","📄"],["loan","Check loan eligibility","🏦"],["booking","Follow up on booking","📝"],["spa","Follow up on SPA","✍️"],["other","Other","📌"]];
+const APS=[["scheduled","Scheduled"],["confirmed","Confirmed"],["rescheduled","Rescheduled"],["completed","Completed"],["cancelled","Cancelled"],["no_show","No-show"]];
+const AP_ACTIVE=["scheduled","confirmed","rescheduled"];
+const AP_VIEWS=[["today","Today"],["upcoming","Upcoming"],["overdue","Overdue"],["calendar","Calendar"],["list","List"],["completed","Completed"],["cancelled","Cancelled"]];
+const AP_REM=[[1440,"1 day before"],[120,"2 hours before"],[30,"30 min before"],[0,"At the time"]];
+const AP={view:"today",from:"",to:"",lead:"",proj:"",kind:"",status:"",month:"",day:"",busy:new Set(),timer:0,showNotifs:false};
+S.appts=[];S.tasks=[];S.notifs=[];S.remFailed=new Set();S.apLoaded=false;
+const apKind=(k,list=APK)=>list.find(x=>x[0]===k)||list[list.length-1];
+const apStatusLbl=k=>(APS.find(x=>x[0]===k)||APS[0])[1];
+const apLead=id=>S.leads.find(l=>l.id===id)||null;
+const apLeadName=id=>{const l=apLead(id);return l?l.name||"(no name)":"(lead removed)"};
+const apProjOf=it=>it.project||((apLead(it.lead_id)||{}).project)||"";
+const apTime=d=>d.toLocaleTimeString("en-MY",{hour:"numeric",minute:"2-digit"});
+const apDate=d=>d.toLocaleDateString("en-MY",{weekday:"short",day:"numeric",month:"short"});
+const toLocalInput=d=>`${localDay(d)}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+/* ---------- data access: website admin (supabase-js) or claude.ai connector (SQL) ---------- */
+function apLit(v){if(v===null||v===undefined||v==="")return "null";if(typeof v==="number")return String(v);if(typeof v==="boolean")return v?"true":"false";if(Array.isArray(v))return `ARRAY[${v.map(Number).filter(Number.isFinite).join(",")}]::int[]`;return sbLit(String(v))}
+async function apDb(op,table,arg,patch){
+  if(S.jsSb){let q;
+    if(op==="list"){q=S.jsSb.from(table).select("*");q=table==="notifications"?q.order("created_at",{ascending:false}).limit(100):table==="reminders"?q.eq("status","failed").limit(100):q.order(table==="appointments"?"starts_at":"due_at",{ascending:true}).limit(2000)}
+    else if(op==="insert")q=S.jsSb.from(table).insert(arg).select("*");
+    else if(op==="update")q=S.jsSb.from(table).update(patch).eq("id",arg).select("*");
+    else if(op==="readall")q=S.jsSb.from("notifications").update({read_at:new Date().toISOString()}).is("read_at",null).select("id");
+    const r=await q;if(r.error)throw new Error(r.error.message);
+    if((op==="insert"||op==="update")&&!(r.data||[]).length)throw new Error("you don't have permission for this");return r.data||[]}
+  if(S.sbDb){
+    if(op==="list")return await S.sbDb.run(table==="notifications"?`select * from public.notifications order by created_at desc limit 100`:table==="reminders"?`select * from public.reminders where status='failed' limit 100`:`select * from public.${table} order by ${table==="appointments"?"starts_at":"due_at"} limit 2000`);
+    if(op==="insert"){const k=Object.keys(arg);return await S.sbDb.run(`insert into public.${table}(${k.join(",")}) values (${k.map(x=>apLit(arg[x])).join(",")}) returning *`)}
+    if(op==="update"){const k=Object.keys(patch);return await S.sbDb.run(`update public.${table} set ${k.map(x=>x+"="+apLit(patch[x])).join(",")} where id::text=${sbLit(String(arg))} returning *`)}
+    if(op==="readall")return await S.sbDb.run(`update public.notifications set read_at=now() where read_at is null returning id`)}
+  throw new Error("not connected to the database")}
+async function apLoad(){if(!S.isAdmin)return;try{
+  const [a,t,n,f]=await Promise.all([apDb("list","appointments"),apDb("list","lead_tasks"),apDb("list","notifications"),apDb("list","reminders").catch(()=>[])]);
+  S.appts=a;S.tasks=t;S.notifs=n;S.remFailed=new Set(f.map(x=>x.target_id));S.apLoaded=true;S.apErr="";
+ }catch(e){S.apErr=String(e&&e.message||e)}
+ if(route().a==="admin"&&!apTyping())render()}
+function apTyping(){const ae=document.activeElement;return !!(ae&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)&&!ae.closest("dialog"))||!!document.querySelector("dialog[open]")}
+function apStart(){if(AP.timer)return;apLoad();AP.timer=setInterval(()=>{if(!document.hidden)apLoad()},60000)}
+async function apSave(op,table,id,data,okMsg){const key=table+":"+(id||"new");if(AP.busy.has(key))return null;AP.busy.add(key);
+  let rows;try{rows=op==="insert"?await apDb("insert",table,data):await apDb("update",table,id,data)}
+  catch(x){AP.busy.delete(key);toast("Not saved: "+String(x&&x.message||"database error").slice(0,100)+". Nothing was changed.");return null}
+  AP.busy.delete(key);if(okMsg)toast(okMsg); // the database confirmed the save; refreshing the lists is separate and never turns it into an error
+  try{await apLoad()}catch(e){}setTimeout(()=>{if(route().a==="admin"&&!apTyping())render()},0);return rows[0]||true}
+/* ---------- unified items ---------- */
+function apItems(){const now=new Date();
+  return [...S.appts.map(a=>({t:"appt",...a,at:new Date(a.starts_at),end:a.ends_at?new Date(a.ends_at):null,active:AP_ACTIVE.includes(a.status)})),
+          ...S.tasks.map(k=>({t:"task",...k,at:new Date(k.due_at),end:null,active:k.status==="open"}))].filter(i=>!isNaN(i.at))
+   .map(i=>{const today=localDay(i.at)===localDay(now),past=i.at<now;i.flag=!i.active?(i.t==="appt"?i.status:i.status==="done"?"completed":"cancelled"):past?(i.t==="task"?"overdue":"passed"):today?(i.at-now<2*36e5?"soon":"today"):"upcoming";return i})}
+function apMatch(i){if(AP.lead&&i.lead_id!==AP.lead)return false;if(AP.proj&&apProjOf(i)!==AP.proj)return false;
+  if(AP.kind&&!(i.t==="appt"?i.kind===AP.kind:("task:"+i.kind)===AP.kind))return false;
+  if(AP.status&&!(i.t==="appt"?i.status===AP.status:(AP.status==="completed"&&i.status==="done")||(AP.status==="cancelled"&&i.status==="cancelled")||(AP.status==="scheduled"&&i.status==="open")))return false;
+  if(AP.from&&i.at<new Date(AP.from+"T00:00"))return false;if(AP.to&&i.at>new Date(AP.to+"T23:59:59"))return false;return true}
+function apViewItems(v,items){const now=new Date(),td=localDay(now);
+  const by={today:i=>i.active&&localDay(i.at)===td,upcoming:i=>i.active&&i.at>now&&localDay(i.at)!==td,overdue:i=>i.active&&i.at<now&&localDay(i.at)!==td||(i.active&&i.t==="task"&&i.at<now),
+    list:i=>i.t==="appt",completed:i=>i.t==="appt"?["completed","no_show"].includes(i.status):i.status==="done",cancelled:i=>i.status==="cancelled"};
+  const f=by[v]||(()=>true);const out=items.filter(i=>f(i)&&apMatch(i));const asc=!["completed","cancelled"].includes(v);
+  return out.sort((a,b)=>asc?a.at-b.at:b.at-a.at)}
+function apCounts(){const it=apItems(),now=new Date(),td=localDay(now);
+  return {todayAp:it.filter(i=>i.t==="appt"&&i.active&&localDay(i.at)===td).length,upAp:it.filter(i=>i.t==="appt"&&i.active&&i.at>now).length,
+    overdue:it.filter(i=>i.t==="task"&&i.active&&i.at<now).length,todayTk:it.filter(i=>i.t==="task"&&i.active&&localDay(i.at)===td&&i.at>=now).length,
+    passed:it.filter(i=>i.t==="appt"&&i.active&&i.at<now).length,failed:S.remFailed.size,unread:S.notifs.filter(n=>!n.read_at).length}}
+function apBadge(){if(!S.apLoaded)return 0;const c=apCounts();return c.todayAp+c.overdue+c.todayTk+c.failed}
+/* ---------- rendering ---------- */
+const AP_FLAG={overdue:["Overdue","bad"],passed:["Time passed: update status","bad"],soon:["Starting soon","warn"],today:["Today","warn"],upcoming:["Upcoming","info"],completed:["Completed","ok"],no_show:["No-show","mute"],cancelled:["Cancelled","mute"],done:["Done","ok"]};
+function apCard(i,compact){const l=apLead(i.lead_id),k=i.t==="appt"?apKind(i.kind):apKind(i.kind,TSK),[fl,fc]=AP_FLAG[i.flag]||["",""],pn=(bySlugAll(apProjOf(i))||{}).name||apProjOf(i);
+  const when=`${apDate(i.at)}, ${apTime(i.at)}${i.end?" – "+apTime(i.end):""}`,busy=AP.busy.has((i.t==="appt"?"appointments:":"lead_tasks:")+i.id);
+  const acts=i.active?(i.t==="appt"?`${["scheduled","rescheduled"].includes(i.status)?`<button type="button" class="agd-b" data-apact="confirm" data-id="${i.id}">Confirm</button>`:""}<button type="button" class="agd-b ok" data-apact="complete" data-id="${i.id}">✓ Complete</button><button type="button" class="agd-b" data-apedit="${i.id}">Reschedule</button>${l&&l.phone?`<a class="agd-b wa" href="${esc(apWa(i))}" target="_blank" rel="noopener noreferrer">WhatsApp reminder</a>`:""}<button type="button" class="agd-b" data-apmore="${i.id}" aria-haspopup="menu" aria-label="More actions">⋯</button>`
+     :`<button type="button" class="agd-b ok" data-tkact="done" data-id="${i.id}">✓ Done</button><button type="button" class="agd-b" data-tkedit="${i.id}">Reschedule</button>${l&&l.phone?`<a class="agd-b wa" href="https://wa.me/${esc(leadWa(l))}" target="_blank" rel="noopener noreferrer">WhatsApp</a>`:""}<button type="button" class="agd-b" data-tkact="cancel" data-id="${i.id}">Cancel</button>`)
+     :(i.t==="appt"?`<button type="button" class="agd-b" data-apedit="${i.id}">View / edit</button>`:`<button type="button" class="agd-b" data-tkact="reopen" data-id="${i.id}">Reopen</button>`);
+  return `<article class="agd-c f-${i.flag}${compact?" compact":""}" data-agd="${i.t}:${i.id}">
+   <div class="agd-h"><span class="agd-ic" aria-hidden="true">${k[2]}</span><div class="agd-tt"><b>${esc(i.title)}</b><small>${i.t==="appt"?esc(k[1]):"Follow-up · "+esc(k[1])}${i.t==="task"&&i.priority==="high"?" · <em class=\"agd-hi\">High priority</em>":""}</small></div>
+    <div class="agd-tags">${fl?`<span class="agd-f ${fc}">${fl}</span>`:""}${i.t==="appt"&&i.active?`<span class="agd-s">${apStatusLbl(i.status)}</span>`:""}${S.remFailed.has(i.id)?`<span class="agd-f bad" title="A Telegram reminder could not be delivered">Reminder failed</span>`:""}</div></div>
+   <div class="agd-m"><span>🕒 ${esc(when)}</span><button type="button" class="agd-lead" data-ldetail="${esc(i.lead_id)}">👤 ${esc(apLeadName(i.lead_id))}</button>${pn?`<span>🏢 ${esc(pn)}</span>`:""}${i.location?`<span>📍 ${esc(i.location)}</span>`:""}${i.online_url?`<a href="${esc(i.online_url)}" target="_blank" rel="noopener noreferrer">🔗 Meeting link</a>`:""}</div>
+   ${i.notes&&!compact?`<p class="agd-n">${esc(i.notes)}</p>`:""}<div class="agd-a"${busy?' aria-busy="true"':""}>${acts}</div></article>`}
+function apSummary(clickable){if(!S.apLoaded)return "";const c=apCounts();const t=(v,n,l,s,cls="")=>`<button type="button" class="agd-k ${cls}" data-apgo="${v}"><b>${n}</b><span>${l}</span>${s?`<small>${s}</small>`:""}</button>`;
+  return `<div class="agd-kpis">${t("today",c.todayAp,"Today's appointments","",c.todayAp?"gold":"")}${t("upcoming",c.upAp,"Upcoming appointments","")}${t("overdue",c.overdue+c.passed,"Overdue","follow-ups & passed",c.overdue+c.passed?"bad":"")}${t("today",c.todayTk,"Follow-ups due today","",c.todayTk?"gold":"")}${t("failed",c.failed,"Failed reminders","needs attention",c.failed?"bad":"")}</div>`}
+function apNotifPanel(){const n=S.notifs.slice(0,30);
+  return `<section class="panel agd-np" aria-label="Notifications"><div class="agd-nph"><h3>Notifications ${S.notifs.some(x=>!x.read_at)?`<span class="agd-f bad">${S.notifs.filter(x=>!x.read_at).length} new</span>`:""}</h3>${S.notifs.some(x=>!x.read_at)?`<button type="button" class="btn btn-ghost btn-sm" data-npread>Mark all read</button>`:""}</div>
+   ${n.length?`<ul class="agd-nl">${n.map(x=>`<li class="${x.read_at?"":"unread"} k-${esc(x.kind)}"><button type="button" class="agd-nb" data-nopen="${esc(x.ref_type||"")}:${esc(x.ref_id||"")}:${esc(x.lead_id||"")}:${x.id}"><b>${esc(x.title)}</b><span>${esc(x.body||"")}</span><small>${fmtDT(x.created_at)}</small></button></li>`).join("")}</ul>`:`<p class="fine">No notifications yet. Reminders appear here and on Telegram (Mr. Rezeki) when they are due.</p>`}</section>`}
+function apCalendar(items){const now=new Date(),m=AP.month?new Date(AP.month+"-01T00:00"):new Date(now.getFullYear(),now.getMonth(),1),y=m.getFullYear(),mo=m.getMonth();
+  const first=new Date(y,mo,1),start=new Date(y,mo,1-((first.getDay()+6)%7)),days=[...Array(42)].map((_,k)=>new Date(start.getFullYear(),start.getMonth(),start.getDate()+k));
+  const byDay={};for(const i of items){const k=localDay(i.at);(byDay[k]=byDay[k]||[]).push(i)}
+  const sel=AP.day||localDay(now),selItems=(byDay[sel]||[]).sort((a,b)=>a.at-b.at),mk=(d)=>`${d.getFullYear()}-${pad2(d.getMonth()+1)}`;
+  return `<div class="agd-cal"><div class="agd-calh"><button type="button" class="agd-b" data-apmon="${mk(new Date(y,mo-1,1))}" aria-label="Previous month">‹</button><b>${first.toLocaleDateString("en-MY",{month:"long",year:"numeric"})}</b><button type="button" class="agd-b" data-apmon="${mk(new Date(y,mo+1,1))}" aria-label="Next month">›</button></div>
+   <div class="agd-grid" role="grid">${["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d=>`<span class="agd-wd">${d}</span>`).join("")}${days.map(d=>{const k=localDay(d),list=byDay[k]||[],ap=list.filter(i=>i.t==="appt").length,tk=list.length-ap;
+     return `<button type="button" class="agd-day${d.getMonth()!==mo?" out":""}${k===localDay(now)?" now":""}${k===sel?" sel":""}" data-apday="${k}" aria-label="${d.toDateString()}: ${ap} appointments, ${tk} follow-ups"><span>${d.getDate()}</span>${list.length?`<i>${ap?`<em class="a">${ap}</em>`:""}${tk?`<em class="t">${tk}</em>`:""}</i>`:""}</button>`}).join("")}</div>
+   <h4 class="agd-dh">${new Date(sel+"T00:00").toLocaleDateString("en-MY",{weekday:"long",day:"numeric",month:"long"})}</h4><div class="agd-list">${selItems.map(i=>apCard(i,true)).join("")||`<p class="fine">Nothing scheduled on this day.</p>`}</div></div>`}
+function admAppts(){if(!S.apLoaded)return `<div class="empty"><p>${S.apErr?"Could not load appointments: "+esc(S.apErr):"Loading appointments & reminders…"}</p></div>`;
+  const items=apItems(),v=AP.view,list=v==="calendar"?items.filter(apMatch):apViewItems(v,items);
+  const leads=S.leads.slice().sort((a,b)=>String(a.name).localeCompare(String(b.name))),projs=[...new Set([...S.appts.map(apProjOf),...S.tasks.map(apProjOf)].filter(Boolean))].map(s=>[s,(bySlugAll(s)||{}).name||s]);
+  const sel=(id,opts,val,lab)=>`<label class="lf"><span class="sr">${lab}</span><select id="${id}" aria-label="${lab}">${opts.map(([o,t])=>`<option value="${esc(o)}" ${String(val)===String(o)?"selected":""}>${esc(t)}</option>`).join("")}</select></label>`;
+  const anyF=AP.from||AP.to||AP.lead||AP.proj||AP.kind||AP.status;
+  return `${apSummary(true)}${AP.showNotifs?apNotifPanel():""}
+   <div class="lseg agd-tabs" role="tablist" aria-label="View">${AP_VIEWS.map(([k,t])=>{const n=k==="calendar"||k==="list"?"":apViewItems(k,items).length;return `<button type="button" role="tab" data-apview="${k}" aria-selected="${v===k}" aria-pressed="${v===k}">${t}${n!==""?` <span class="n">${n}</span>`:""}</button>`}).join("")}</div>
+   <div class="lfilters agd-filters"><label class="lf"><span class="sr">From</span><input type="date" id="apFrom" value="${esc(AP.from)}" aria-label="From date"></label><label class="lf"><span class="sr">To</span><input type="date" id="apTo" value="${esc(AP.to)}" aria-label="To date"></label>
+    ${sel("apLead",[["","All leads"],...leads.map(l=>[l.id,l.name||"(no name)"])],AP.lead,"Lead")}${sel("apProj",[["","All projects"],...projs],AP.proj,"Project")}
+    ${sel("apKind",[["","All types"],...APK.map(([k,t])=>[k,t]),...TSK.map(([k,t])=>["task:"+k,"Follow-up: "+t])],AP.kind,"Type")}${sel("apStat",[["","Any status"],...APS],AP.status,"Status")}
+    ${anyF?`<button type="button" class="lclear" data-apclr>✕ Clear filters</button>`:""}</div>
+   ${v==="failed"?`<div class="agd-list">${items.filter(i=>S.remFailed.has(i.id)).map(i=>apCard(i)).join("")||`<p class="fine">No failed reminders.</p>`}</div>`
+    :v==="calendar"?apCalendar(list):`<p class="fine lcount" role="status">${list.length} ${list.length===1?"item":"items"}</p><div class="agd-list">${list.map(i=>apCard(i)).join("")||`<div class="empty"><p>${({today:"Nothing scheduled for today.",upcoming:"No upcoming appointments or follow-ups.",overdue:"Nothing overdue. 👍",list:"No appointments yet.",completed:"Nothing completed yet.",cancelled:"Nothing cancelled."})[v]||"Nothing here."}</p><button type="button" class="btn btn-brand btn-sm" data-apnew>+ Appointment</button> <button type="button" class="btn btn-ghost btn-sm" data-tknew>+ Follow-up task</button></div>`}</div>`}`}
+/* ---------- WhatsApp reminder to the client (opens WhatsApp; you press Send) ---------- */
+const AP_TPL_MS="Peringatan Temujanji — Rezeki Hartanah\n\nHi {client_name}, ini peringatan untuk temujanji anda bersama Rezeki Hartanah.\n\nProjek: {project_name}\nTarikh: {appointment_date}\nMasa: {appointment_time}\nLokasi: {appointment_location}\n\nJika anda ingin menukar masa temujanji, sila hubungi kami.\n\nTerima kasih!";
+const AP_TPL_EN="Appointment Reminder — Rezeki Hartanah\n\nHi {client_name}, this is a reminder of your upcoming appointment with Rezeki Hartanah.\n\nProject: {project_name}\nDate: {appointment_date}\nTime: {appointment_time}\nLocation: {appointment_location}\n\nPlease contact us if you need to reschedule.\n\nThank you!";
+function apWa(i){const l=apLead(i.lead_id)||{},en=l.lang==="en",at=new Date(i.starts_at),loc=en?"en-GB":"ms-MY";
+  const tpl=((S.settings||{})[en?"apptTplEn":"apptTplMs"]||(en?AP_TPL_EN:AP_TPL_MS));
+  const pn=(bySlugAll(apProjOf(i))||{}).name||apProjOf(i)||(en?"To be confirmed":"Akan dimaklumkan");
+  const txt=tpl.replace(/\{client_name\}/g,l.name||"").replace(/\{project_name\}/g,pn).replace(/\{appointment_date\}/g,at.toLocaleDateString(loc,{weekday:"long",day:"numeric",month:"long",year:"numeric"}))
+    .replace(/\{appointment_time\}/g,at.toLocaleTimeString("en-MY",{hour:"numeric",minute:"2-digit"})).replace(/\{appointment_location\}/g,i.location||i.online_url||(en?"To be confirmed":"Akan dimaklumkan"));
+  return `https://wa.me/${leadWa(l)}?text=${encodeURIComponent(txt)}`}
+function apTplPanel(){const st=S.settings||{};return `<section class="panel"><h3>Appointment reminder messages</h3><p class="fine" style="margin:0 0 10px">Used by the <b>WhatsApp reminder</b> button on each appointment. It opens WhatsApp with this message filled in; you press Send. Placeholders: {client_name}, {project_name}, {appointment_date}, {appointment_time}, {appointment_location}. Leads who enquired in English get the English version.</p>
+  <form data-aptpl class="edgrid"><div class="field w3"><label for="tplMs">Bahasa Melayu</label><textarea id="tplMs" name="ms" rows="9" maxlength="1200">${esc(st.apptTplMs||AP_TPL_MS)}</textarea></div><div class="field w3"><label for="tplEn">English</label><textarea id="tplEn" name="en" rows="9" maxlength="1200">${esc(st.apptTplEn||AP_TPL_EN)}</textarea></div>
+  <div class="cms-save w3"><button class="btn btn-brand btn-sm">Save messages</button><button type="button" class="btn btn-ghost btn-sm" data-tplreset>Reset to default</button></div></form></section>`}
+/* ---------- editors ---------- */
+function apLeadOptions(sel){return S.leads.filter(l=>!l.archived||l.id===sel).sort((a,b)=>String(a.name).localeCompare(String(b.name))).map(l=>`<option value="${esc(l.id)}" ${l.id===sel?"selected":""}>${esc(l.name||"(no name)")}${l.phone?" · "+esc(l.phone):""}</option>`).join("")}
+function openApptEditor(id,leadId){const a=id?S.appts.find(x=>x.id===id):null;const lid=a?a.lead_id:leadId||"";const l=apLead(lid);
+  const st=a?new Date(a.starts_at):(()=>{const d=new Date(Date.now()+864e5);d.setHours(11,0,0,0);return d})();const dur=a&&a.ends_at?Math.round((new Date(a.ends_at)-new Date(a.starts_at))/6e4):60;
+  const offs=a?a.remind_offsets||[]:[1440,120,30,0],custom=offs.filter(o=>!AP_REM.some(r=>r[0]===o));
+  const projs=projects(true).map(p=>[p.slug,p.name]),proj=a?a.project||"":(l&&l.project)||"";
+  leadDlg(`${dlgHead(a?"Appointment":"New appointment",a?apLeadName(lid):l?l.name:"Choose the lead")}<form class="ld-body ld-form" data-apform="${a?a.id:""}" novalidate>
+   <div class="edgrid"><div class="field"><label for="ap_lead">Lead *</label><select id="ap_lead" name="lead_id" required ${a?"disabled":""}><option value="">Choose a lead…</option>${apLeadOptions(lid)}</select></div>
+   <div class="field"><label for="ap_kind">Type</label><select id="ap_kind" name="kind">${APK.map(([k,t])=>`<option value="${k}" ${(a?a.kind:"viewing")===k?"selected":""}>${t}</option>`).join("")}</select></div>
+   <div class="field w3"><label for="ap_title">Title *</label><input id="ap_title" name="title" maxlength="160" value="${esc(a?a.title:"")}" placeholder="e.g. Viewing at PV22 show unit"></div>
+   <div class="field"><label for="ap_at">Date & start time *</label><input id="ap_at" name="at" type="datetime-local" value="${esc(toLocalInput(st))}" required></div>
+   <div class="field"><label for="ap_dur">Duration</label><select id="ap_dur" name="dur">${[[30,"30 min"],[45,"45 min"],[60,"1 hour"],[90,"1.5 hours"],[120,"2 hours"],[180,"3 hours"]].map(([m,t])=>`<option value="${m}" ${dur===m?"selected":""}>${t}</option>`).join("")}${[30,45,60,90,120,180].includes(dur)?"":`<option value="${dur}" selected>${dur} min</option>`}</select></div>
+   <div class="field"><label for="ap_proj">Project</label><select id="ap_proj" name="project"><option value="">Not set</option>${projs.map(([v,t])=>`<option value="${esc(v)}" ${proj===v?"selected":""}>${esc(t)}</option>`).join("")}</select></div>
+   <div class="field"><label for="ap_loc">Location</label><input id="ap_loc" name="location" maxlength="200" value="${esc(a?a.location||"":"")}" placeholder="e.g. PV22 sales gallery, Setapak"></div>
+   <div class="field w3"><label for="ap_url">Online meeting link</label><input id="ap_url" name="online_url" type="url" maxlength="300" value="${esc(a?a.online_url||"":"")}" placeholder="https://… (optional)"></div>
+   <div class="field w3"><label for="ap_notes">Notes</label><textarea id="ap_notes" name="notes" maxlength="1000" rows="3">${esc(a?a.notes||"":"")}</textarea></div>
+   ${a?`<div class="field"><label for="ap_status">Status</label><select id="ap_status" name="status">${APS.map(([k,t])=>`<option value="${k}" ${a.status===k?"selected":""}>${t}</option>`).join("")}</select></div>`:""}
+   <fieldset class="field w3 agd-rem"><legend>Remind me on Telegram</legend>${AP_REM.map(([m,t])=>`<label class="chk"><input type="checkbox" name="rem" value="${m}" ${offs.includes(m)?"checked":""}> ${t}</label>`).join("")}<label class="chk">Also <input type="number" name="remx" min="5" max="20160" step="5" value="${custom[0]||""}" style="width:90px" aria-label="Custom reminder, minutes before"> min before</label></fieldset></div>
+   <p class="msg" id="apMsg" role="alert"></p>
+   <div class="cms-save"><button class="btn btn-brand btn-sm">${a?"Save changes":"Create appointment"}</button>${a&&AP_ACTIVE.includes(a.status)&&leadWa(apLead(a.lead_id)||{})?`<a class="btn btn-ghost btn-sm" href="${esc(apWa({...a,at:new Date(a.starts_at)}))}" target="_blank" rel="noopener noreferrer">WhatsApp reminder to client</a>`:""}<button type="button" class="btn btn-ghost btn-sm" data-ldclose>Close</button></div></form>`,"wide")}
+function openTaskEditor(id,leadId){const k=id?S.tasks.find(x=>x.id===id):null;const lid=k?k.lead_id:leadId||"";const l=apLead(lid);
+  const due=k?new Date(k.due_at):(()=>{const d=new Date(Date.now()+864e5);d.setHours(10,0,0,0);return d})();const offs=k?k.remind_offsets||[0]:[0];
+  leadDlg(`${dlgHead(k?"Follow-up task":"New follow-up task",k?apLeadName(lid):l?l.name:"Choose the lead")}<form class="ld-body ld-form" data-tkform="${k?k.id:""}" novalidate>
+   <div class="edgrid"><div class="field"><label for="tk_lead">Lead *</label><select id="tk_lead" name="lead_id" required ${k?"disabled":""}><option value="">Choose a lead…</option>${apLeadOptions(lid)}</select></div>
+   <div class="field"><label for="tk_kind">Task</label><select id="tk_kind" name="kind">${TSK.map(([v,t])=>`<option value="${v}" ${(k?k.kind:"call")===v?"selected":""}>${t}</option>`).join("")}</select></div>
+   <div class="field w3"><label for="tk_title">Title *</label><input id="tk_title" name="title" maxlength="160" value="${esc(k?k.title:"")}" placeholder="e.g. Call about Type B price"></div>
+   <div class="field"><label for="tk_due">Due date & time *</label><input id="tk_due" name="due" type="datetime-local" value="${esc(toLocalInput(due))}" required></div>
+   <div class="field"><label for="tk_pri">Priority</label><select id="tk_pri" name="priority">${[["low","Low"],["normal","Normal"],["high","High"]].map(([v,t])=>`<option value="${v}" ${(k?k.priority:"normal")===v?"selected":""}>${t}</option>`).join("")}</select></div>
+   <div class="field"><label for="tk_rep">Repeat reminder until done</label><select id="tk_rep" name="repeat">${[["","No repeat"],["60","Every hour"],["180","Every 3 hours"],["1440","Every day"]].map(([v,t])=>`<option value="${v}" ${String(k&&k.repeat_minutes||"")===v?"selected":""}>${t}</option>`).join("")}</select></div>
+   <div class="field w3"><label for="tk_notes">Notes</label><textarea id="tk_notes" name="notes" maxlength="1000" rows="3">${esc(k?k.notes||"":"")}</textarea></div>
+   <fieldset class="field w3 agd-rem"><legend>Remind me on Telegram</legend>${[[1440,"1 day before"],[60,"1 hour before"],[30,"30 min before"],[0,"At the time"]].map(([m,t])=>`<label class="chk"><input type="checkbox" name="rem" value="${m}" ${offs.includes(m)?"checked":""}> ${t}</label>`).join("")}</fieldset></div>
+   <div class="qd" role="group" aria-label="Quick dates">${[["Tomorrow 10 AM",1],["In 3 days",3],["Next week",7]].map(([t,n])=>`<button type="button" class="chip" data-tkq="${n}">${t}</button>`).join("")}</div>
+   <p class="msg" id="tkMsg" role="alert"></p>
+   <div class="cms-save"><button class="btn btn-brand btn-sm">${k?"Save changes":"Create task"}</button>${k&&k.status==="open"?`<button type="button" class="btn btn-ghost btn-sm" data-tkact="done" data-id="${k.id}">Mark done</button>`:""}<button type="button" class="btn btn-ghost btn-sm" data-ldclose>Close</button></div></form>`,"wide")}
+function apOverlaps(startIso,endIso,selfId){const s=new Date(startIso),e=new Date(endIso);return S.appts.filter(a=>a.id!==selfId&&AP_ACTIVE.includes(a.status)).filter(a=>{const as=new Date(a.starts_at),ae=a.ends_at?new Date(a.ends_at):new Date(as.getTime()+36e5);return as<e&&ae>s})}
+function apMoreMenu(a){return `${a.status!=="confirmed"?`<button type="button" role="menuitem" data-apact="confirm" data-id="${a.id}">Mark confirmed</button>`:""}<button type="button" role="menuitem" data-apedit="${a.id}">Edit / reschedule</button><button type="button" role="menuitem" data-apact="no_show" data-id="${a.id}">Mark no-show</button><hr><button type="button" role="menuitem" class="danger" data-apact="cancel" data-id="${a.id}">Cancel appointment…</button>`}
+/* lead-side helpers used by the Enquiries page */
+function leadNextTask(l){return S.tasks.filter(t=>t.lead_id===l.id&&t.status==="open").sort((a,b)=>new Date(a.due_at)-new Date(b.due_at))[0]||null}
+function leadNextAppt(l){const now=Date.now();return S.appts.filter(a=>a.lead_id===l.id&&AP_ACTIVE.includes(a.status)&&new Date(a.starts_at).getTime()>now-36e5).sort((a,b)=>new Date(a.starts_at)-new Date(b.starts_at))[0]||null}
+function leadAgendaHtml(l){const it=apItems().filter(i=>i.lead_id===l.id),open=it.filter(i=>i.active).sort((a,b)=>a.at-b.at),past=it.filter(i=>!i.active).sort((a,b)=>b.at-a.at).slice(0,5);
+  return `<div class="ld-sec"><h5>Appointments & follow-ups</h5><div class="agd-list">${open.map(i=>apCard(i,true)).join("")||`<p class="fine" style="margin:0">Nothing scheduled.</p>`}</div>${past.length?`<details style="margin-top:6px"><summary class="fine">Completed / cancelled (${past.length})</summary><div class="agd-list">${past.map(i=>apCard(i,true)).join("")}</div></details>`:""}</div>`}
+
 function admLeads(){
   const pool=leadPool(LF.arch),act=leadPool(false),list=leadsFiltered(),shown=LF.view==="list"?list.slice(0,LF.limit):list;
   const counts=Object.fromEntries(LEAD_ST.map(([k])=>[k,pool.filter(l=>leadMatch(l,{status:"all"})&&leadSt(l)===k).length]));const allN=pool.filter(l=>leadMatch(l,{status:"all"})).length;
@@ -2376,7 +2560,7 @@ function openLPop(anchor,html,label){closeLPop();const el=document.createElement
 window.addEventListener("resize",()=>LPOP&&LPOP.place());window.addEventListener("scroll",()=>LPOP&&LPOP.place(),{passive:true,capture:true});
 document.addEventListener("pointerdown",e=>{if(LPOP&&!LPOP.el.contains(e.target)&&!LPOP.anchor.contains(e.target))closeLPop()},true);
 function statusMenu(l){return LEAD_ST.map(([k,lab])=>`<button type="button" role="menuitemradio" aria-checked="${leadSt(l)===k}" data-setst="${k}" data-for="${esc(l.id)}"><i class="dot st-${k}" aria-hidden="true"></i>${lab}${leadSt(l)===k?`<span class="ck" aria-hidden="true">✓</span>`:""}</button>`).join("")}
-function actionMenu(l){const fu=!!l.followAt;return `<button type="button" role="menuitem" data-la="detail" data-for="${esc(l.id)}">Details & history</button><button type="button" role="menuitem" data-la="edit" data-for="${esc(l.id)}">Edit lead</button><button type="button" role="menuitem" data-la="status" data-for="${esc(l.id)}">Change status…</button><button type="button" role="menuitem" data-la="follow" data-for="${esc(l.id)}">${fu?"Change follow-up…":"Schedule follow-up…"}</button>${fu?`<button type="button" role="menuitem" data-la="fudone" data-for="${esc(l.id)}">Mark follow-up done</button>`:""}<button type="button" role="menuitem" data-la="appt" data-for="${esc(l.id)}">${l.apptAt?"Change appointment…":"Set appointment…"}</button>${l.apptAt?`<button type="button" role="menuitem" data-la="apptdone" data-for="${esc(l.id)}">Mark appointment done</button>`:""}<hr>${l.archived?`<button type="button" role="menuitem" data-la="restore" data-for="${esc(l.id)}">Restore to active</button>`:`<button type="button" role="menuitem" data-la="archive" data-for="${esc(l.id)}">Archive</button>`}${S.isOwner?`<button type="button" role="menuitem" class="danger" data-la="delete" data-for="${esc(l.id)}">Delete permanently…</button>`:""}`}
+function actionMenu(l){const fu=!!l.followAt;return `<button type="button" role="menuitem" data-la="detail" data-for="${esc(l.id)}">Details & history</button><button type="button" role="menuitem" data-la="edit" data-for="${esc(l.id)}">Edit lead</button><button type="button" role="menuitem" data-la="status" data-for="${esc(l.id)}">Change status…</button><button type="button" role="menuitem" data-la="follow" data-for="${esc(l.id)}">New follow-up task…</button><button type="button" role="menuitem" data-la="appt" data-for="${esc(l.id)}">New appointment…</button><hr>${l.archived?`<button type="button" role="menuitem" data-la="restore" data-for="${esc(l.id)}">Restore to active</button>`:`<button type="button" role="menuitem" data-la="archive" data-for="${esc(l.id)}">Archive</button>`}${S.isOwner?`<button type="button" role="menuitem" class="danger" data-la="delete" data-for="${esc(l.id)}">Delete permanently…</button>`:""}`}
 /* ---------- safe writes: one at a time per lead, success only when the database confirms ---------- */
 async function leadWrite(id,patch,okMsg){if(!S.db){toast("Not connected to the database");return false}if(LEAD_BUSY.has(id))return false;LEAD_BUSY.add(id);render();
   try{await S.db.collection("leads").doc(id).update({...patch,updatedAt:Date.now()});const i=S.leads.findIndex(x=>x.id===id);if(i>=0)S.leads[i]={...S.leads[i],...patch};if(okMsg)toast(okMsg);return true}
@@ -2384,7 +2568,7 @@ async function leadWrite(id,patch,okMsg){if(!S.db){toast("Not connected to the d
   finally{LEAD_BUSY.delete(id);render()}}
 async function leadDelete(id){const l=S.leads.find(x=>x.id===id);if(!l||!S.db)return false;LEAD_BUSY.add(id);
   try{await S.db.collection("leads").doc(id).delete();const chk=await S.db.collection("leads").doc(id).get();if(chk&&chk.exists)throw new Error("you don't have permission to delete enquiries");
-    S.leads=S.leads.filter(x=>x.id!==id);toast(`“${l.name}” was permanently deleted`);return true}
+    S.leads=S.leads.filter(x=>x.id!==id);toast(`“${l.name}” was permanently deleted`);apLoad();return true}
   catch(x){toast("Not deleted: "+String(x&&x.message||"database error").slice(0,90));return false}finally{LEAD_BUSY.delete(id);render()}}
 /* ---------- activity timeline (lead_events) ---------- */
 async function leadEvents(id){try{if(S.jsSb){const r=await S.jsSb.from("lead_events").select("id,at,actor,type,data").eq("lead_id",id).order("at",{ascending:false}).limit(200);if(r.error)throw r.error;return r.data||[]}
@@ -2394,6 +2578,10 @@ async function leadAddEvent(id,type,data){if(S.jsSb){const em=(S.cms&&S.cms.emai
 const EV_TXT={created:e=>`Lead created${e.data&&e.data.source?` · ${srcLabel(e.data.source)}`:""}`,status:e=>`Status: ${stLabel(e.data.from)} → <b>${stLabel(e.data.to)}</b>`,edited:e=>`Edited ${(e.data.fields||[]).join(", ")}`,note:e=>e.data.redacted?"Note (removed)":`Note: ${esc(e.data.text||"")}`,
   outcome:e=>e.data.redacted?"Contact logged (details removed)":`${({call:"📞 Call",wa:"💬 WhatsApp",meet:"🤝 Meeting"})[e.data.channel]||"Contact"}: ${esc(e.data.text||"")}`,followup_set:e=>e.data.redacted?"Follow-up scheduled":`Follow-up scheduled for ${esc(fmtDT(e.data.when))}${e.data.note?` · ${esc(e.data.note)}`:""}`,
   followup_done:()=>"Follow-up completed",followup_cleared:()=>"Follow-up removed",
+  appt_created:e=>`📅 Appointment: ${esc(e.data.title||"")} · ${esc(fmtDT(e.data.when))}`,appt_updated:e=>`Appointment updated: ${esc(e.data.title||"")}`,appt_rescheduled:e=>`📅 Rescheduled to ${esc(fmtDT(e.data.when))}${e.data.from?` (was ${esc(fmtDT(e.data.from))})`:""}`,
+  appt_confirmed:e=>`Appointment confirmed: ${esc(e.data.title||"")}`,appt_cancelled:e=>`Appointment cancelled: ${esc(e.data.title||"")}`,appt_completed:e=>`✅ Appointment completed: ${esc(e.data.title||"")}`,appt_no_show:e=>`No-show: ${esc(e.data.title||"")}`,
+  task_created:e=>`⏰ Follow-up task: ${esc(e.data.title||"")} · due ${esc(fmtDT(e.data.when))}`,task_updated:e=>`Follow-up task updated: ${esc(e.data.title||"")}`,task_rescheduled:e=>`⏰ Follow-up moved to ${esc(fmtDT(e.data.when))}`,task_done:e=>`✅ Follow-up done: ${esc(e.data.title||"")}`,task_cancelled:e=>`Follow-up cancelled: ${esc(e.data.title||"")}`,
+  reminder_sent:()=>"Reminder sent",reminder_failed:()=>"⚠️ A Telegram reminder failed",
   appt_set:e=>e.data.redacted?"Appointment set":`📅 ${esc(apptLabel(e.data.kind))} set for ${esc(fmtDT(e.data.when))}${e.data.place?` · ${esc(e.data.place)}`:""}`,appt_done:()=>"Appointment completed",appt_cleared:()=>"Appointment cancelled",archived:()=>"Archived",restored:()=>"Restored to active",deleted:()=>"Permanently deleted"};
 function fmtDT(v){const d=new Date(v);return isNaN(d)?String(v||""):d.toLocaleString("en-MY",{day:"numeric",month:"short",year:"numeric",hour:"numeric",minute:"2-digit"})}
 /* ---------- dialogs ---------- */
@@ -2403,11 +2591,12 @@ async function openLeadDetail(id){const l=S.leads.find(x=>x.id===id);if(!l)retur
   const row=(k,v)=>v?`<div><dt>${k}</dt><dd>${v}</dd></div>`:"";
   const d=leadDlg(`${dlgHead(l.name||"Enquiry",`${leadProj(l)} · received ${lcDate(l.at)}`)}<div class="ld-body">
    <div class="ld-top">${stBadge(l)}${fuChip(l)}${l.archived?`<span class="pill off">Archived</span>`:""}</div>
-   <div class="crm-acts"><a class="crm-btn wa" href="https://wa.me/${esc(ph)}" target="_blank" rel="noopener noreferrer" data-lcontact="${esc(l.id)}">WhatsApp</a><a class="crm-btn" href="tel:+${esc(ph)}" data-lcontact="${esc(l.id)}">📞 Call</a><button type="button" class="crm-btn ghost" data-la="edit" data-for="${esc(l.id)}">Edit</button><button type="button" class="crm-btn ghost" data-la="follow" data-for="${esc(l.id)}">${l.followAt?"Follow-up":"Schedule follow-up"}</button><button type="button" class="crm-btn ghost" data-la="appt" data-for="${esc(l.id)}">${l.apptAt?"Appointment":"Set appointment"}</button></div>
-   <dl class="ld-grid">${row("Phone",esc(l.phone))}${row("Email",esc(l.email))}${row("Project",esc(leadProj(l)))}${row("Budget",esc(l.budget))}${row("Source",esc(srcLabel(l.source)))}${row("Received",fmtDT(l.at))}${row("Last contacted",l.lastContactAt?fmtDT(l.lastContactAt):"—")}${row("Next follow-up",l.followAt?esc(fmtDT(l.followAt))+(l.followNote?` · ${esc(l.followNote)}`:""):"—")}${row("Appointment",l.apptAt?esc(apptLabel(l.apptType)+" · "+fmtDT(l.apptAt))+(l.apptPlace?` · 📍 ${esc(l.apptPlace)}`:"")+(l.apptNote?` · ${esc(l.apptNote)}`:""):"—")}</dl>
+   <div class="crm-acts"><a class="crm-btn wa" href="https://wa.me/${esc(ph)}" target="_blank" rel="noopener noreferrer" data-lcontact="${esc(l.id)}">WhatsApp</a><a class="crm-btn" href="tel:+${esc(ph)}" data-lcontact="${esc(l.id)}">📞 Call</a><button type="button" class="crm-btn ghost" data-la="edit" data-for="${esc(l.id)}">Edit</button><button type="button" class="crm-btn ghost" data-la="follow" data-for="${esc(l.id)}">+ Follow-up</button><button type="button" class="crm-btn ghost" data-la="appt" data-for="${esc(l.id)}">+ Appointment</button></div>
+   <dl class="ld-grid">${row("Phone",esc(l.phone))}${row("Email",esc(l.email))}${row("Project",esc(leadProj(l)))}${row("Budget",esc(l.budget))}${row("Source",esc(srcLabel(l.source)))}${row("Received",fmtDT(l.at))}${row("Last contacted",l.lastContactAt?fmtDT(l.lastContactAt):"—")}${(()=>{const tk=leadNextTask(l),na=leadNextAppt(l);return row("Next follow-up",tk?esc(fmtDT(tk.due_at))+" · "+esc(tk.title):"—")+row("Next appointment",na?esc(apKind(na.kind)[1]+" · "+fmtDT(na.starts_at))+(na.location?` · 📍 ${esc(na.location)}`:""):"—")})()}</dl>
    ${l.msg?`<div class="ld-sec"><h5>Customer message</h5><p class="crm-msg">${esc(l.msg)}</p></div>`:""}
    <div class="ld-sec"><h5><label for="n_${esc(l.id)}">Internal note</label></h5><textarea class="lnote" id="n_${esc(l.id)}" data-lnote="${esc(l.id)}" placeholder="Saved when you leave the box" maxlength="1000">${esc(l.note||"")}</textarea></div>
    <form class="ld-sec ld-log" data-llog="${esc(l.id)}"><h5>Log contact or add a note</h5><div class="ld-logrow"><select name="channel" aria-label="Type"><option value="call">📞 Call</option><option value="wa">💬 WhatsApp</option><option value="meet">🤝 Meeting</option><option value="note">📝 Note only</option></select><input name="text" maxlength="500" required placeholder="Outcome, e.g. interested in Type B, call back Friday" aria-label="Outcome or note"><button class="btn btn-brand btn-sm">Add</button></div><small class="fine">Calls, WhatsApp and meetings also update “Last contacted”.</small></form>
+   ${leadAgendaHtml(l)}
    <div class="ld-sec"><h5>Activity</h5><ol class="ld-tl" id="ldTl"><li class="fine">Loading history…</li></ol></div></div>`,"wide");
   const ev=await leadEvents(id),tl=d.querySelector("#ldTl");if(!tl)return;
   tl.innerHTML=ev===null?`<li class="fine">History could not be loaded. Check your connection.</li>`:ev.length?ev.map(e=>`<li class="ev-${esc(e.type)}"><span>${(EV_TXT[e.type]||(()=>esc(e.type)))({...e,data:e.data||{}})}</span><small>${fmtDT(e.at)} · ${esc(e.actor||"")}</small></li>`).join(""):`<li class="fine">No activity recorded yet.</li>`}
@@ -2444,7 +2633,7 @@ function openLeadDelete(id){const l=S.leads.find(x=>x.id===id);if(!l)return;
    <div class="cms-save" style="margin-top:12px"><button type="button" class="btn btn-sm ldanger" data-ldelgo="${esc(id)}" disabled>Delete permanently</button><button type="button" class="btn btn-ghost btn-sm" data-la="archive" data-for="${esc(id)}">Archive instead</button><button type="button" class="btn btn-ghost btn-sm" data-ldclose>Cancel</button></div></div>`,"danger")}
 /* ---------- exports (current view + filters) ---------- */
 function leadExportRows(){const H=["Name","Phone","Email","Project","Status","Lead source","Date received","Last contacted","Next follow-up","Follow-up note","Budget","Customer message","Internal note","Archived","Appointment","Appointment place"];
-  return [H,...leadsFiltered().map(l=>[l.name||"",l.phone||"",l.email||"",leadProj(l),stLabel(leadSt(l)),srcLabel(l.source),fmtDT(l.at),l.lastContactAt?fmtDT(l.lastContactAt):"",l.followAt?fmtDT(l.followAt):"",l.followNote||"",l.budget||"",l.msg||"",l.note||"",l.archived?"Yes":"No",l.apptAt?apptLabel(l.apptType)+" · "+fmtDT(l.apptAt):"",l.apptPlace||""])]}
+  return [H,...leadsFiltered().map(l=>[l.name||"",l.phone||"",l.email||"",leadProj(l),stLabel(leadSt(l)),srcLabel(l.source),fmtDT(l.at),l.lastContactAt?fmtDT(l.lastContactAt):"",(()=>{const tk=leadNextTask(l);return tk?fmtDT(tk.due_at):l.followAt?fmtDT(l.followAt):""})(),(()=>{const tk=leadNextTask(l);return tk?tk.title:l.followNote||""})(),l.budget||"",l.msg||"",l.note||"",l.archived?"Yes":"No",(()=>{const na=leadNextAppt(l);return na?apKind(na.kind)[1]+" · "+fmtDT(na.starts_at):""})(),(()=>{const na=leadNextAppt(l);return na?na.location||"":""})()])]}
 function csvLeads(){const q=v=>'"'+String(v??"").replace(/"/g,'""').replace(/^[=+\-@\t\r]/,"'$&")+'"';return "\ufeff"+leadExportRows().map(r=>r.map(q).join(",")).join("\r\n")}
 function lcCrc32(b){let c,t=lcCrc32.t;if(!t){t=lcCrc32.t=new Uint32Array(256);for(let n=0;n<256;n++){c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}}c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=t[(c^b[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
 function lcZip(files){const enc=new TextEncoder(),parts=[],cen=[];let off=0;const u16=n=>[n&255,(n>>>8)&255],u32=n=>[n&255,(n>>>8)&255,(n>>>16)&255,(n>>>24)&255];
@@ -4272,9 +4461,9 @@ document.addEventListener("click",async e=>{
   if((b=t.closest("[data-setst]"))){e.preventDefault();const id=b.dataset.for,st=b.dataset.setst,l=S.leads.find(x=>x.id===id);closeLPop();if(!l||leadSt(l)===st)return;
     await leadWrite(id,{status:st,statusAt:Date.now()},`${l.name}: ${stLabel(st)}`);return}
   if((b=t.closest("[data-la]"))){e.preventDefault();const id=b.dataset.for,a=b.dataset.la,l=S.leads.find(x=>x.id===id);closeLPop();if(!l)return;const dl=$("#leadDlg");
-    if(a==="detail")return openLeadDetail(id);if(a==="edit")return openLeadEdit(id);if(a==="follow")return openLeadFollow(id);if(a==="delete"){if(!S.isOwner){toast("Only the owner can permanently delete enquiries");return}return openLeadDelete(id)}
+    if(a==="detail")return openLeadDetail(id);if(a==="edit")return openLeadEdit(id);if(a==="follow")return openTaskEditor(null,id);if(a==="delete"){if(!S.isOwner){toast("Only the owner can permanently delete enquiries");return}return openLeadDelete(id)}
     if(a==="status"){const card=document.querySelector(`[data-lid="${CSS.escape(id)}"] [data-stmenu]`)||document.querySelector(`#leadDlg [data-stmenu]`);if(card)openLPop(card,statusMenu(l),"Change status of "+(l.name||""));return}
-    if(a==="appt")return openLeadAppt(id);
+    if(a==="appt")return openApptEditor(null,id);
     if(a==="apptdone"){if(await leadWrite(id,{apptAt:"",apptDone:new Date().toISOString()},"Appointment marked done")&&dl&&dl.open)dl.close();return}
     if(a==="fudone"){if(await leadWrite(id,{followAt:"",followNote:"",followDone:new Date().toISOString()},"Follow-up marked done")&&dl&&dl.open)dl.close();return}
     if(a==="archive"){if(await leadWrite(id,{archived:true,archivedAt:Date.now()},`${l.name} archived · find it under Archived`)&&dl&&dl.open)dl.close();return}
@@ -4312,6 +4501,58 @@ document.addEventListener("submit",async e=>{const f=e.target;
     const btn=f.querySelector(".btn-brand");btn.disabled=true;
     try{await leadAddEvent(id,ch==="note"?"note":"outcome",ch==="note"?{text:txt}:{channel:ch,text:txt});if(ch!=="note")await leadWrite(id,{lastContactAt:Date.now()});toast(ch==="note"?"Note added":"Contact logged");openLeadDetail(id)}
     catch(x){toast("Not saved: "+String(x&&x.message||"database error").slice(0,90));btn.disabled=false}return}
+});
+document.addEventListener("click",async e=>{const t=e.target;let b;
+  if((b=t.closest("[data-apgo]"))){e.preventDefault();const v=b.dataset.apgo;admTab="appts";AP.view=v==="failed"?"failed":v;render();window.scrollTo(0,0);return}
+  if((b=t.closest("[data-apview]"))){AP.view=b.dataset.apview;render();return}
+  if(t.closest("[data-apbell]")){AP.showNotifs=!AP.showNotifs;render();return}
+  if(t.closest("[data-apnew]")){e.preventDefault();openApptEditor(null,AP.lead||"");return}
+  if(t.closest("[data-tknew]")){e.preventDefault();openTaskEditor(null,AP.lead||"");return}
+  if((b=t.closest("[data-apedit]"))){e.preventDefault();closeLPop();openApptEditor(b.dataset.apedit);return}
+  if((b=t.closest("[data-tkedit]"))){e.preventDefault();openTaskEditor(b.dataset.tkedit);return}
+  if((b=t.closest("[data-apmore]"))){e.preventDefault();const a=S.appts.find(x=>x.id===b.dataset.apmore);if(!a)return;if(LPOP&&LPOP.anchor===b){closeLPop();return}openLPop(b,apMoreMenu(a),"Appointment actions");return}
+  if((b=t.closest("[data-apact]"))){e.preventDefault();closeLPop();const id=b.dataset.id,act=b.dataset.apact,a=S.appts.find(x=>x.id===id);if(!a)return;
+    if(act==="cancel"&&!confirm(`Cancel “${a.title}” with ${apLeadName(a.lead_id)}? Pending reminders will be stopped.`))return;
+    const st={confirm:"confirmed",complete:"completed",no_show:"no_show",cancel:"cancelled"}[act];
+    if(await apSave("update","appointments",id,{status:st},({confirmed:"Appointment confirmed",completed:"Appointment completed ✓",no_show:"Marked as no-show",cancelled:"Appointment cancelled"})[st]))$("#leadDlg")?.open&&$("#leadDlg [data-apform]")&&$("#leadDlg").close();return}
+  if((b=t.closest("[data-tkact]"))){e.preventDefault();const id=b.dataset.id,act=b.dataset.tkact,k=S.tasks.find(x=>x.id===id);if(!k)return;
+    if(act==="cancel"&&!confirm(`Cancel the follow-up “${k.title}”? Its reminders will stop.`))return;
+    const st={done:"done",cancel:"cancelled",reopen:"open"}[act];
+    if(await apSave("update","lead_tasks",id,{status:st},({done:"Follow-up done ✓",cancelled:"Follow-up cancelled",open:"Follow-up reopened"})[st])){const d=$("#leadDlg");if(d&&d.open&&d.querySelector("[data-tkform]"))d.close()}return}
+  if((b=t.closest("[data-apmon]"))){AP.month=b.dataset.apmon;AP.day=b.dataset.apmon+"-01";render();return}
+  if((b=t.closest("[data-apday]"))){AP.day=b.dataset.apday;render();return}
+  if(t.closest("[data-apclr]")){Object.assign(AP,{from:"",to:"",lead:"",proj:"",kind:"",status:""});render();return}
+  if(t.closest("[data-npread]")){try{await apDb("readall");await apLoad()}catch(x){toast("Could not update notifications")}return}
+  if((b=t.closest("[data-nopen]"))){const [rt,rid,lid,nid]=b.dataset.nopen.split(":");try{await apDb("update","notifications",nid,{read_at:new Date().toISOString()})}catch(x){}apLoad();
+    if(rt==="appointment"&&S.appts.some(a=>a.id===rid))return openApptEditor(rid);if(rt==="task"&&S.tasks.some(k=>k.id===rid))return openTaskEditor(rid);if(lid)return openLeadDetail(lid);return}
+  if((b=t.closest("[data-tkq]"))){const i=$("#tk_due");if(i){const d=new Date(Date.now()+864e5*num(b.dataset.tkq));d.setHours(10,0,0,0);i.value=toLocalInput(d)}return}
+  if(t.closest("[data-tplreset]")){const a=$("#tplMs"),c=$("#tplEn");if(a)a.value=AP_TPL_MS;if(c)c.value=AP_TPL_EN;return}
+});
+document.addEventListener("change",e=>{const m={apFrom:"from",apTo:"to",apLead:"lead",apProj:"proj",apKind:"kind",apStat:"status"}[e.target.id];if(m){AP[m]=e.target.value;render();$("#"+e.target.id)?.focus();return}
+  if(["ap_kind","ap_proj","ap_lead"].includes(e.target.id)){const ti=$("#ap_title");if(ti&&!ti.dataset.touched){const k=apKind($("#ap_kind").value)[1],pv=$("#ap_proj").value,pn=pv?((bySlugAll(pv)||{}).name||pv):"";ti.value=k+(pn?" · "+pn:"")}}
+  if(e.target.id==="ap_lead"){const l=apLead(e.target.value),ps=$("#ap_proj");if(l&&ps&&!ps.value&&l.project)ps.value=l.project}
+  if(["tk_kind"].includes(e.target.id)){const ti=$("#tk_title");if(ti&&!ti.dataset.touched)ti.value=apKind(e.target.value,TSK)[1]}});
+document.addEventListener("input",e=>{if(e.target.id==="ap_title"||e.target.id==="tk_title")e.target.dataset.touched="1"});
+document.addEventListener("submit",async e=>{const f=e.target;
+  if(f.hasAttribute("data-apform")){e.preventDefault();const id=f.dataset.apform||null,fd=new FormData(f),out=f.querySelector("#apMsg"),g=k=>String(fd.get(k)||"").trim();
+    const lead=id?S.appts.find(a=>a.id===id).lead_id:g("lead_id"),at=g("at");if(!lead){out.className="msg err";out.textContent="Choose the lead.";return}
+    if(!at||isNaN(new Date(at))){out.className="msg err";out.textContent="Choose a date and start time.";return}
+    const kind=g("kind")||"viewing",title=g("title")||(apKind(kind)[1]+(g("project")?" · "+((bySlugAll(g("project"))||{}).name||g("project")):"")),start=new Date(at),end=new Date(start.getTime()+num(g("dur")||60)*6e4);
+    const rem=[...new Set([...fd.getAll("rem").map(Number),...(num(g("remx"))>0?[num(g("remx"))]:[])])].sort((a,b)=>b-a);
+    if(g("online_url")&&!/^https?:\/\//i.test(g("online_url"))){out.className="msg err";out.textContent="The meeting link must start with https://";return}
+    const status=id?(g("status")||"scheduled"):"scheduled";
+    if(AP_ACTIVE.includes(status)&&!f.dataset.override){const ov=apOverlaps(start.toISOString(),end.toISOString(),id);if(ov.length){f.dataset.override="1";out.className="msg err";out.innerHTML=`⚠️ Overlaps with ${ov.map(a=>`<b>${esc(a.title)}</b> (${esc(apLeadName(a.lead_id))}, ${esc(apTime(new Date(a.starts_at)))})`).join(", ")}. Press the button again to save anyway.`;f.querySelector(".btn-brand").textContent="Save anyway";return}}
+    const row={title:title.slice(0,160),kind,project:g("project")||null,starts_at:start.toISOString(),ends_at:end.toISOString(),location:g("location").slice(0,200)||null,online_url:g("online_url")||null,notes:g("notes").slice(0,1000)||null,remind_offsets:rem,...(id?{status}:{lead_id:lead,status:"scheduled"})};
+    const btn=f.querySelector(".btn-brand");btn.disabled=true;
+    if(await apSave(id?"update":"insert","appointments",id,row,id?"Appointment saved":`Appointment created · ${apDate(start)}, ${apTime(start)}`))$("#leadDlg")?.close();else btn.disabled=false;return}
+  if(f.hasAttribute("data-tkform")){e.preventDefault();const id=f.dataset.tkform||null,fd=new FormData(f),out=f.querySelector("#tkMsg"),g=k=>String(fd.get(k)||"").trim();
+    const lead=id?S.tasks.find(k=>k.id===id).lead_id:g("lead_id"),due=g("due");if(!lead){out.className="msg err";out.textContent="Choose the lead.";return}
+    if(!due||isNaN(new Date(due))){out.className="msg err";out.textContent="Choose the due date and time.";return}
+    const kind=g("kind")||"call",row={title:(g("title")||apKind(kind,TSK)[1]).slice(0,160),kind,due_at:new Date(due).toISOString(),priority:g("priority")||"normal",repeat_minutes:g("repeat")?num(g("repeat")):null,notes:g("notes").slice(0,1000)||null,remind_offsets:[...new Set(fd.getAll("rem").map(Number))].sort((a,b)=>b-a),...(id?{}:{lead_id:lead})};
+    const btn=f.querySelector(".btn-brand");btn.disabled=true;
+    if(await apSave(id?"update":"insert","lead_tasks",id,row,id?"Follow-up saved":`Follow-up task created · due ${apDate(new Date(due))}, ${apTime(new Date(due))}`))$("#leadDlg")?.close();else btn.disabled=false;return}
+  if(f.hasAttribute("data-aptpl")){e.preventDefault();const fd=new FormData(f),btn=f.querySelector(".btn-brand");btn.disabled=true;
+    try{await S.db.doc("settings/site").update({apptTplMs:String(fd.get("ms")||"").slice(0,1200),apptTplEn:String(fd.get("en")||"").slice(0,1200)});S.settings={...(S.settings||{}),apptTplMs:String(fd.get("ms")||""),apptTplEn:String(fd.get("en")||"")};toast("Reminder messages saved")}catch(x){toast("Not saved: "+String(x&&x.message||x).slice(0,80))}btn.disabled=false;return}
 });
 const rhDownloads={async save({filename,data}){const b=data instanceof Blob?data:new Blob([data]);const u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}};
 async function rhCmsBoot(startSubs){
@@ -4357,7 +4598,8 @@ new MutationObserver(()=>{fillCap();const f=$("#setForm");if(f&&!f.dataset.popsy
     db.doc("settings/site").onSnapshot(d=>{S.settings=d.exists?(d.data()||{}):{};applySettings();if(!busy())render()},()=>{});
     db.collection("projects").onSnapshot(snap=>{S.remote=new Map(snap.docs.filter(d=>d.exists).map(d=>[d.id,d.data()]));siteLd();if(!busy())render()},()=>{});
     db.collection("posts").onSnapshot(snap=>{S.posts=new Map(snap.docs.filter(d=>d.exists).map(d=>[d.id,d.data()]));if(!busy())render()},()=>{});
-    if(S.isAdmin) db.collection("leads").orderBy("at","desc").limit(1000).onSnapshot(snap=>{S.leadsLoaded=true;S.leads=snap.docs.map(d=>({id:d.id,...d.data()}));if(route().a==="admin"&&!busy())render()},()=>{});};
+    if(S.isAdmin) db.collection("leads").orderBy("at","desc").limit(1000).onSnapshot(snap=>{S.leadsLoaded=true;S.leads=snap.docs.map(d=>({id:d.id,...d.data()}));if(route().a==="admin"&&!busy())render()},()=>{});
+    if(S.isAdmin) apStart();};
   if(window.RH_CMS){await rhCmsBoot(startSubs);return}
   if(!window.claude||!window.claude.use)return;
   let [db,user,assets,downloads,sample]=await Promise.all(["db","user","assets","downloads","sample"].map(n=>window.claude.use(n).catch(()=>null)));
