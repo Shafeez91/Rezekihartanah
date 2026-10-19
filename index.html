@@ -173,6 +173,9 @@ nav.main a:hover{background:var(--surface-2)}
 .bud:hover .bud-a{transform:translateX(2px)}
 .searchbox.sb2{margin-top:52px}
 .sb-foot{display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px dashed var(--line)}
+.sb-foot{align-items:stretch}.sb-more,.sb-reset{white-space:nowrap;flex:0 0 auto}.sb-reset .rs-short{display:none} /* stretch: both buttons always share one height */
+@media(max-width:600px){.sb-foot{flex-wrap:wrap;gap:8px}.sb-more,.sb-reset{flex:1 1 auto;justify-content:center;min-height:40px;padding:0 13px;font-size:13.5px;gap:6px}.sb-reset .rs-long{display:none}.sb-reset .rs-short{display:inline}.sb-more svg,.sb-reset svg{flex:none}} /* phones: share the row in equal widths when they fit, otherwise each gets its own full row */
+@media(max-width:360px){.sb-more,.sb-reset{padding:0 10px;font-size:12.5px;gap:5px}.sb-more .sb-caret{display:none}}
 .lnk{border:0;background:none;padding:4px 0;font-weight:600;font-size:14px;color:var(--gold);cursor:pointer}
 .sb-reset{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--danger);background:color-mix(in srgb,var(--danger) 8%,transparent);color:var(--danger);border-radius:999px;padding:7px 14px;font-weight:700;font-size:14px;line-height:1;cursor:pointer;transition:background .15s,color .15s}
 .sb-reset:hover{background:var(--danger);color:var(--surface,#fff)}
@@ -1460,7 +1463,7 @@ const T = {
  ms:{nav_props:"Hartanah",nav_calc:"Kalkulator",nav_fin:"Pembiayaan",nav_contact:"Hubungi",nav_saved:"Simpanan",
   h1:"Semua hartanah Klang Valley, satu tempat.",lead:"Bandingkan harga, saiz, susun atur dan ansuran bulanan projek baharu, siap, tanah dan komersial — kemudian terus berbincang dengan kami.",
   dial_l:"Ansuran bulanan yang saya selesa",dial_lp:"Bajet harga hartanah saya",m_mon:"Ansuran bulanan",m_price:"Harga hartanah",eq_price:"harga sehingga",eq_mon:"ansuran",ten_lbl:"Tempoh pinjaman",eqm_t:"Bayar {m} selama {n} tahun = mampu harga sehingga {p}",eqp_t:"Harga {p} selama {n} tahun = ansuran ~{m}/bln",ten_why:"Pinjaman perlu tamat sebelum umur {age}. Lebih muda, lebih panjang tempoh, lebih rendah ansuran.",dial_hit:"hartanah sepadan",dial_btn:"Tunjuk",per:"/bln",
-  s_kw:"Cari projek, kawasan atau pemaju",pop:"Popular:",bud_t:"Cari ikut bajet",bud_s:"Tetapkan harga atau ansuran, lihat semua rumah yang sepadan",reset_all:"Set semula semua",close:"Tutup",reset_done:"Penapis diset semula",s_area:"Kawasan",s_type:"Jenis",s_all:"Semua",s_btn:"Cari",
+  s_kw:"Cari projek, kawasan atau pemaju",pop:"Popular:",bud_t:"Cari ikut bajet",bud_s:"Tetapkan harga atau ansuran, lihat semua rumah yang sepadan",reset_all:"Set semula semua",reset_short:"Set semula",close:"Tutup",reset_done:"Penapis diset semula",s_area:"Kawasan",s_type:"Jenis",s_all:"Semua",s_btn:"Cari",
   l_title:"Direktori hartanah",l_sub:"Tapis ikut status, pemaju, pegangan, perabot, bilik dan akses transit.",more:"Lagi penapis",reset:"Set semula",
   f_status:"Status",f_dev:"Pemaju",f_ten:"Pegangan",f_furn:"Perabot",f_bed:"Bilik",any:"Mana-mana",
   sort:"Susun",s_new:"Pilihan dahulu",s_lo:"Harga: rendah ke tinggi",s_hi:"Harga: tinggi ke rendah",s_az:"Nama A–Z",s_mo:"Ansuran: rendah ke tinggi",
@@ -1494,7 +1497,7 @@ const T = {
  en:{nav_props:"Properties",nav_calc:"Calculator",nav_fin:"Financing",nav_contact:"Contact",nav_saved:"Saved",
   h1:"Every Klang Valley property, in one place.",lead:"Compare prices, sizes, layouts and monthly instalments for new launch, completed, land and commercial projects — then talk to us directly.",
   dial_l:"Monthly instalment I'm comfortable with",dial_lp:"My property price budget",m_mon:"Monthly instalment",m_price:"Property price",eq_price:"price up to",eq_mon:"instalment",ten_lbl:"Loan tenure",eqm_t:"Pay {m} for {n} years = afford a price up to {p}",eqp_t:"Price {p} over {n} years = ~{m}/mo instalment",ten_why:"Loans must end before age {age}. The younger you are, the longer the tenure and the lower the instalment.",dial_hit:"matching properties",dial_btn:"Show",per:"/mo",
-  s_kw:"Search project, area or developer",pop:"Popular:",bud_t:"Find by budget",bud_s:"Set your price or instalment, see every home that fits",reset_all:"Reset all",close:"Close",reset_done:"Filters reset",s_area:"Area",s_type:"Type",s_all:"All",s_btn:"Search",
+  s_kw:"Search project, area or developer",pop:"Popular:",bud_t:"Find by budget",bud_s:"Set your price or instalment, see every home that fits",reset_all:"Reset all",reset_short:"Reset",close:"Close",reset_done:"Filters reset",s_area:"Area",s_type:"Type",s_all:"All",s_btn:"Search",
   l_title:"Property directory",l_sub:"Filter by status, developer, tenure, furnishing, bedrooms and transit access.",more:"More filters",reset:"Reset",
   f_status:"Status",f_dev:"Developer",f_ten:"Tenure",f_furn:"Furnishing",f_bed:"Bedrooms",any:"Any",
   sort:"Sort",s_new:"Featured first",s_lo:"Price: low to high",s_hi:"Price: high to low",s_az:"Name A–Z",s_mo:"Instalment: low to high",
@@ -1932,7 +1935,7 @@ function viewHome(){
       <p class="lead">${t("lead")}</p>
       <form class="searchbox sb2" id="searchForm" role="search" autocomplete="off">
         <button type="button" class="bud" data-bud><span class="bud-i" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 12 4l9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg></span><span class="bud-t"><b>${t("bud_t")}</b><small>${t("bud_s")}</small></span><span class="bud-a" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
-        <div class="sb-foot"><button type="button" class="sb-more" id="sbMore" aria-expanded="${!!S.sbOpen}" aria-controls="sbAdv"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>${t("more")}<span class="sb-caret" aria-hidden="true">${S.sbOpen?"▴":"▾"}</span>${[f.status,f.dev,f.tenure,f.furn,f.bed].filter(Boolean).length?` <span class="nbadge">${[f.status,f.dev,f.tenure,f.furn,f.bed].filter(Boolean).length}</span>`:""}</button><button type="button" class="sb-reset" data-resethero><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>${t("reset_all")}</button></div>
+        <div class="sb-foot"><button type="button" class="sb-more" id="sbMore" aria-expanded="${!!S.sbOpen}" aria-controls="sbAdv"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>${t("more")}<span class="sb-caret" aria-hidden="true">${S.sbOpen?"▴":"▾"}</span>${[f.status,f.dev,f.tenure,f.furn,f.bed].filter(Boolean).length?` <span class="nbadge">${[f.status,f.dev,f.tenure,f.furn,f.bed].filter(Boolean).length}</span>`:""}</button><button type="button" class="sb-reset" data-resethero aria-label="${esc(t("reset_all"))}" title="${esc(t("reset_all"))}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span class="rs-long">${t("reset_all")}</span><span class="rs-short" aria-hidden="true">${t("reset_short")}</span></button></div>
         <div class="sb-adv" id="sbAdv" ${S.sbOpen?"":"hidden"}>
           <div class="field"><label for="fArea">${t("s_area")}</label><select id="fArea"><option value="">${t("s_all")}</option>${areas.map(a=>`<option ${f.area===a?"selected":""}>${esc(a)}</option>`).join("")}</select></div>
           <div class="field"><label for="fType">${t("s_type")}</label><select id="fType">${typeOptions(f.type)}</select></div>
@@ -2454,13 +2457,19 @@ async function putProject(p,msg){
   try{const now=Date.now(),stp=stampContent(bySlugAll(p.slug),p,now);await S.db.collection("projects").doc(p.slug).set(JSON.parse(JSON.stringify({...p,...stp,updatedAt:now})));if(msg)toast(msg);return true}
   catch(x){toast(x&&x.code==="permission_denied"?"You don't have permission to edit":"Save failed. Try again.");return false}
 }
+let SAVING=false;
 async function saveProject(e){
-  e.preventDefault();const out=$("#edMsg");let o=readEditor();
+  e.preventDefault();if(SAVING)return;const out=$("#edMsg");let o=readEditor();
   const err=!o.name?"Enter the project name.":!o.area?"Enter the area.":!o.pmin?"Enter the starting price.":slugError(projects(true),o.slug,o.name,edIsNew)||(o.redirectTo&&(o.redirectTo===o.slug||!listable(bySlugAll(o.redirectTo)))?"The redirect target must be another published project.":"");
   if(err){out.className="msg err";out.textContent=err;return}
   o.createdAt=o.createdAt||Date.now();delete o.deleted;const enWarn=o._enWarn;delete o._enWarn;if(enWarn)toast(enWarn);
-  if(S.sample&&needsTr(o)){out.className="msg";out.textContent="Translating content into BM & English…";try{o=await translateProject(o)}catch(x){toast("Translation failed; project saved without translation")}}
-  if(await putProject(o,o.published?"Project published":"Saved as draft")){edDirty=false;editing=null;admTab="projects";render();window.scrollTo(0,0)}
+  SAVING=true;const btns=[...document.querySelectorAll('#edForm button.btn-brand')],lbl=btns.map(b=>b.textContent);btns.forEach(b=>{b.disabled=true;b.textContent="Saving…"});
+  try{
+    if(S.sample&&needsTr(o)){out.className="msg";out.textContent="Translating content into BM & English…";try{o=await translateProject(o)}catch(x){toast("Translation failed; project saved without translation")}}
+    out.className="msg";out.textContent="Saving to the database…";
+    if(await putProject(o,o.published?"Saved · live on the website":"Saved as draft · not public")){edDirty=false;editing=null;admTab="projects";render();window.scrollTo(0,0)}
+    else{out.className="msg err";out.textContent="Not saved. Check your connection and try again; nothing was lost in this form."}
+  }finally{SAVING=false;btns.forEach((b,i)=>{if(b.isConnected){b.disabled=false;b.textContent=lbl[i]}})}
 }
 function galHtml(a){return a.map((u,i)=>`<div class="eg-it${i?"":" cover"}" data-i="${i}"><img src="${esc(u)}" alt="Photo ${i+1}">${i?"":`<span class="eg-tag">Cover</span>`}<div class="eg-act"><button type="button" data-gal="left" ${i?"":"disabled"} aria-label="Move left" title="Move left">←</button><button type="button" data-gal="cover" ${i?"":"disabled"} aria-label="Make cover" title="Make cover">★</button><button type="button" data-gal="right" ${i<a.length-1?"":"disabled"} aria-label="Move right" title="Move right">→</button><button type="button" data-gal="del" aria-label="Remove photo" title="Remove photo">✕</button></div></div>`).join("")}
 function galGet(){const h=$("#edForm [name=photos]");return h?h.value.split("\n").filter(Boolean):[]}
@@ -3904,11 +3913,32 @@ async function sbSyncSitemap(){if(!S.sbDb)return;const sm=sitemap(),files=Object
   await S.sbDb.run(`delete from public.sitemap_files where name not in (${files.map(f=>sbLit(f[0])).join(",")})`)}
 /* production domain: always show the latest content from Supabase, and send enquiries there */
 async function sbLead(lead){try{await fetch(SB_URL+"/rest/v1/leads",{method:"POST",headers:{apikey:SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({data:{...lead,source:"website"}})})}catch(e){console.error("lead save failed",e)}}
-if(PATHMODE&&!window.RH_CMS)(async()=>{try{
-  const r=await fetch(SB_URL+"/rest/v1/rpc/public_seed",{method:"POST",headers:{apikey:SB_KEY,"Content-Type":"application/json"},body:"{}",cache:"no-store"});if(!r.ok)return;const d=await r.json();if(!d||!Array.isArray(d.projects)||(!d.projects.length&&!Object.keys(d.settings||{}).length))return; // empty database: keep the pre-rendered content
-  const sig=()=>stableStr([[...S.remote.values()].sort((a,b)=>String(a.slug).localeCompare(String(b.slug))),[...S.posts.values()].sort((a,b)=>String(a.slug).localeCompare(String(b.slug))),S.settings||{}]);
-  const before=sig();applySeed(d);if(sig()===before)return;siteLd();
-  const go=()=>{const ae=document.activeElement;if(ae&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)){ae.addEventListener("blur",go,{once:true});return}const y=window.scrollY;render();window.scrollTo(0,y)};go()}catch(e){}})();
+/* ===== Live content on the public site =====
+   Root cause of "stale until refresh": the page fetched Supabase once at load and never again.
+   Now: fetch on load, then check a tiny version fingerprint every 30 s (only while the tab is visible), whenever the tab
+   regains focus, and instantly when the CMS saves in another tab of the same browser. The full data is re-downloaded only
+   when the fingerprint changes, and the page re-renders only when the content actually differs, never while the visitor
+   is typing in a form or has a dialog open. */
+const LIVE={ver:"",busy:false,timer:0};
+function liveSig(){return stableStr([[...S.remote.values()].sort((a,b)=>String(a.slug).localeCompare(String(b.slug))),[...S.posts.values()].sort((a,b)=>String(a.slug).localeCompare(String(b.slug))),S.settings||{}])}
+function liveSafeToRender(){const ae=document.activeElement;if(ae&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName))return false;if(document.querySelector("dialog[open]"))return false;
+  return ![...document.querySelectorAll('#app input[type=text],#app input[type=tel],#app input[type=email],#app textarea')].some(x=>String(x.value||"").trim())}
+function liveRender(){if(!liveSafeToRender()){clearTimeout(LIVE.timer);LIVE.timer=setTimeout(liveRender,4000);return}const y=window.scrollY;render();window.scrollTo(0,y)}
+async function liveRefresh(force){if(LIVE.busy)return;LIVE.busy=true;try{
+  const hd={apikey:SB_KEY,"Content-Type":"application/json"};
+  if(!force&&LIVE.ver){const v=await fetch(SB_URL+"/rest/v1/rpc/content_version",{method:"POST",headers:hd,body:"{}",cache:"no-store"});if(v.ok){const nv=await v.json();if(nv===LIVE.ver)return;LIVE.ver=nv}}
+  else{fetch(SB_URL+"/rest/v1/rpc/content_version",{method:"POST",headers:hd,body:"{}",cache:"no-store"}).then(v=>v.ok?v.json():"").then(v=>{if(v)LIVE.ver=v}).catch(()=>{})}
+  const r=await fetch(SB_URL+"/rest/v1/rpc/public_seed",{method:"POST",headers:hd,body:"{}",cache:"no-store"});if(!r.ok)return;const d=await r.json();
+  if(!d||!Array.isArray(d.projects)||(!d.projects.length&&!Object.keys(d.settings||{}).length))return; // empty database: keep the pre-rendered content
+  const before=liveSig();applySeed(d);if(liveSig()===before)return;siteLd();liveRender();
+ }catch(e){}finally{LIVE.busy=false}}
+if(PATHMODE&&!window.RH_CMS){
+  liveRefresh(true);
+  setInterval(()=>{if(!document.hidden)liveRefresh(false)},30000);
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)liveRefresh(false)});
+  window.addEventListener("focus",()=>liveRefresh(false));
+  try{const bc=new BroadcastChannel("rh-content");bc.onmessage=()=>liveRefresh(true)}catch(e){}
+}
 
 /* ============ SELF-HOSTED CMS (Netlify) — signs in with Supabase Auth, saves through supabase-js under admin-only security rules ============ */
 S.cms={state:window.RH_CMS?"loading":"off",email:"",msg:""};
@@ -3932,7 +3962,7 @@ function makeJsDb(sb){
   const chk=r=>{if(r.error){const e=new Error(r.error.message||"Supabase error");e.code=r.error.code;sbSetState("error","Couldn’t save: "+String(r.error.message||"").slice(0,140));throw e}if(S.sb.state!=="ok")sbSetState("ok");return r.data};
   const tbl=c=>{if(!SB_TABLE[c])throw new Error("Unknown collection "+c);return SB_TABLE[c]};
   const snap=(id,d)=>({id,exists:d!=null,data:()=>d==null?undefined:d});
-  const notify=t=>{(subs.get(t)||new Set()).forEach(f=>f());clearTimeout(wTimer);wTimer=setTimeout(()=>{rhSyncSitemap().catch(()=>{})},3000)};
+  const notify=t=>{(subs.get(t)||new Set()).forEach(f=>f());try{new BroadcastChannel("rh-content").postMessage({t,at:Date.now()})}catch(e){}clearTimeout(wTimer);wTimer=setTimeout(()=>{rhSyncSitemap(true).catch(()=>{})},3000)};
   const listen=(t,load)=>{if(!subs.has(t))subs.set(t,new Set());subs.get(t).add(load);load();const iv=setInterval(()=>{if(!document.hidden)load()},45000);return()=>{clearInterval(iv);subs.get(t).delete(load)}};
   const docRef=(c,id)=>{const t=tbl(c);return {id,
     async get(){const d=chk(await sb.from(t).select("data").eq("id",id).maybeSingle());return snap(id,d?d.data:null)},
@@ -3976,9 +4006,15 @@ function makeJsAssets(sb){
     async list(){const r=await sb.storage.from("media").list("",{limit:1000});if(r.error)throw new Error(r.error.message);const a=(r.data||[]).filter(x=>x.id&&/^[a-f0-9]{32}$/.test(x.name));
       return {assets:a.map(x=>({id:x.name,url:"/_blob/"+x.name,sizeBytes:(x.metadata&&x.metadata.size)||0,contentType:x.metadata&&x.metadata.mimetype})),usage:{files:a.length,bytes:a.reduce((s,x)=>s+((x.metadata&&x.metadata.size)||0),0),maxFiles:20000,maxBytes:1024*1024*1024}}},
     async delete(id){const r=await sb.storage.from("media").remove([String(id).replace(/^\/_blob\//,"")]);if(r.error)throw new Error(r.error.message)}}}
-async function rhSyncSitemap(){if(!S.jsSb||!S.isAdmin)return;const sm=sitemap(),files=Object.entries(sm.files);if(!files.length)return;
-  let r=await S.jsSb.from("sitemap_files").upsert(files.map(([name,xml])=>({name,xml:String(xml),updated_at:new Date().toISOString()})));if(r.error)return;
-  await S.jsSb.from("sitemap_files").delete().not("name","in",`(${files.map(f=>'"'+f[0]+'"').join(",")})`)}
+async function rhSyncSitemap(report){if(!S.jsSb||!S.isAdmin)return;
+  // build from what is actually in the database right now, not from the dashboard's in-memory copy (which may still be reloading)
+  {const fr=await S.jsSb.from("projects").select("id,data");if(fr.error){if(report)toast("Saved, but the sitemap could not be updated: "+String(fr.error.message||"").slice(0,80)+". It will retry on your next save.");return}
+   S.remote=new Map((fr.data||[]).filter(r=>r&&r.data).map(r=>[r.id,r.data]))}
+  const sm=sitemap(),files=Object.entries(sm.files);if(!files.length)return;
+  let r=await S.jsSb.from("sitemap_files").upsert(files.map(([name,xml])=>({name,xml:String(xml),updated_at:new Date().toISOString()})));
+  if(r.error){if(report)toast("Saved, but the sitemap could not be updated: "+String(r.error.message||"").slice(0,80)+". It will retry on your next save.");return}
+  await S.jsSb.from("sitemap_files").delete().not("name","in",`(${files.map(f=>'"'+f[0]+'"').join(",")})`);
+  if(report)toast(`Website & sitemap updated · ${sm.urls.length} URLs`)}
 function makeJsSample(sb){
   const call=async(texts,target)=>{const r=await sb.functions.invoke("translate",{body:{texts,target}});if(r.error||!r.data||!Array.isArray(r.data.translations))throw {code:"bad",message:r.error&&r.error.message};return r.data};
   const s=async()=>{throw {code:"bad"}};
