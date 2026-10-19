@@ -16,7 +16,7 @@ const DEFAULT_DESC = "Bandingkan projek hartanah baharu, siap & komersial di Kla
 
 let cache = { at: 0, seed: null };
 async function seed() {
-  if (cache.seed && Date.now() - cache.at < 60000) return cache.seed;
+  if (cache.seed && Date.now() - cache.at < 10000) return cache.seed; // short server cache: a saved change reaches Google-visible HTML within ~10 s
   const r = await fetch(SB + "/rest/v1/rpc/public_seed", { method: "POST", headers: { apikey: KEY, "Content-Type": "application/json" }, body: "{}" });
   if (!r.ok) throw new Error("seed " + r.status);
   const d = await r.json();
