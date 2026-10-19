@@ -1426,8 +1426,8 @@ pre.code{background:var(--surface-2);border-radius:var(--r-sm);padding:12px;over
    ===================================================================== */
 /* grids never push wider than their container */
 .edgrid>*{min-width:0}
-.ed-side .edgrid{grid-template-columns:minmax(0,1fr)!important}
-.ed-side .edgrid>*{grid-column:1/-1!important}
+.cms .ed-side .edgrid{grid-template-columns:minmax(0,1fr)}
+.cms .ed-side .edgrid>*{grid-column:1/-1}
 .cms-main :is(b,code,small,a,td,.fine){overflow-wrap:anywhere}
 /* dialogs: fixed header, scrolling body, footer that always stays reachable */
 .shd.ldlg .shd-in{display:flex;flex-direction:column;max-height:min(92dvh,900px)}
@@ -1451,8 +1451,8 @@ pre.code{background:var(--surface-2);border-radius:var(--r-sm);padding:12px;over
   .shd.ldlg .shd-h{padding:calc(12px + env(safe-area-inset-top,0px)) 14px 12px}
   .ldlg .ld-body>.cms-save,.ldlg .ld-form>.cms-save{margin:6px -14px 0;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px))}
   .ldlg .cms-save .btn-brand{flex:1 1 auto}
-  .cms .edgrid{grid-template-columns:minmax(0,1fr)!important}
-  .cms .edgrid>*{grid-column:1/-1!important}
+  .cms .edgrid{grid-template-columns:minmax(0,1fr)}
+  .cms .edgrid>*{grid-column:1/-1}
   .agd-nph{flex-wrap:wrap}.agd-nph .btn{white-space:nowrap}
   .prow{grid-template-columns:56px minmax(0,1fr)}.pthumb{width:56px;height:44px}
   .pacts{grid-row:auto;grid-column:1/-1;justify-content:flex-end}
@@ -1472,6 +1472,36 @@ pre.code{background:var(--surface-2);border-radius:var(--r-sm);padding:12px;over
   .cms .agd-lead,.cms .crm-name,dialog.ldlg .agd-lead{display:inline-flex;align-items:center;min-height:44px}
   .cms label.btn{white-space:nowrap}
 }
+/* two-field rows: side by side only when the card itself has room (container query), otherwise stacked */
+.edgrid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cms .pop-step,.cms .panel,.cms .ed-side,.ldlg .ld-body{container-type:inline-size}
+@container (max-width:440px){.edgrid.two{grid-template-columns:minmax(0,1fr)}}
+/* Safari/iOS: native date & time fields keep a built-in minimum width and overflow their column unless told otherwise */
+.cms input:is([type=date],[type=datetime-local],[type=time],[type=month]),dialog input:is([type=date],[type=datetime-local],[type=time],[type=month]){-webkit-appearance:none;appearance:none;display:block;width:100%;max-width:100%;min-width:0;min-height:44px;text-align:left}
+.cms input:is([type=date],[type=datetime-local],[type=time])::-webkit-date-and-time-value,dialog input:is([type=date],[type=datetime-local],[type=time])::-webkit-date-and-time-value{text-align:left;min-height:1.3em}
+.cms .field>input,.cms .field>select,.cms .field>textarea{max-width:100%;min-width:0}
+/* short checkbox labels stay on one line (Safari shrinks the text next to a checkbox in a flex row) */
+.pop-checks label,.pop-checks .consent{flex:0 0 auto;white-space:nowrap;align-items:center}
+/* Settings pop-up steps: equal-height cards; a last odd card spans the full row instead of leaving a gap */
+.pop-set-g{align-items:stretch}.pop-set-g>.pop-step:last-child:nth-child(odd){grid-column:1/-1}
+/* tables: on desktop a normal table (the "To fix" column keeps room); below 900px each row becomes a labelled card, no sideways scrolling */
+.seo-fixtxt{min-width:240px}
+@container (max-width:760px){
+  .cms .tbl.stack{overflow:visible;border:0;background:none}
+  .cms .tbl.stack table,.cms .tbl.stack tbody{display:block;width:100%}
+  .cms .tbl.stack thead{display:none}
+  .cms .tbl.stack tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:12px 14px;margin-bottom:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+  .cms .tbl.stack td{display:block;padding:0;border:0;white-space:normal!important;min-width:0}
+  .cms .tbl.stack td[data-label]:not([data-label=""])::before{content:attr(data-label);display:block;font:700 11px var(--body);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+  .cms .tbl.stack td:first-child{grid-column:1/-1;font-weight:700}
+  .cms .tbl.stack td.seo-fixtxt{grid-column:1/-1;min-width:0}
+  .cms .tbl.stack td.tbl-act{grid-column:1/-1;justify-self:start}
+}
+/* editors: form columns follow the form's own width (it sits beside the sidebar and preview panel), not the screen */
+.cms .ed-main{container-type:inline-size}
+@container (max-width:760px){.ed-main .edgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@container (max-width:460px){.ed-main .edgrid{grid-template-columns:minmax(0,1fr)}.ed-main .edgrid>*{grid-column:1/-1}}
+@container (max-width:600px){.ed-photo{grid-template-columns:minmax(0,1fr)}.ed-photo>*{min-width:0}}
 /* remaining tight spots found by the audit */
 .pop-imgfield{flex-wrap:wrap}.pop-imgfield>div{min-width:0}
 .pe-rel label{flex-wrap:wrap}.pe-rel label small{flex:1 1 100%;padding-left:26px}
@@ -2721,14 +2751,14 @@ function robots(){return robotsTxt()}
 function admSeo(){
   const all=projects(true).map(p=>[p,seoFor(p)]).sort((a,b)=>a[1].score-b[1].score),avg=Math.round(all.reduce((a,[,s])=>a+s.score,0)/(all.length||1));
   return `<div class="kpis">${kpi("Average score",avg,"out of 100")}${kpi("Good (80+)",all.filter(([,s])=>s.score>=80).length,"projects")}${kpi("Fair",all.filter(([,s])=>s.score>=55&&s.score<80).length,"projects")}${kpi("Needs work",all.filter(([,s])=>s.score<55).length,"projects")}</div>
-  <section class="panel" style="margin-top:14px"><h3>SEO health by project</h3><div class="tbl"><table><thead><tr><th>Project</th><th>Score</th><th>To fix</th><th></th></tr></thead><tbody>${all.map(([p,s])=>`<tr><td>${esc(p.name)}${p.published===false?` <span class="pill off">Draft</span>`:""}</td><td><span class="score ${scoreCls(s.score)}">${s.score}</span></td><td style="white-space:normal;min-width:240px;font-size:13px;color:var(--muted)">${s.checks.filter(c=>!c[0]).map(c=>esc(c[1])).slice(0,3).join("; ")||"Complete"}</td><td><button class="btn btn-ghost btn-sm" data-edit="${esc(p.slug)}">Fix</button></td></tr>`).join("")}</tbody></table></div></section>
+  <section class="panel" style="margin-top:14px"><h3>SEO health by project</h3><div class="tbl stack"><table><thead><tr><th>Project</th><th>Score</th><th>To fix</th><th></th></tr></thead><tbody>${all.map(([p,s])=>`<tr><td data-label="Project">${esc(p.name)}${p.published===false?` <span class="pill off">Draft</span>`:""}</td><td data-label="Score"><span class="score ${scoreCls(s.score)}">${s.score}</span></td><td data-label="To fix" class="seo-fixtxt" style="white-space:normal;font-size:13px;color:var(--muted)">${s.checks.filter(c=>!c[0]).map(c=>esc(c[1])).slice(0,3).join("; ")||"Complete"}</td><td data-label="" class="tbl-act"><button class="btn btn-ghost btn-sm" data-edit="${esc(p.slug)}">Fix</button></td></tr>`).join("")}</tbody></table></div></section>
   ${seoIndexPanel()}`;
 }
 function seoIndexPanel(){
   const all=projects(true),b=sitemap(),names=[SM_FILES.index,...b.index.map(e=>e.name)],nIn=b.projects.length;
   const rows=all.map(p=>[p,indexIssues(p,all)]).sort((x,y)=>y[1].length-x[1].length);
   return `<section class="panel" style="margin-top:14px"><h3>Google indexing</h3><p class="fine">${nIn} of ${all.length} projects in sitemap · ${b.urls.length} URLs in total. The sitemap is regenerated from project data every time it is opened, so new projects are included as soon as they are published.</p>
-   <div class="tbl"><table><thead><tr><th>Project</th><th>Status</th><th>Canonical URL / reason</th><th>lastmod</th></tr></thead><tbody>${rows.map(([p,is])=>`<tr><td>${esc(p.name||p.slug)}</td><td>${is.length?`<span class="pill off">Excluded</span>`:`<span class="pill seo-in">In sitemap</span>`}</td><td style="white-space:normal;font-size:13px">${is.length?esc(is.join(", ")):esc(projUrl(p).replace(SITE,""))}</td><td>${lastmodOf(p)||"–"}</td></tr>`).join("")}</tbody></table></div></section>
+   <div class="tbl stack"><table><thead><tr><th>Project</th><th>Status</th><th>Canonical URL / reason</th><th>lastmod</th></tr></thead><tbody>${rows.map(([p,is])=>`<tr><td data-label="Project">${esc(p.name||p.slug)}</td><td data-label="Status">${is.length?`<span class="pill off">Excluded</span>`:`<span class="pill seo-in">In sitemap</span>`}</td><td data-label="URL / reason" style="white-space:normal;font-size:13px">${is.length?esc(is.join(", ")):esc(projUrl(p).replace(SITE,""))}</td><td data-label="lastmod">${lastmodOf(p)||"–"}</td></tr>`).join("")}</tbody></table></div></section>
   <div class="cms-grid"><section class="panel"><h3>Sitemap files</h3><p class="fine">Main index: <b>${esc(SITE)}/${SM_FILES.index}</b>. Each file ≤ ${SM_MAX.toLocaleString()} URLs; project files are split automatically when over the limit.</p>
    ${names.map(n=>{const e=b.index.find(x=>x.name===n);return `<details class="seo-f"><summary><code>/${esc(n)}</code><span class="fine">${e?e.count+" URLs":"index"}</span></summary><pre class="code">${esc(b.files[n])}</pre><button class="btn btn-ghost btn-sm" data-dlf="${esc(n)}">Download</button></details>`}).join("")}
    <button class="btn btn-brand btn-sm" data-dl="sitemap" style="margin-top:10px">Download all sitemap files</button></section>
@@ -2747,15 +2777,15 @@ function seoIndexPanel(){
 const MEDIA_SLOTS={sv:{label:"Property management / co-living photo",where:"Home page, section \"Property management, after you get the keys\"",src:"/_blob/f4b77ddfabda507642bf77e368d0e7f6",alt:"Keluarga tersenyum menerima kunci rumah, pakar perkhidmatan co-living",altEn:"Smiling couple handing over house keys, co-living services experts",size:"Portrait, about 1100×1440"}};
 function mediaSrc(k){const s=S.settings||{};return s["m_"+k]||MEDIA_SLOTS[k].src}
 function mediaAlt(k){const s=S.settings||{},d=MEDIA_SLOTS[k];return L2(s["m_"+k+"Alt"]||d.alt,s["m_"+k+"AltEn"]||d.altEn)}
-function mediaSettingsHtml(s){return `<section class="panel" style="grid-column:1/-1"><h3>Site media</h3><p class="fine" style="margin-bottom:12px">Replace photos used on the public site. Upload, then press Save settings. Project photos are managed in Projects.</p>${Object.entries(MEDIA_SLOTS).map(([k,d])=>{const cur=s["m_"+k]||"";return `<div class="media-slot" data-mslot="${k}" style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;margin-bottom:12px"><div class="pop-thumb" data-mthumb style="width:96px;aspect-ratio:3/4"><img src="${esc(cur||d.src)}" alt=""></div><div style="flex:1;min-width:220px"><b style="font-size:14px">${esc(d.label)}</b><p class="fine">${esc(d.where)}. ${esc(d.size)}, JPG/PNG/WebP max 5MB.</p><input type="hidden" name="m_${k}" value="${esc(cur)}"><div style="margin:8px 0"><label class="btn btn-ghost btn-sm" ${S.assets?"":"aria-disabled=\"true\""}>📷 Upload photo<input type="file" class="m-file" accept="image/jpeg,image/png,image/webp" hidden ${S.assets?"":"disabled"}></label> <button type="button" class="btn btn-ghost btn-sm" data-mreset ${cur?"":"hidden"}>Use original photo</button> <span class="fine" data-mnote></span></div><div class="edgrid" style="grid-template-columns:1fr 1fr"><div class="field"><label for="m_${k}Alt">Alt text BM (for Google Images)</label><input id="m_${k}Alt" name="m_${k}Alt" maxlength="160" value="${esc(s["m_"+k+"Alt"]||"")}" placeholder="${esc(d.alt)}"></div><div class="field"><label for="m_${k}AltEn">Alt text EN</label><input id="m_${k}AltEn" name="m_${k}AltEn" maxlength="160" value="${esc(s["m_"+k+"AltEn"]||"")}" placeholder="${esc(d.altEn)}"></div></div></div></div>`}).join("")}</section>`}
+function mediaSettingsHtml(s){return `<section class="panel" style="grid-column:1/-1"><h3>Site media</h3><p class="fine" style="margin-bottom:12px">Replace photos used on the public site. Upload, then press Save settings. Project photos are managed in Projects.</p>${Object.entries(MEDIA_SLOTS).map(([k,d])=>{const cur=s["m_"+k]||"";return `<div class="media-slot" data-mslot="${k}" style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;margin-bottom:12px"><div class="pop-thumb" data-mthumb style="width:96px;aspect-ratio:3/4"><img src="${esc(cur||d.src)}" alt=""></div><div style="flex:1;min-width:220px"><b style="font-size:14px">${esc(d.label)}</b><p class="fine">${esc(d.where)}. ${esc(d.size)}, JPG/PNG/WebP max 5MB.</p><input type="hidden" name="m_${k}" value="${esc(cur)}"><div style="margin:8px 0"><label class="btn btn-ghost btn-sm" ${S.assets?"":"aria-disabled=\"true\""}>📷 Upload photo<input type="file" class="m-file" accept="image/jpeg,image/png,image/webp" hidden ${S.assets?"":"disabled"}></label> <button type="button" class="btn btn-ghost btn-sm" data-mreset ${cur?"":"hidden"}>Use original photo</button> <span class="fine" data-mnote></span></div><div class="edgrid two"><div class="field"><label for="m_${k}Alt">Alt text BM (for Google Images)</label><input id="m_${k}Alt" name="m_${k}Alt" maxlength="160" value="${esc(s["m_"+k+"Alt"]||"")}" placeholder="${esc(d.alt)}"></div><div class="field"><label for="m_${k}AltEn">Alt text EN</label><input id="m_${k}AltEn" name="m_${k}AltEn" maxlength="160" value="${esc(s["m_"+k+"AltEn"]||"")}" placeholder="${esc(d.altEn)}"></div></div></div></div>`}).join("")}</section>`}
 document.addEventListener("change",async e=>{if(!e.target.classList||!e.target.classList.contains("m-file"))return;const slot=e.target.closest("[data-mslot]"),f=e.target.files[0],note=slot.querySelector("[data-mnote]");if(!f||!S.assets)return;
   if(!/^image\/(jpeg|png|webp)$/.test(f.type)||f.size>5*1024*1024){note.textContent="Choose a JPG, PNG or WebP under 5MB.";return}
   note.textContent="Uploading…";try{const r=await S.assets.upload(f),u="/_blob/"+r.id;slot.querySelector("input[type=hidden]").value=u;slot.querySelector("[data-mthumb]").innerHTML=`<img src="${u}" alt="">`;slot.querySelector("[data-mreset]").hidden=false;note.textContent="Uploaded. Save settings to use it."}catch(x){note.textContent="Upload failed. Try again."}});
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-mreset]");if(!b)return;const slot=b.closest("[data-mslot]"),k=slot.dataset.mslot;slot.querySelector("input[type=hidden]").value="";slot.querySelector("[data-mthumb]").innerHTML=`<img src="${esc(MEDIA_SLOTS[k].src)}" alt="">`;b.hidden=true;slot.querySelector("[data-mnote]").textContent="Original photo will be used after you save."});
 function admSettings(){const s=S.settings||{};return `<form id="setForm" novalidate><div class="cms-grid" style="margin-top:0">
  <section class="panel"><h3>Contact</h3><div class="field"><label for="st_wa">WhatsApp number (starting with 60)</label><input id="st_wa" name="wa" inputmode="tel" value="${esc(WA)}"></div><p class="fine">Used for every WhatsApp button on the site.</p></section>
- <section class="panel"><h3>Loan calculator</h3><div class="edgrid" style="grid-template-columns:1fr 1fr"><div class="field"><label for="st_rate">Interest rate (% per year)</label><input id="st_rate" name="rate" type="number" step="0.05" min="1" max="10" value="${RATE}"></div><div class="field"><label for="st_age">Loan end age</label><input id="st_age" name="maxAge" type="number" min="60" max="75" value="${MAXAGE}"></div></div><p class="fine">Used for all instalment and loan tenure estimates on the site. Visitors cannot change this rate.</p></section>
- <section class="panel"><h3>Loan eligibility (DSR)</h3><p class="fine" style="margin-top:0">Set a DSR % for each net salary range. Each range runs from its “Salary from” amount up to the next range. Example: RM0 → 60%, RM3,001 → 70%.</p><div id="dsrBands">${BANDS.map(bandRowHtml).join("")}</div><button type="button" class="btn dsr-add" data-bandadd>+ Add salary range</button><div class="edgrid" style="grid-template-columns:1fr 1fr;margin-top:14px"><div class="field"><label for="st_stress">Stress test (+% on interest rate)</label><input id="st_stress" name="stress" type="number" step="0.05" min="0" max="3" value="${STRESS}"></div></div><p class="fine">Used by the eligibility calculator to work out the maximum loan, based on the buyer’s net monthly income.</p></section>
+ <section class="panel"><h3>Loan calculator</h3><div class="edgrid two"><div class="field"><label for="st_rate">Interest rate (% per year)</label><input id="st_rate" name="rate" type="number" step="0.05" min="1" max="10" value="${RATE}"></div><div class="field"><label for="st_age">Loan end age</label><input id="st_age" name="maxAge" type="number" min="60" max="75" value="${MAXAGE}"></div></div><p class="fine">Used for all instalment and loan tenure estimates on the site. Visitors cannot change this rate.</p></section>
+ <section class="panel"><h3>Loan eligibility (DSR)</h3><p class="fine" style="margin-top:0">Set a DSR % for each net salary range. Each range runs from its “Salary from” amount up to the next range. Example: RM0 → 60%, RM3,001 → 70%.</p><div id="dsrBands">${BANDS.map(bandRowHtml).join("")}</div><button type="button" class="btn dsr-add" data-bandadd>+ Add salary range</button><div class="edgrid two" style="margin-top:14px"><div class="field"><label for="st_stress">Stress test (+% on interest rate)</label><input id="st_stress" name="stress" type="number" step="0.05" min="0" max="3" value="${STRESS}"></div></div><p class="fine">Used by the eligibility calculator to work out the maximum loan, based on the buyer’s net monthly income.</p></section>
  <section class="panel" style="grid-column:1/-1"><h3>Site announcement bar</h3><div class="edgrid"><div class="field"><label for="st_ann">BM text (leave empty to hide)</label><input id="st_ann" name="ann" maxlength="140" value="${esc(s.ann||"")}"></div><div class="field"><label for="st_annEn">EN text</label><input id="st_annEn" name="annEn" maxlength="140" value="${esc(s.annEn||"")}"></div><div class="field"><label for="st_annLink">Link to project (optional)</label><select id="st_annLink" name="annLink"><option value="">None</option>${projects(true).map(p=>`<option value="${esc(p.slug)}" ${s.annLink===p.slug?"selected":""}>${esc(p.name)}</option>`).join("")}</select></div></div><p class="fine">Example: "M Mira launch now open, register your interest". Appears as an amber strip at the top of every page.</p></section>
  ${mediaSettingsHtml(s)}
  ${popSettingsHtml(s)}
@@ -3304,14 +3334,14 @@ function popSettingsHtml(s){
      <div class="pop-imgfield"><div class="pop-thumb" id="popThumb">${img?`<img src="${esc(img)}" alt="">`:"<span>No image</span>"}</div>
       <div><label class="btn btn-ghost btn-sm" ${S.assets?"":"aria-disabled=\"true\""}>📷 Upload image<input type="file" id="popFile" accept="image/jpeg,image/png,image/webp" hidden ${S.assets?"":"disabled"}></label> <button type="button" class="btn btn-ghost btn-sm" data-popimgdel ${img?"":"hidden"}>Remove</button><p class="fine" id="popImgNote">JPG/PNG/WebP, max 5MB. Best size 1200×800 (standard styles) or 1080×1350 (full-image style).</p></div>
       <input type="hidden" name="popImg" value="${esc(img)}"></div>
-     <div class="edgrid" style="grid-template-columns:1fr 1fr">
+     <div class="edgrid two">
       <div class="field"><label for="st_popTitle">BM title</label><input id="st_popTitle" name="popTitle" maxlength="70" value="${esc(c.popTitle)}" placeholder="e.g. Pelancaran M Aria, rebat RM20k"></div>
       <div class="field"><label for="st_popTitleEn">EN title</label><input id="st_popTitleEn" name="popTitleEn" maxlength="70" value="${esc(c.popTitleEn)}"></div>
       <div class="field"><label for="st_popMsg">BM message</label><textarea id="st_popMsg" name="popMsg" rows="3" maxlength="300">${esc(c.popMsg)}</textarea></div>
       <div class="field"><label for="st_popMsgEn">EN message</label><textarea id="st_popMsgEn" name="popMsgEn" rows="3" maxlength="300">${esc(c.popMsgEn)}</textarea></div>
      </div></div>
     <div class="pop-step"><h4><span>2</span>Action button</h4>
-     <div class="edgrid" style="grid-template-columns:1fr 1fr">
+     <div class="edgrid two">
       <div class="field"><label for="st_popAct">On click</label><select id="st_popAct" name="popAct">${o("wa","Open WhatsApp",c.popAct)}${o("proj","Open project page",c.popAct)}${o("enq","Go to enquiry form",c.popAct)}${o("url","External link",c.popAct)}${o("none","No button",c.popAct)}</select></div>
       <div class="field" data-popshow="proj"><label for="st_popSlug">Project</label><select id="st_popSlug" name="popSlug">${o("","– choose –",c.popSlug)}${projOptsAll.map(([v,l])=>o(v,esc(l),c.popSlug)).join("")}</select></div>
       <div class="field" data-popshow="url"><label for="st_popUrl">URL (https://…)</label><input id="st_popUrl" name="popUrl" value="${esc(c.popUrl)}" placeholder="https://"></div>
@@ -3322,14 +3352,14 @@ function popSettingsHtml(s){
      <div class="pop-styles">${[["modal","Centre","Card in the middle of the screen. Most prominent."],["sheet","Bottom sheet","Slides up from the bottom. Thumb-friendly on phones."],["corner","Corner","Small card in the corner. Unobtrusive."],["image","Full image","Poster only, click to act."]].map(([v,l,d])=>`<label class="pop-sty"><input type="radio" name="popStyle" value="${v}" ${c.popStyle===v?"checked":""}><span class="pop-ico pop-ico-${v}"><i></i></span><b>${l}</b><small>${d}</small></label>`).join("")}</div></div>
     <div class="pop-step"><h4><span>4</span>Where & when</h4>
      <div class="pop-checks"><label class="consent"><input type="checkbox" name="popHome" ${c.popHome?"checked":""}> Home page</label><label class="consent"><input type="checkbox" name="popProj" ${c.popProj?"checked":""}> Project pages</label></div>
-     <div class="edgrid" style="grid-template-columns:1fr 1fr">
+     <div class="edgrid two">
       <div class="field"><label for="st_popOnly">Which project pages</label><select id="st_popOnly" name="popOnly">${o("","All projects",c.popOnly)}${projOptsAll.map(([v,l])=>o(v,esc(l),c.popOnly)).join("")}</select></div>
       <div class="field"><label for="st_popTrig">Trigger</label><select id="st_popTrig" name="popTrig">${o("delay","After a few seconds",c.popTrig)}${o("scroll","After scrolling",c.popTrig)}${o("exit","On exit intent (desktop)",c.popTrig)}</select></div>
       <div class="field" data-popshow-trig="delay exit"><label for="st_popDelay">Wait (seconds)</label><input id="st_popDelay" name="popDelay" type="number" min="0" max="120" value="${num(c.popDelay)}"></div>
       <div class="field" data-popshow-trig="scroll"><label for="st_popScroll">After scrolling (%)</label><input id="st_popScroll" name="popScroll" type="number" min="5" max="95" value="${num(c.popScroll)||40}"></div>
      </div></div>
     <div class="pop-step"><h4><span>5</span>Frequency & schedule</h4>
-     <div class="edgrid" style="grid-template-columns:1fr 1fr">
+     <div class="edgrid two">
       <div class="field"><label for="st_popFreq">Show</label><select id="st_popFreq" name="popFreq">${o("once","Once per visitor",c.popFreq)}${o("session","Once per visit",c.popFreq)}${o("day","Once a day",c.popFreq)}${o("week","Once a week",c.popFreq)}${o("always","Every page view",c.popFreq)}</select></div>
       <div class="field"><label for="st_popMax">Max times per visitor (0 = no limit)</label><input id="st_popMax" name="popMax" type="number" min="0" max="50" value="${num(c.popMax)}"></div>
       <div class="field"><label for="st_popStart">Start (optional)</label><input id="st_popStart" name="popStart" type="date" value="${esc(c.popStart)}"></div>
