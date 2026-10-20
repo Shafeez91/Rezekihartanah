@@ -1106,8 +1106,25 @@ details.faq p{margin:8px 0 0;color:var(--muted)}
 /* project detail — refined sections */
 .blk h2{display:flex;align-items:center;gap:10px;letter-spacing:-.01em}
 .blk h2::before{content:"";width:4px;height:1.05em;border-radius:3px;background:linear-gradient(180deg,#F2B54F,var(--gold));flex:none}
+
+/* ---- Collapsible sections (About the project, Facilities) ---- */
+.rhc{scroll-margin-top:96px}
+.rhc .rhc-body{position:relative}
+.rhc.is-c .rhc-body{max-height:calc(5 * 1.7em * 1.05);overflow:hidden;-webkit-mask-image:linear-gradient(#000 62%,transparent);mask-image:linear-gradient(#000 62%,transparent)}
+.rhc.is-c .d-fac>li.rhc-more{display:none}
+.rhc-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin-top:12px;padding:0 18px;border-radius:999px;border:1.5px solid color-mix(in srgb,var(--gold) 55%,var(--line));background:var(--surface);color:var(--ink);font:700 14.5px var(--body);cursor:pointer;transition:background .15s ease,border-color .15s ease,transform .1s ease}
+.rhc-btn:hover{background:var(--gold-soft);border-color:var(--gold)}
+.rhc-btn:active{transform:scale(.98)}
+.rhc-btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.rhc-chev{width:18px;height:18px;color:var(--gold);transition:transform .2s ease}
+.rhc-btn[aria-expanded="true"] .rhc-chev{transform:rotate(180deg)}
+.rhc-btn[hidden]{display:none}
+.d-fac{grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr))}
+.d-fac li{min-height:52px;padding:11px 14px;line-height:1.35}
+@media (max-width:600px){.d-fac{grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr))}.d-fac li{font-size:13.5px;padding:10px 12px;gap:8px}}
+@media (prefers-reduced-motion:reduce){.rhc-chev,.rhc-btn{transition:none}}
 .d-cnt{font:700 12px/1 var(--body);color:var(--gold);background:var(--gold-soft);padding:5px 9px;border-radius:999px}
-dl.facts.fx{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr));gap:10px;border:0;border-radius:0;overflow:visible}
+dl.facts.fx{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:10px;border:0;border-radius:0;overflow:visible}
 dl.facts.fx div{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);min-width:0;transition:border-color .2s,transform .2s}
 dl.facts.fx div:nth-child(odd){border-right:1px solid var(--line)}
 dl.facts.fx div:hover{border-color:color-mix(in srgb,var(--gold) 45%,var(--line));transform:translateY(-1px)}
@@ -1131,7 +1148,8 @@ dl.facts.fx div.fx-hi dd{color:var(--gold);font:800 1.1rem/1.25 var(--display)}
 .kf dl.facts.fx div:hover{box-shadow:0 8px 20px rgba(10,20,50,.08)}
 .kf .fx-ic{background:var(--gold-soft);color:var(--gold)}
 .kf .fx-t dt{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-.kf .fx-t dd{margin-top:3px;font-weight:700}
+.kf .fx-t dd{margin-top:3px;font-weight:700;overflow-wrap:break-word;word-break:normal}
+.kf .fx-t{min-width:0}
 @media (max-width:520px){.kf-hero{grid-template-columns:1fr}.kf-hero div{padding:16px}.kf-hero div+div::before{left:16px;right:16px;top:0;bottom:auto;width:auto;height:1px}}
 .d-lead{font-size:1.05rem;line-height:1.7;padding:4px 0 4px 16px;border-left:3px solid color-mix(in srgb,var(--gold) 55%,transparent)}
 .faq{display:grid;gap:10px}.faq details{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:0 16px}.faq summary{cursor:pointer;list-style:none;font-weight:700;padding:14px 26px 14px 0;position:relative;line-height:1.35}.faq summary::-webkit-details-marker{display:none}.faq summary::after{content:"+";position:absolute;right:0;top:12px;font:700 1.3rem/1 var(--display);color:var(--gold)}.faq details[open] summary::after{content:"–"}.faq details p{margin:0 0 14px;color:var(--muted);line-height:1.6}
@@ -2313,12 +2331,12 @@ function viewDetail(slug){
      <div class="blk kf" style="margin-top:0"><div class="kf-head"><h2>${t("d_facts")}</h2><span class="kf-sub">${L2("Ringkasan projek sekilas pandang","The project at a glance")}</span></div>
       ${(()=>{const pr=priceRange(p),mi=rmFull(monthlyOf(p));return pr||mi?`<div class="kf-hero">${pr?`<div><span class="kf-hic" aria-hidden="true">${dIco("tag")}</span><small>${t("from")}</small><b>${esc(pr)}</b></div>`:""}${mi?`<div><span class="kf-hic" aria-hidden="true">${dIco("cal")}</span><small>${t("k_inst")}</small><b>${esc(mi)}<i>${L2("/bulan","/mo")}</i></b></div>`:""}</div>`:""})()}
       <dl class="facts fx">${fact("k_dev",p.dev)}${fact("k_type",t("t_"+p.type))}${fact("k_ten",p.tenure?t(p.tenure):"")}${fact("k_size",sizeTxt(p))}${fact("k_rooms",bedTxt(p))}${fact("k_units",p.units?p.units.toLocaleString():"")}${fact("k_maint",p.maint?"RM"+p.maint+" psf":"")}${fact("k_comp",p.completion)}${fact("k_furn",p.furn?t(p.furn):"")}${fact("k_status",t("st_"+p.status))}</dl></div>
-     <div class="blk prose"><h2>${t("d_about")}</h2><p class="d-lead">${esc(p.summary)}</p></div>
+     <div class="blk prose rhc" data-rhc="about" id="sec-about"><h2>${t("d_about")}</h2><div class="rhc-body" id="rhc-about-body"><p class="d-lead">${esc(p.summary)}</p></div><button type="button" class="rhc-btn" data-rhc-btn aria-controls="rhc-about-body" aria-expanded="true" hidden><span class="rhc-lbl"></span><svg class="rhc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div>
      ${locSection(p)}
      ${(p.hl||[]).length?`<div class="blk"><h2>${t("d_hl")}</h2><ol class="d-hl">${p.hl.map((h,i)=>`<li><span class="d-hl-n">${String(i+1).padStart(2,"0")}</span><span>${esc(h)}</span></li>`).join("")}</ol></div>`:""}
      ${towerBlock(p,tw)}
      ${lay.length?`<div class="blk" id="laySec"><h2>${t("d_lay")}</h2>${layoutCards(p,lay)}</div>`:""}
-     ${(p.fac||[]).length?`<div class="blk"><h2>${t("d_fac")} <small class="d-cnt">${p.fac.length}</small></h2><ul class="d-fac">${p.fac.map(f=>`<li><span class="d-fac-ic" aria-hidden="true">${dIco("check")}</span>${esc(f)}</li>`).join("")}</ul></div>`:""}
+     ${(p.fac||[]).length?`<div class="blk rhc" data-rhc="fac" id="sec-fac"><h2>${t("d_fac")} <small class="d-cnt">${p.fac.length}</small></h2><ul class="d-fac" id="rhc-fac-body">${p.fac.map(f=>`<li><span class="d-fac-ic" aria-hidden="true">${dIco("check")}</span>${esc(f)}</li>`).join("")}</ul><button type="button" class="rhc-btn" data-rhc-btn aria-controls="rhc-fac-body" aria-expanded="true" hidden><span class="rhc-lbl"></span><svg class="rhc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div>`:""}
      ${projElig(p)}
     </div>
     <aside class="sticky">
@@ -3124,6 +3142,25 @@ function locSection(p){
     </div>
    </div></div>`;
 }
+
+/* ---- Collapsible "About the project" & "Facilities" (rhc = Rezeki collapsible). Content always stays in the page (SEO);
+   open/closed state is remembered per project while browsing. ---- */
+const RHC_OPEN=new Set();
+function rhcLabel(kind,open){return kind==="about"?(open?L2("Paparkan kurang","Show less"):L2("Baca selanjutnya","Read more")):(open?L2("Paparkan kurang kemudahan","Show fewer facilities"):L2("Lihat semua kemudahan","View all facilities"))}
+function rhcFacPreview(ul){const cols=(getComputedStyle(ul).gridTemplateColumns||"").split(" ").filter(Boolean).length||1;
+  return cols>=5?cols:cols===4?8:cols===3?6:cols===2?6:5}
+function initRhc(){const slug=(route().slug||"");
+  document.querySelectorAll(".rhc[data-rhc]").forEach(sec=>{const kind=sec.dataset.rhc,key=slug+":"+kind,btn=sec.querySelector("[data-rhc-btn]");if(!btn)return;
+    let long=false;
+    if(kind==="about"){const body=sec.querySelector(".rhc-body"),lead=body.querySelector(".d-lead");sec.classList.remove("is-c");const lh=parseFloat(getComputedStyle(lead).lineHeight)||28;long=body.scrollHeight>lh*6.2}
+    else{const ul=sec.querySelector(".d-fac");sec.classList.remove("is-c");const items=[...ul.children],n=rhcFacPreview(ul);items.forEach((li,i)=>li.classList.toggle("rhc-more",i>=n));long=items.length>n}
+    btn.hidden=!long;const open=!long||RHC_OPEN.has(key);
+    sec.classList.toggle("is-c",!open);btn.setAttribute("aria-expanded",String(open));btn.querySelector(".rhc-lbl").textContent=rhcLabel(kind,open)});
+}
+document.addEventListener("click",e=>{const btn=e.target.closest("[data-rhc-btn]");if(!btn)return;const sec=btn.closest(".rhc[data-rhc]"),kind=sec.dataset.rhc,key=(route().slug||"")+":"+kind;
+  const open=sec.classList.contains("is-c");sec.classList.toggle("is-c",!open);btn.setAttribute("aria-expanded",String(open));btn.querySelector(".rhc-lbl").textContent=rhcLabel(kind,open);
+  if(open)RHC_OPEN.add(key);else{RHC_OPEN.delete(key);if(sec.getBoundingClientRect().top<70)sec.scrollIntoView({block:"start",behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}});
+let rhcRz=0,rhcW=innerWidth;addEventListener("resize",()=>{if(innerWidth===rhcW)return;rhcW=innerWidth;clearTimeout(rhcRz);rhcRz=setTimeout(()=>{if(document.querySelector(".rhc[data-rhc]"))initRhc()},150)});
 function initLoc(){
   const sec=$("#locSec");if(!sec)return;const tip=$("#locTip");
   const focus=i=>{sec.querySelectorAll("[data-pt],[data-li],[data-ln]").forEach(el=>el.classList.toggle("on",String(el.dataset.pt??el.dataset.li??el.dataset.ln)===String(i)));
@@ -3583,7 +3620,7 @@ function render(){
   {const s=document.getElementById("ld-ssr");if(s)s.remove()} // server-rendered structured data is replaced by the live page's own
   siteLd();const {a,b}=route(),app=$("#app"),reBud=!!$("#budDlg")?.open;if($("#cmpDlg").open)$("#cmpDlg").close();
   document.documentElement.lang=S.lang==="ms"?"ms":"en";document.body.classList.toggle("adm",a==="admin");
-  if(a==="p"){const rs=resolveSlug(projects(true),b,S.isAdmin);if(rs.status===301){navTo("#/p/"+rs.p.slug,true);return}app.innerHTML=viewDetail(b);if(rs.status===200)app.insertAdjacentHTML("beforeend",relatedPostsHtml(rs.p.slug));const p=rs.status===200?rs.p:null;if(p){const L=S.lang==="en"?"en":"ms",s=seoFor(p,L);setHead({title:s.title,desc:s.desc,canonical:s.url,ld:s.ld,image:p.image,alts:hreflangAlts(p),robots:p.noindex||p.published===false||(L==="en"&&!enIndexable(p))?"noindex, follow":""})}else setHead({title:"Projek tidak dijumpai | Rezeki Hartanah",desc:"Projek ini tiada atau telah dikeluarkan.",canonical:SITE+"/",ld:null,robots:"noindex, follow"});initCalc();initPElig();initLoc();initEnq();window.scrollTo(0,0)}
+  if(a==="p"){const rs=resolveSlug(projects(true),b,S.isAdmin);if(rs.status===301){navTo("#/p/"+rs.p.slug,true);return}app.innerHTML=viewDetail(b);if(rs.status===200)app.insertAdjacentHTML("beforeend",relatedPostsHtml(rs.p.slug));const p=rs.status===200?rs.p:null;if(p){const L=S.lang==="en"?"en":"ms",s=seoFor(p,L);setHead({title:s.title,desc:s.desc,canonical:s.url,ld:s.ld,image:p.image,alts:hreflangAlts(p),robots:p.noindex||p.published===false||(L==="en"&&!enIndexable(p))?"noindex, follow":""})}else setHead({title:"Projek tidak dijumpai | Rezeki Hartanah",desc:"Projek ini tiada atau telah dikeluarkan.",canonical:SITE+"/",ld:null,robots:"noindex, follow"});initCalc();initPElig();initLoc();initRhc();initEnq();window.scrollTo(0,0)}
   else if(a==="kawasan"){const ps=projects(),area=uniq(ps.map(p=>p.area)).find(x=>areaSlug(x)===b)||b,list=ps.filter(p=>p.area===area);
     app.innerHTML=viewList(`${t("area_t")} ${area}`,`${list.length} ${t("area_s")}`,list,"",area,areaIntro(area,list));
     setHead({title:[`Hartanah di ${area} (${list.length} Projek) | Rezeki Hartanah`,`Hartanah di ${area}: ${list.length} Projek Baharu & Siap`,`Projek Hartanah di ${area} (${list.length})`].find(x=>x.length<=60)||clip(`Hartanah di ${area}`,60),desc:`Senarai ${list.length} projek hartanah di ${area}: harga, saiz, ansuran bulanan dan pembiayaan. Bandingkan dan tanya terus melalui WhatsApp.`,canonical:areaUrl(area),robots:list.length?"":"noindex, follow",ld:{"@context":"https://schema.org","@type":"CollectionPage","name":`Hartanah di ${area}`,"url":areaUrl(area),"inLanguage":"ms-MY","isPartOf":{"@id":SITE+"/#site"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Hartanah","item":SITE+"/"},{"@type":"ListItem","position":2,"name":area,"item":areaUrl(area)}]},"mainEntity":{"@type":"ItemList","itemListElement":list.map((p,i)=>({"@type":"ListItem","position":i+1,"url":projUrl(p),"name":p.name}))}}});window.scrollTo(0,0)}
