@@ -1494,6 +1494,27 @@ html:has(#edForm){scroll-padding-top:72px;scroll-padding-bottom:190px}
 @container (max-width:560px){.lr-thumb{height:110px;max-width:160px}}
 @media (max-width:440px){.ed-bar [data-cancel]{display:none}.ed-bar .btn-brand{margin-left:auto}}
 
+/* ===== SEO › Location pins ===== */
+.pin-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.pin-head h3{margin:0}
+.pin-prog{height:6px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin-top:10px}.pin-prog i{display:block;height:100%;background:linear-gradient(90deg,#F2B54F,#1FAF5A);transition:width .3s ease}
+.pin-tools{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-bottom:10px}
+.pin-q{flex:1 1 220px;min-width:0}.pin-q input{width:100%;min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 15px var(--body)}
+.pin-fs{flex-wrap:wrap}.pin-fs button .n{opacity:.7;font-weight:600}
+.pin-nm{display:block}.pin-area{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+.pin-note{white-space:normal!important;font-size:13px;color:var(--muted);min-width:200px}
+.pin-acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.pin-rm{color:var(--danger)}
+#pinTbl{table-layout:fixed;width:100%}
+#pinTbl th:nth-child(1){width:30%}#pinTbl th:nth-child(2){width:120px}#pinTbl th:nth-child(4){width:290px}
+#pinTbl td{overflow-wrap:break-word;white-space:normal;vertical-align:middle}
+#pinTbl .pin-ed p{white-space:normal}
+@container (max-width:760px){.cms .tbl.stack #pinTbl tr{grid-template-columns:minmax(0,1fr)}.cms .tbl.stack #pinTbl td{grid-column:1/-1}.cms .tbl.stack #pinTbl td[data-label="Status"]::before{display:none}.cms .tbl.stack #pinTbl td[data-label="Note"]::before{display:none}}
+.pin-ed-row>td{background:color-mix(in srgb,var(--gold) 7%,var(--surface));padding:14px!important}
+.pin-ed label{display:block;margin-bottom:6px}
+.pin-ed-row2{display:flex;gap:8px;flex-wrap:wrap}.pin-ed-row2 input{flex:1 1 260px;min-width:0;min-height:44px;padding:0 12px;border-radius:12px;border:1.5px solid var(--gold);background:var(--surface);color:var(--ink);font:500 15px var(--body)}
+.pin-flash{animation:pinflash 1.6s ease}@keyframes pinflash{0%{background:color-mix(in srgb,#1FAF5A 22%,transparent)}100%{background:transparent}}
+@media (prefers-reduced-motion:reduce){.pin-flash{animation:none}.pin-prog i{transition:none}}
+@container (max-width:760px){.cms .tbl.stack tr.pin-ed-row{display:block;padding:0;border:0;background:none}.cms .tbl.stack tr.pin-ed-row>td{display:block;border-radius:12px;border:1.5px solid var(--gold)}.pin-acts{justify-content:flex-start}.pin-note{min-width:0}}
+
 /* =====================================================================
    CMS RESPONSIVE LAYER: one place for phone / iPad / desktop behaviour.
    Phone ≤600 · iPad 601–1023 (and any touch screen) · desktop ≥1024
@@ -2572,7 +2593,7 @@ async function apLoad(){if(!S.isAdmin)return;try{
  if(route().a==="admin"){if(!apTyping())render();else apBadgeRefresh()}}
 /* Background refreshes (appointments every 60 s, etc.) must never redraw the screen while the person is editing.
    The project/article editors are drawn from the last loaded copy, so a redraw there would wipe unsaved input. */
-function cmsBusy(){const ae=document.activeElement;return route().a==="admin"&&(admTab==="editor"||admTab==="post"||!!document.querySelector("dialog[open]")||!!(ae&&ae.closest&&ae.closest(".cms")&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))}
+function cmsBusy(){const ae=document.activeElement;return route().a==="admin"&&(admTab==="editor"||admTab==="post"||!!document.querySelector("[data-pin-form].dirty")||!!document.querySelector("dialog[open]")||!!(ae&&ae.closest&&ae.closest(".cms")&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))}
 function apTyping(){return cmsBusy()}
 function apBadgeRefresh(){const n=apBadge();document.querySelectorAll('[data-tab="appts"]').forEach(b=>{let em=b.querySelector("em");if(n){if(!em){em=document.createElement("em");b.appendChild(em)}em.textContent=n}else if(em)em.remove()})}
 function apStart(){if(AP.timer)return;apLoad();AP.timer=setInterval(()=>{if(!document.hidden)apLoad()},60000)}
@@ -3055,7 +3076,7 @@ async function saveProject(e){
     if(S.sample&&needsTr(o)){out.className="msg";out.textContent="Translating content into BM & English…";try{o=await translateProject(o)}catch(x){toast("Translation failed; project saved without translation")}}
     out.className="msg";out.textContent="Saving to the database…";
     edStatus("saving");
-    if(await putProject(o,o.published?"Saved · live on the website":"Saved as draft · not public")){edDraftClear(edIsNew?"new":o.slug);if(!edIsNew&&editing&&editing.slug!==o.slug)edDraftClear(editing.slug);edDirty=false;editing=null;admTab="projects";render();window.scrollTo(0,0)}
+    if(await putProject(o,o.published?"Saved · live on the website":"Saved as draft · not public")){edDraftClear(edIsNew?"new":o.slug);if(!edIsNew&&editing&&editing.slug!==o.slug)edDraftClear(editing.slug);edDirty=false;editing=null;edReturnTo(o.slug)}
     else{edStatus("failed");out.className="msg err";out.textContent="Not saved. Check your connection and try again; nothing was lost in this form."}
   }finally{SAVING=false;btns.forEach((b,i)=>{if(b.isConnected){b.disabled=false;b.textContent=lbl[i]}})}
 }
@@ -3161,14 +3182,68 @@ const gmDir=(dest,origin)=>"https://www.google.com/maps/dir/?api=1"+(origin?"&or
 const gmSearch=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
 const EMBED_MAP=!/claude/.test(location.hostname); // real Google map on the live site; drawn map in the claude.ai preview (frames are blocked there)
 /* address line: a real address only; short labels like "Pv22" (a repeat of the name) fall back to area, state */
-/* CMS: which projects need a location pin, have an invalid one, or share a spot (flagged for review, never auto-rejected) */
+/* ===== SEO › Location pins: inline add / edit / remove, search & filter. Updates only the affected row — no page change, no scroll. ===== */
+const PINF={q:"",f:""},PIN_BUSY=new Set();
+function pinState(p,ps){const g=geoOf({geo:p.geo,mapUrl:p.mapUrl}),iss=geoIssue(p.geo),dup=g?ps.filter(o=>o.slug!==p.slug&&(()=>{const g1=geoOf({geo:o.geo,mapUrl:o.mapUrl});return g1&&Math.abs(g1.lat-g.lat)<0.0003&&Math.abs(g1.lng-g.lng)<0.0003})()).map(o=>o.name):[];
+  return {g,iss,dup,st:iss?"invalid":!g?"missing":dup.length?"shared":"ok",src:g?(p.geo&&!iss?"pin":"link"):""}}
+const PIN_LBL={invalid:["Invalid pin","off"],missing:["No pin","gold"],shared:["Shared spot","gold"],ok:["Pin set","on"]};
+function pinRowHtml(p,ps){const s=pinState(p,ps),[l,c]=PIN_LBL[s.st];
+  const note=s.st==="invalid"?esc(s.iss):s.st==="missing"?`Explore buttons search the ${esc(p.area||"")} area only`:s.st==="shared"?`Same spot as ${esc(s.dup.join(", "))}. Fine if one site`:`Centred on ${s.g.lat.toFixed(5)}, ${s.g.lng.toFixed(5)}${s.src==="link"?" (from the Google Maps link)":""}`;
+  const acts=s.st==="missing"?`<button type="button" class="btn btn-brand btn-sm" data-pin-edit="${esc(p.slug)}">Add pin</button>`
+    :`<button type="button" class="btn btn-ghost btn-sm" data-pin-edit="${esc(p.slug)}">Edit pin</button>${s.g?`<a class="btn btn-ghost btn-sm" href="https://www.google.com/maps/search/?api=1&query=${s.g.lat},${s.g.lng}" target="_blank" rel="noopener noreferrer" aria-label="Check ${esc(p.name)} on Google Maps">Check map ↗</a>`:""}${p.geo?`<button type="button" class="btn btn-ghost btn-sm pin-rm" data-pin-del="${esc(p.slug)}">Remove</button>`:""}`;
+  return `<tr data-pin-row="${esc(p.slug)}" data-pin-st="${s.st}" data-pin-name="${esc((p.name+" "+(p.area||"")).toLowerCase())}"><td data-label="Project"><b class="pin-nm">${esc(p.name)}</b><small class="pin-area">${esc([p.area,p.state].filter(Boolean).join(", "))}</small></td><td data-label="Status"><span class="pill ${c}">${l}</span></td><td data-label="Note" class="pin-note">${note}</td><td data-label="" class="tbl-act"><div class="pin-acts">${acts}</div></td></tr>`}
+function pinFormRow(p){const cur=p.geo||(/^https?:\/\/(www\.)?google\.[^/]+\/maps/i.test(p.mapUrl||"")?p.mapUrl:"");
+  return `<tr class="pin-ed-row" data-pin-ed-for="${esc(p.slug)}"><td colspan="4"><form class="pin-ed" data-pin-form="${esc(p.slug)}" novalidate>
+   <label for="pin_${esc(p.slug)}"><b>Pin for ${esc(p.name)}</b></label>
+   <div class="pin-ed-row2"><input id="pin_${esc(p.slug)}" name="v" autocomplete="off" inputmode="text" value="${esc(cur)}" placeholder="3.20612, 101.72851  or a full google.com/maps link" aria-describedby="pinh_${esc(p.slug)} pinm_${esc(p.slug)}">
+   <button type="submit" class="btn btn-brand btn-sm">Save pin</button><button type="button" class="btn btn-ghost btn-sm" data-pin-cancel="${esc(p.slug)}">Cancel</button></div>
+   <p class="fine" id="pinh_${esc(p.slug)}" style="margin:6px 0 0">Google Maps app: <b>long-press exactly on the building</b> › copy the numbers. Or in Safari, open the place on google.com/maps and copy the full address-bar link. <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([p.name,p.area,p.state].filter(Boolean).join(", "))}" target="_blank" rel="noopener noreferrer">Find it on Google Maps ↗</a></p>
+   <p class="msg" id="pinm_${esc(p.slug)}" role="alert"></p></form></td></tr>`}
+function pinParse(v){v=String(v||"").trim();if(!v)return {err:"Paste the pin numbers or a full Google Maps link."};
+  if(/^https?:\/\//i.test(v)){if(/maps\.app\.goo\.gl|goo\.gl\/maps/i.test(v))return {err:"Short share links (maps.app.goo.gl) don't contain the numbers. Use long-press › copy the numbers, or a full google.com/maps link."};
+    const g=geoOf({mapUrl:v});return g?{patch:{mapUrl:v,geo:""},g}:{err:"This link doesn't contain a location. Open the place on google.com/maps and copy the full address-bar link."}}
+  const iss=geoIssue(v);if(iss)return {err:iss};const g=geoOf({geo:v});return g?{patch:{geo:`${g.lat}, ${g.lng}`},g}:{err:"Use the format 3.20612, 101.72851."}}
+function pinHeadUpdate(){const tb=document.querySelector("#pinTbl tbody");if(!tb)return;const rows=[...tb.querySelectorAll("[data-pin-row]")],n=k=>rows.filter(r=>r.dataset.pinSt===k).length,pin=n("ok")+n("shared");
+  const h=document.getElementById("pinCount");if(h)h.textContent=`${pin} of ${rows.length} pinned`;const bar=document.getElementById("pinBar");if(bar)bar.style.width=(rows.length?Math.round(pin/rows.length*100):0)+"%";
+  for(const [k,c] of [["",rows.length],["missing",n("missing")+n("invalid")],["pinned",pin],["shared",n("shared")]]){const b=document.querySelector(`[data-pin-f="${k}"] .n`);if(b)b.textContent=c}}
+function pinApplyFilter(){const q=PINF.q.trim().toLowerCase();document.querySelectorAll("#pinTbl [data-pin-row]").forEach(r=>{const st=r.dataset.pinSt,okF=!PINF.f||(PINF.f==="missing"?st==="missing"||st==="invalid":PINF.f==="pinned"?st==="ok"||st==="shared":st===PINF.f);
+  const show=okF&&(!q||r.dataset.pinName.includes(q));r.hidden=!show;const ed=r.nextElementSibling;if(ed&&ed.classList.contains("pin-ed-row"))ed.hidden=!show});
+  const vis=document.querySelectorAll("#pinTbl [data-pin-row]:not([hidden])").length,em=document.getElementById("pinEmpty");if(em)em.hidden=vis>0;
+  document.querySelectorAll("[data-pin-f]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.pinF===PINF.f)))}
 function locAuditPanel(){const ps=projects(true).filter(p=>!p.deleted&&p.published!==false);
-  const rows=ps.map(p=>{const g=geoOf({geo:p.geo,mapUrl:p.mapUrl}),iss=geoIssue(p.geo),dup=g?ps.filter(o=>o.slug!==p.slug&&(()=>{const g1=geoOf({geo:o.geo,mapUrl:o.mapUrl});return g1&&Math.abs(g1.lat-g.lat)<0.0003&&Math.abs(g1.lng-g.lng)<0.0003})()).map(o=>o.name):[];
-    return {p,st:iss?"invalid":!g?"missing":dup.length?"shared":"ok",iss,dup}}).sort((a,b)=>["invalid","missing","shared","ok"].indexOf(a.st)-["invalid","missing","shared","ok"].indexOf(b.st)||a.p.name.localeCompare(b.p.name));
-  const n=k=>rows.filter(r=>r.st===k).length,lbl={invalid:["Invalid pin","off"],missing:["No pin","gold"],shared:["Shared spot","gold"],ok:["Pin set","on"]};
-  return `<section class="panel"><h3>Location pins <span class="fine">· ${n("ok")+n("shared")} of ${rows.length} projects pinned</span></h3>
-   <p class="fine" style="margin:0 0 10px">The “Explore around” buttons (schools, hospitals, mosques…) search around the project's exact pin. Without a pin they can only search the general area, and say so on the page. To add one: Google Maps app › <b>long-press exactly on the building</b> › copy the numbers › paste them into the project's <b>Pin coordinates</b>.</p>
-   <div class="tbl stack"><table><thead><tr><th>Project</th><th>Status</th><th>Note</th><th></th></tr></thead><tbody>${rows.map(r=>`<tr><td data-label="Project">${esc(r.p.name)}</td><td data-label="Status"><span class="pill ${lbl[r.st][1]}">${lbl[r.st][0]}</span></td><td data-label="Note" style="white-space:normal;font-size:13px;color:var(--muted)">${r.st==="invalid"?esc(r.iss):r.st==="missing"?"Explore buttons search the "+esc(r.p.area||"")+" area only":r.st==="shared"?"Same spot as "+esc(r.dup.join(", "))+". Fine if one site":"Searches are centred on this pin"}</td><td data-label="" class="tbl-act">${r.st==="ok"?"":`<button class="btn btn-ghost btn-sm" data-edit="${esc(r.p.slug)}">Add pin</button>`}</td></tr>`).join("")}</tbody></table></div></section>`}
+  const order=["invalid","missing","shared","ok"],rows=ps.map(p=>({p,s:pinState(p,ps)})).sort((a,b)=>order.indexOf(a.s.st)-order.indexOf(b.s.st)||a.p.name.localeCompare(b.p.name));
+  const n=k=>rows.filter(r=>r.s.st===k).length,pin=n("ok")+n("shared");
+  return `<section class="panel pin-panel" id="pinPanel"><div class="pin-head"><h3>Location pins</h3><span class="pill on" id="pinCount">${pin} of ${rows.length} pinned</span></div>
+   <div class="pin-prog" aria-hidden="true"><i id="pinBar" style="width:${rows.length?Math.round(pin/rows.length*100):0}%"></i></div>
+   <p class="fine" style="margin:8px 0 12px">The “Explore around” buttons (schools, hospitals, mosques…) search around each project's exact pin. Without one they search the general area, and say so on the page. Add or fix pins right here: nothing else on this page changes.</p>
+   <div class="pin-tools"><label class="pin-q"><span class="sr">Search projects</span><input type="search" id="pinQ" value="${esc(PINF.q)}" placeholder="Search projects…" autocomplete="off"></label>
+    <div class="lseg pin-fs" role="group" aria-label="Filter">${[["","All",rows.length],["missing","No pin",n("missing")+n("invalid")],["pinned","Pinned",pin],["shared","Shared spot",n("shared")]].map(([k,t,c])=>`<button type="button" data-pin-f="${k}" aria-pressed="${PINF.f===k}">${t} <span class="n">${c}</span></button>`).join("")}</div></div>
+   <div class="tbl stack"><table id="pinTbl"><thead><tr><th>Project</th><th>Status</th><th>Note</th><th></th></tr></thead><tbody>${rows.map(r=>pinRowHtml(r.p,ps)).join("")}</tbody></table></div>
+   <p class="fine" id="pinEmpty" hidden>No projects match.</p></section>`}
+document.addEventListener("click",e=>{let b;
+  if((b=e.target.closest("[data-pin-edit]"))){e.preventDefault();const slug=b.dataset.pinEdit,p=bySlugAll(slug),row=document.querySelector(`[data-pin-row="${CSS.escape(slug)}"]`);if(!p||!row)return;
+    const open=row.nextElementSibling&&row.nextElementSibling.classList.contains("pin-ed-row");if(open){row.nextElementSibling.querySelector("input").focus({preventScroll:true});return}
+    row.insertAdjacentHTML("afterend",pinFormRow(p));const inp=row.nextElementSibling.querySelector("input");inp.focus({preventScroll:true});return}
+  if((b=e.target.closest("[data-pin-cancel]"))){const r=b.closest(".pin-ed-row");if(r){const prev=r.previousElementSibling;r.remove();prev&&prev.querySelector("[data-pin-edit]")?.focus({preventScroll:true})}return}
+  if((b=e.target.closest("[data-pin-f]"))){PINF.f=b.dataset.pinF;pinApplyFilter();return}
+  if((b=e.target.closest("[data-pin-del]"))){const slug=b.dataset.pinDel,p=bySlugAll(slug);if(!p)return;const viaLink=geoOf({mapUrl:p.mapUrl});
+    if(!confirm(`Remove the pin for “${p.name}”?${viaLink?" Its Google Maps link also contains a location, so the project will still use that.":" Its Explore buttons will go back to searching the area."}`))return;pinSave(slug,{geo:""},b)}});
+document.addEventListener("input",e=>{if(e.target.id==="pinQ"){PINF.q=e.target.value;pinApplyFilter();return}
+  const f=e.target.closest&&e.target.closest("[data-pin-form]");if(f){f.classList.add("dirty");const m=f.querySelector(".msg"),r=pinParse(e.target.value);m.className="msg"+(r.err&&e.target.value.trim().length>6?" err":"");m.textContent=r.err?(e.target.value.trim().length>6?r.err:""):`✓ ${r.g.lat.toFixed(5)}, ${r.g.lng.toFixed(5)}: ready to save`}});
+document.addEventListener("submit",e=>{const f=e.target.closest&&e.target.closest("[data-pin-form]");if(!f)return;e.preventDefault();const slug=f.dataset.pinForm,v=f.querySelector("input").value,r=pinParse(v),m=f.querySelector(".msg");
+  if(r.err){m.className="msg err";m.textContent=r.err;f.querySelector("input").focus({preventScroll:true});return}pinSave(slug,r.patch,f.querySelector(".btn-brand"))});
+async function pinSave(slug,patch,btn){if(PIN_BUSY.has(slug))return;const p=bySlugAll(slug);if(!p)return;PIN_BUSY.add(slug);const lbl=btn&&btn.textContent;if(btn){btn.disabled=true;btn.textContent="Saving…"}
+  const nx={...p,...patch};let ok=false;try{ok=await putProject(nx,null)}finally{PIN_BUSY.delete(slug);if(btn&&btn.isConnected){btn.disabled=false;btn.textContent=lbl}}
+  const row=document.querySelector(`[data-pin-row="${CSS.escape(slug)}"]`),ed=row&&row.nextElementSibling&&row.nextElementSibling.classList.contains("pin-ed-row")?row.nextElementSibling:null;
+  if(!ok){if(ed){const m=ed.querySelector(".msg");m.className="msg err";m.textContent="Not saved. Check your connection and try again; what you typed is still here."}return}
+  if(S.remote&&S.remote.set)S.remote.set(slug,nx);const ps=projects(true).filter(q=>!q.deleted&&q.published!==false);
+  if(row){if(ed)ed.remove();const tmp=document.createElement("tbody");tmp.innerHTML=pinRowHtml(bySlugAll(slug)||nx,ps);const nr=tmp.firstElementChild;row.replaceWith(nr);nr.classList.add("pin-flash");nr.querySelector("[data-pin-edit]")?.focus({preventScroll:true})}
+  pinHeadUpdate();pinApplyFilter();toast(patch.geo===""&&!patch.mapUrl?`Pin removed for ${p.name}`:`Pin saved for ${p.name} · Explore buttons now centre on it`)}
+/* the editor returns to where it was opened from (SEO list or Projects), at the same project */
+let ED_RETURN={tab:"projects",y:0,slug:""};
+function edReturnTo(slug){const r=ED_RETURN||{tab:"projects",y:0};admTab=r.tab||"projects";render();
+  const el=slug&&(document.querySelector(`[data-pin-row="${CSS.escape(slug)}"]`)||document.querySelector(`.cms-main [data-edit="${CSS.escape(slug)}"]`)?.closest(".prow,tr,article,li"));
+  if(el){el.scrollIntoView({block:"center"});el.classList.add("pin-flash")}else window.scrollTo(0,r.y||0)}
 function addrLine(p){const a=String(p.addr||"").trim(),nm=String(p.name||"").split("@")[0].trim().toLowerCase();return a.length>=12&&!nm.includes(a.toLowerCase())?a:[p.area,p.state].filter(Boolean).join(", ")}
 function locSection(p){
   const g=geoOf(p),near=nearOf(p),dest=locDest(p),open=/^https:\/\/(www\.)?(google\.[a-z.]+\/maps|maps\.google\.[a-z.]+|maps\.app\.goo\.gl|goo\.gl\/maps)/.test(p.mapUrl||"")?p.mapUrl:gmSearch(g?dest:[p.name,p.area,p.state].filter(Boolean).join(", "));
@@ -4055,10 +4130,10 @@ document.addEventListener("click",async e=>{
   if(el.id==="themeBtn"){const r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;r.dataset.theme=dark?"light":"dark";store.set("theme",r.dataset.theme);return}
   // admin
   if(d.tab){if(admTab==="editor"&&edDirty&&!confirm("Discard unsaved changes?"))return;edDirty=false;admTab=d.tab;slugTouched=false;if(d.tab!=="editor")editing=null;render();window.scrollTo(0,0);return}
-  if(d.new!==undefined){if(admTab==="editor"&&edDirty&&!confirm("Discard unsaved changes?"))return;editing=null;edIsNew=true;edDirty=false;slugTouched=false;admTab="editor";render();window.scrollTo(0,0);return}
-  if(d.edit){const p=bySlugAll(d.edit);if(!p)return;editing=JSON.parse(JSON.stringify(p));edIsNew=false;edDirty=false;slugTouched=false;admTab="editor";render();window.scrollTo(0,0);return}
+  if(d.new!==undefined){if(admTab==="editor"&&edDirty&&!confirm("Discard unsaved changes?"))return;ED_RETURN={tab:"projects",y:0,slug:""};editing=null;edIsNew=true;edDirty=false;slugTouched=false;admTab="editor";render();window.scrollTo(0,0);return}
+  if(d.edit){const p=bySlugAll(d.edit);if(!p)return;ED_RETURN={tab:["projects","seo","overview"].includes(admTab)?admTab:"projects",y:scrollY,slug:d.edit};editing=JSON.parse(JSON.stringify(p));edIsNew=false;edDirty=false;slugTouched=false;admTab="editor";render();window.scrollTo(0,0);return}
   if(d.dup){const p=bySlugAll(d.dup);if(!p)return;let s=p.slug+"-copy",i=2;while(bySlugAll(s))s=p.slug+"-copy-"+i++;editing={...JSON.parse(JSON.stringify(p)),slug:s,name:p.name+" (copy)",published:false,featured:false,createdAt:0,updatedAt:0};edIsNew=true;slugTouched=true;edDirty=true;admTab="editor";render();window.scrollTo(0,0);return}
-  if(d.cancel!==undefined){if(edDirty&&!confirm("Discard unsaved changes?"))return;edDirty=false;editing=null;admTab="projects";render();return}
+  if(d.cancel!==undefined){if(edDirty&&!confirm("Discard unsaved changes?"))return;const cs=editing&&!edIsNew?editing.slug:"";edDirty=false;editing=null;edReturnTo(cs);return}
   if(d.pub){const p=bySlugAll(d.pub);el.closest("details")?.removeAttribute("open");if(p)await putProject({...p,published:p.published===false},p.published===false?"Project published":"Made draft");return}
   if(d.feat){const p=bySlugAll(d.feat);el.closest("details")?.removeAttribute("open");if(p)await putProject({...p,featured:!p.featured},p.featured?"Removed from featured":"Made featured");return}
   if(d.del){const p=bySlugAll(d.del);el.closest("details")?.removeAttribute("open");if(!p||!S.db||!confirm(`Delete "${p.name}"? The project page will be removed from the site and sitemap.`))return;try{await S.db.collection("projects").doc(p.slug).set({slug:p.slug,deleted:true,updatedAt:Date.now()});toast("Project deleted")}catch(x){toast("Delete failed")}return}
@@ -4829,7 +4904,7 @@ if(!PATHMODE&&!window.RH_SITE&&(!location.hash||location.hash==="#"||location.ha
 siteLd();render();schedulePop();scheduleSpot();
 new MutationObserver(()=>{fillCap();const f=$("#setForm");if(f&&!f.dataset.popsync){f.dataset.popsync="1";popSyncForm();bandSync()}}).observe($("#app"),{childList:true});
 (async()=>{
-  const busy=()=>{const ae=document.activeElement;return route().a==="admin"&&(admTab==="editor"||admTab==="post"||(ae&&ae.closest&&ae.closest(".cms")&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))};
+  const busy=()=>{const ae=document.activeElement;return route().a==="admin"&&(admTab==="editor"||admTab==="post"||!!document.querySelector("[data-pin-form].dirty")||(ae&&ae.closest&&ae.closest(".cms")&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))};
   const startSubs=db=>{if(!db)return;
     db.doc("settings/site").onSnapshot(d=>{S.settings=d.exists?(d.data()||{}):{};applySettings();if(!busy())render()},()=>{});
     db.collection("projects").onSnapshot(snap=>{S.remote=new Map(snap.docs.filter(d=>d.exists).map(d=>[d.id,d.data()]));siteLd();if(!busy())render()},()=>{});
