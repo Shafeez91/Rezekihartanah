@@ -1455,6 +1455,45 @@ pre.code{background:var(--surface-2);border-radius:var(--r-sm);padding:12px;over
 :root[data-theme="dark"] .lay{background:linear-gradient(var(--surface),var(--surface)) padding-box,linear-gradient(160deg,#2C4A8C 0%,#3A5BA8 55%,#F2B54F 100%) border-box}
 @media (prefers-reduced-motion:reduce){.lay{transition:none}.lay:hover{transform:none}}
 
+/* ===== Project editor redesign: section bar, drafts, save status, full-width towers & layouts, roomy layout cards ===== */
+html:has(#edForm){scroll-padding-top:72px;scroll-padding-bottom:190px}
+#edForm{padding-bottom:24px}
+#edForm .panel,#edForm .ed-anchor{scroll-margin-top:72px}
+.cms .ed-main .edgrid>.w3,.cms .ed-main .edgrid>.ed-anchor{grid-column:1/-1}
+.ed-nav{grid-column:1/-1;position:sticky;top:0;z-index:25;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:8px 2px;margin:-4px 0 4px;background:color-mix(in srgb,var(--paper) 92%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.ed-nav::-webkit-scrollbar{display:none}
+.ed-nav a{flex:none;display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:700 13px var(--body);text-decoration:none;white-space:nowrap}
+.ed-nav a:hover{border-color:var(--gold);background:var(--gold-soft)}
+.ed-nav a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.ed-draft{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;border:1.5px solid var(--gold);background:var(--gold-soft)}
+.ed-draft-act{display:flex;gap:8px;flex-wrap:wrap}
+.ed-draft-warn{display:block;margin-top:4px;font-size:13px;color:var(--danger)}
+.ed-status{font:700 12.5px var(--body);color:var(--muted);margin-right:auto}
+.ed-status.st-dirty,.ed-status.st-draft{color:var(--gold)}.ed-status.st-saving{color:var(--ink)}.ed-status.st-failed{color:var(--danger)}
+.ed-bar .switch{margin-right:4px}
+.tw-sum-line{margin:8px 0 0;font-weight:700;color:var(--ink)}
+.tw-ed,.lay-ed{display:grid;gap:10px}
+.tw-row{grid-template-columns:minmax(0,1.3fr) minmax(104px,.7fr) minmax(0,1.6fr) auto;padding:12px}
+.tw-row input::placeholder,.lay-row input::placeholder{color:color-mix(in srgb,var(--muted) 70%,transparent);font-style:italic}
+.lay-ed{container-type:inline-size}
+.lay-row{grid-template-columns:132px minmax(0,1fr) auto;gap:14px;padding:14px}
+.lr-thumb{width:132px;height:132px}
+.lr-f{grid-template-columns:repeat(auto-fill,minmax(min(100%,128px),1fr))!important;gap:10px 12px}
+.lr-f label{font-size:12.5px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@container (max-width:560px){.lay-row{grid-template-columns:minmax(0,1fr) auto}.lay-row>div:first-child{grid-column:1/-1;grid-row:1;display:flex;gap:10px;align-items:center}.lr-thumb{width:100%;max-width:220px;height:150px}.lay-row>.lr-f{grid-row:2}.lay-row>.lr-del{grid-row:1;grid-column:2;align-self:start}}
+@media (max-width:640px){.tw-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.ed-status:empty{display:none}
+@media (max-width:600px){
+  .ed-bar{flex-wrap:wrap;row-gap:4px;padding:8px 10px}
+  .ed-bar .ed-status{order:-1;flex:1 1 100%;margin:0;font-size:12px}
+  .ed-bar .switch{flex:1 1 auto;min-width:0}.ed-bar .switch span{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ed-bar .btn{flex:none;padding:0 14px}
+  .ed-bar .msg:empty{display:none}
+  .ed-bar .msg:not(:empty){order:-1;flex:1 1 100%}
+}
+@container (max-width:560px){.lr-thumb{height:110px;max-width:160px}}
+@media (max-width:440px){.ed-bar [data-cancel]{display:none}.ed-bar .btn-brand{margin-left:auto}}
+
 /* =====================================================================
    CMS RESPONSIVE LAYER: one place for phone / iPad / desktop behaviour.
    Phone ≤600 · iPad 601–1023 (and any touch screen) · desktop ≥1024
@@ -2532,8 +2571,12 @@ async function apLoad(){if(!S.isAdmin)return;try{
   const [a,t,n,f]=await Promise.all([apDb("list","appointments"),apDb("list","lead_tasks"),apDb("list","notifications"),apDb("list","reminders").catch(()=>[])]);
   S.appts=a;S.tasks=t;S.notifs=n;S.remFailed=new Set(f.map(x=>x.target_id));S.apLoaded=true;S.apErr="";
  }catch(e){S.apErr=String(e&&e.message||e)}
- if(route().a==="admin"&&!apTyping())render()}
-function apTyping(){const ae=document.activeElement;return !!(ae&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)&&!ae.closest("dialog"))||!!document.querySelector("dialog[open]")}
+ if(route().a==="admin"){if(!apTyping())render();else apBadgeRefresh()}}
+/* Background refreshes (appointments every 60 s, etc.) must never redraw the screen while the person is editing.
+   The project/article editors are drawn from the last loaded copy, so a redraw there would wipe unsaved input. */
+function cmsBusy(){const ae=document.activeElement;return route().a==="admin"&&(admTab==="editor"||admTab==="post"||!!document.querySelector("dialog[open]")||!!(ae&&ae.closest&&ae.closest(".cms")&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))}
+function apTyping(){return cmsBusy()}
+function apBadgeRefresh(){const n=apBadge();document.querySelectorAll('[data-tab="appts"]').forEach(b=>{let em=b.querySelector("em");if(n){if(!em){em=document.createElement("em");b.appendChild(em)}em.textContent=n}else if(em)em.remove()})}
 function apStart(){if(AP.timer)return;apLoad();AP.timer=setInterval(()=>{if(!document.hidden)apLoad()},60000)}
 async function apSave(op,table,id,data,okMsg){const key=table+":"+(id||"new");if(AP.busy.has(key))return null;AP.busy.add(key);
   let rows;try{rows=op==="insert"?await apDb("insert",table,data):await apDb("update",table,id,data)}
@@ -2833,9 +2876,9 @@ function editorView(){
   const p=editing||blank();
   const inp=(id,label,val,type="text",cls="")=>`<div class="field ${cls}"><label for="ed_${id}">${label}</label><input id="ed_${id}" name="${id}" type="${type}" value="${esc(val)}" ${type==="number"?'min="0" step="any"':''}></div>`;
   const sel=(id,label,opts,val)=>`<div class="field"><label for="ed_${id}">${label}</label><select id="ed_${id}" name="${id}">${opts.map(([v,l])=>`<option value="${v}" ${String(val)===v?"selected":""}>${l}</option>`).join("")}</select></div>`;
-  return `<form id="edForm" class="ed-wrap" novalidate>
+  return `<form id="edForm" class="ed-wrap" novalidate data-key="${esc(edIsNew?"new":(p.slug||"new"))}">${edDraftBanner(p)}${edNavHtml()}
    <div class="ed-main">
-    <section class="panel"><h3>Basic information</h3><div class="edgrid">
+    <section class="panel" id="eds-basic"><h3>Basic information</h3><div class="edgrid">
      ${inp("name","Project name *",p.name,"text","w2")}
      <div class="field"><label for="ed_slug">URL slug</label><input id="ed_slug" name="slug" value="${esc(p.slug)}" ${edIsNew?"":"readonly"} pattern="[a-z0-9-]+"></div>
      ${(()=>{const cnt=new Map();for(const q of projects(true)){const d=String(q.dev||"").trim();if(d)cnt.set(d,(cnt.get(d)||0)+1)}const devs=[...cnt.keys()].sort((a,b)=>cnt.get(b)-cnt.get(a)||a.localeCompare(b));
@@ -2849,32 +2892,32 @@ function editorView(){
      <label class="consent"><input type="checkbox" name="featured" ${p.featured?"checked":""}> Featured project</label>
      <label class="consent"><input type="checkbox" name="indexable" ${p.noindex?"":"checked"}> Allow Google to index this page</label>
      <div class="field"><label for="ed_redir">Redirect to (if this project is replaced)</label><select id="ed_redir" name="redirectTo"><option value="">None</option>${projects().filter(o=>o.slug!==p.slug).map(o=>`<option value="${esc(o.slug)}" ${p.redirectTo===o.slug?"selected":""}>${esc(o.name)}</option>`).join("")}</select></div>
-     <div class="field w3"><label>Towers / blocks: units per tower & types (total units calculated automatically)</label><div class="tw-ed" id="twRows">${(p.towers||[]).map(twRow).join("")}</div><button type="button" class="btn btn-ghost btn-sm" data-tw-add>+ Add tower / block</button><textarea id="ed_towers" name="towers" hidden>${esc((p.towers||[]).join("\n"))}</textarea></div>
+     <div class="field w3 ed-anchor" id="eds-towers"><label>Towers / blocks: units per tower & types (total units calculated automatically)</label><div class="tw-ed" id="twRows">${(p.towers||[]).map(twRow).join("")}</div><button type="button" class="btn btn-ghost btn-sm" data-tw-add>+ Add tower / block</button><p class="fine tw-sum-line" id="twSum" aria-live="polite">${twSummary(p.towers)}</p><textarea id="ed_towers" name="towers" hidden>${esc((p.towers||[]).join("\n"))}</textarea></div>
     </div></section>
-    <section class="panel"><h3>Price & units</h3><div class="edgrid">
+    <section class="panel" id="eds-price"><h3>Price & units</h3><div class="edgrid">
      ${inp("pmin","Price from (RM) *",p.pmin||"","number")}${inp("pmax","Price up to (RM)",p.pmax||"","number")}${inp("mon","Instalment/mo (empty = auto)",p.mon||"","number")}
      ${inp("bmin","Min bedrooms (0 = studio)",p.bmin,"number")}${inp("bmax","Max bedrooms",p.bmax,"number")}${inp("units","Total units (auto from towers)",p.units||"","number")}
      ${inp("tmin","Min bathrooms",p.tmin,"number")}${inp("tmax","Max bathrooms",p.tmax,"number")}${inp("maint","Maintenance fee RM psf (all layouts)",p.maint||"")}
      ${inp("smin","Min size (sqft)",p.smin||"","number")}${inp("smax","Max size (sqft)",p.smax||"","number")}${inp("completion","Expected completion",p.completion||"")}
-     <div class="field w3"><label>Layouts: floor plan, size, bedrooms, bathrooms & parking (price & fee optional)</label><div class="lay-ed" id="layRows">${(p.layouts||[]).map(layRow).join("")}</div><button type="button" class="btn btn-ghost btn-sm" data-lay-add>+ Add layout</button>${S.assets?"":`<span class="fine" style="margin-left:8px">Floor plan upload is not available in this view.</span>`}<textarea id="ed_layouts" name="layouts" hidden>${esc((p.layouts||[]).join("\n"))}</textarea></div>
+     <div class="field w3 ed-anchor" id="eds-layouts"><label>Layouts: floor plan, size, bedrooms, bathrooms & parking (price & fee optional)</label><div class="lay-ed" id="layRows">${(p.layouts||[]).map(layRow).join("")}</div><button type="button" class="btn btn-ghost btn-sm" data-lay-add>+ Add layout</button>${S.assets?"":`<span class="fine" style="margin-left:8px">Floor plan upload is not available in this view.</span>`}<textarea id="ed_layouts" name="layouts" hidden>${esc((p.layouts||[]).join("\n"))}</textarea></div>
     </div></section>
-    <section class="panel"><h3>Content</h3><div class="edgrid">
+    <section class="panel" id="eds-content"><h3>Content</h3><div class="edgrid">
      <div class="field w3"><label for="ed_summary">Description (≥250 characters for SEO) <span class="counter" id="cntSum"></span></label><textarea id="ed_summary" name="summary" maxlength="4000" style="min-height:150px">${esc(p.summary)}</textarea></div>
      <div class="field w3"><label for="ed_hl">Highlights, one per line</label><textarea id="ed_hl" name="hl">${esc((p.hl||[]).join("\n"))}</textarea></div>
      <div class="field w3"><label for="ed_fac">Facilities, one per line</label><textarea id="ed_fac" name="fac">${esc((p.fac||[]).join("\n"))}</textarea></div>
     </div></section>
-    <section class="panel"><h3>Location</h3><div class="edgrid">
+    <section class="panel" id="eds-loc"><h3>Location</h3><div class="edgrid">
      <div class="field w3"><label for="ed_mapUrl">Google Maps link (Share › Copy link)</label><input id="ed_mapUrl" name="mapUrl" type="url" placeholder="https://maps.app.goo.gl/…" value="${esc(p.mapUrl||"")}"></div>
      <div class="field w2"><label for="ed_addr">Display address</label><input id="ed_addr" name="addr" placeholder="Jalan Sentul, 51000 Kuala Lumpur" value="${esc(p.addr||"")}"></div>
      <div class="field w3"><label for="ed_geo">Pin coordinates (needed for exact distances) ${geoOf({geo:p.geo,mapUrl:p.mapUrl})?`<span style="color:#1FAF5A;font-weight:700">✓ ${p.geo&&!geoIssue(p.geo)?"pin set":"location from the Google Maps link"}</span>`:`<span style="color:#C98A1B;font-weight:700">• not set</span>`}</label>${(()=>{const iss=geoIssue(p.geo),g0=geoOf({geo:p.geo,mapUrl:p.mapUrl}),dup=g0?projects(true).filter(o=>o.slug!==p.slug&&!o.deleted&&(()=>{const g1=geoOf({geo:o.geo,mapUrl:o.mapUrl});return g1&&Math.abs(g1.lat-g0.lat)<0.0003&&Math.abs(g1.lng-g0.lng)<0.0003})()):[];
       return (iss?`<p class="msg err" style="margin:2px 0 4px">⚠️ ${esc(iss)} This pin is ignored until fixed.</p>`:"")+(dup.length?`<p class="msg" style="margin:2px 0 4px;color:#C98A1B">⚠️ Same spot as ${dup.map(o=>esc(o.name)).join(", ")}. Fine if they share one site; otherwise re-check.</p>`:"")})()}<input id="ed_geo" name="geo" inputmode="decimal" placeholder="3.20612, 101.72851" value="${esc(p.geo||"")}"><p class="fine" style="margin:4px 0 0">In the Google Maps app: <b>long-press exactly on the building</b> › a “Dropped pin” appears with numbers like <b>3.20612, 101.72851</b> › tap the numbers to copy › paste here. Google short links don’t contain the pin’s numbers, so this field is what makes “1.2 km from this project” exact.</p></div>
      <div class="field w3"><label for="ed_near">Nearby, one per line: Name | category | distance</label><textarea id="ed_near" name="near" placeholder="LRT Sentul Timur | transit | 5 min&#10;Sunway Putra Mall | mall | 10 min&#10;Hospital Kuala Lumpur | hospital | 3.2km">${esc((p.near||[]).join("\n"))}</textarea><p class="fine" style="margin:4px 0 0">Categories: transit, school, university, hospital, clinic, mall, supermarket, mosque, highway, park, food, office (Malay names such as sekolah, pasaraya, masjid also work). Distance in minutes (e.g. 5 min) or km. Coordinates are picked up automatically from a full Google Maps link; for short links (maps.app.goo.gl), copy the coordinates from Google Maps for accurate directions.</p></div>
     </div></section>
-    <section class="panel"><h3>Project photos</h3><div class="ed-photo"><div class="pthumb big" id="edPhoto">${art(p)}</div><div class="field"><label for="ed_img">JPG, PNG or WebP, max 5MB each. You can select several photos at once (max 20). The first photo is the cover photo.<br><b>Recommended size: 1600 × 1000 px (landscape, 16:10).</b> Keep text and logos inside the middle 1600 × 800 px, because the project page shows photos wider (2:1) and trims the top and bottom. Portrait posters will be cropped; place them on a 1600 × 1000 canvas with a plain background first.</label><input id="ed_img" type="file" multiple accept="image/jpeg,image/png,image/webp" ${S.assets?"":"disabled"}><input type="hidden" name="photos" value="${esc(photosOf(p).join("\n"))}"><span class="fine" id="imgNote">${photosOf(p).length?photosOf(p).length+" photo(s). The first photo is the cover; tap ★ to change.":S.assets?"No photos yet; an illustration is used for now.":"Photo upload is not available in this view."}</span></div></div><div class="ed-gal" id="edGal">${galHtml(photosOf(p))}</div></section>
+    <section class="panel" id="eds-photos"><h3>Project photos</h3><div class="ed-photo"><div class="pthumb big" id="edPhoto">${art(p)}</div><div class="field"><label for="ed_img">JPG, PNG or WebP, max 5MB each. You can select several photos at once (max 20). The first photo is the cover photo.<br><b>Recommended size: 1600 × 1000 px (landscape, 16:10).</b> Keep text and logos inside the middle 1600 × 800 px, because the project page shows photos wider (2:1) and trims the top and bottom. Portrait posters will be cropped; place them on a 1600 × 1000 canvas with a plain background first.</label><input id="ed_img" type="file" multiple accept="image/jpeg,image/png,image/webp" ${S.assets?"":"disabled"}><input type="hidden" name="photos" value="${esc(photosOf(p).join("\n"))}"><span class="fine" id="imgNote">${photosOf(p).length?photosOf(p).length+" photo(s). The first photo is the cover; tap ★ to change.":S.assets?"No photos yet; an illustration is used for now.":"Photo upload is not available in this view."}</span></div></div><div class="ed-gal" id="edGal">${galHtml(photosOf(p))}</div></section>
    </div>
    <div class="ed-side">
     <section class="panel"><h3>Card preview</h3><div class="edprev" id="edPrev" aria-hidden="true"></div></section>
-    <section class="panel"><h3>SEO</h3>
+    <section class="panel" id="eds-seo"><h3>SEO</h3>
      <div class="field"><label for="ed_keyword">Focus keyword</label><input id="ed_keyword" name="keyword" value="${esc(p.keyword||"")}" placeholder="e.g. m aria sentul"></div>
      <div class="field" style="margin-top:8px"><label for="ed_metaTitle">Meta title (BM page) <span class="counter" id="cntT"></span></label><input id="ed_metaTitle" name="metaTitle" maxlength="70" value="${esc(p.metaTitle||"")}" placeholder="Leave empty to generate automatically"></div>
      <div class="field" style="margin-top:8px"><label for="ed_metaDesc">Meta description (BM page) <span class="counter" id="cntD"></span></label><textarea id="ed_metaDesc" name="metaDesc" maxlength="170" placeholder="Leave empty to generate automatically">${esc(p.metaDesc||"")}</textarea></div>
@@ -2885,16 +2928,16 @@ function editorView(){
     </section>
     ${enPanel(p)}
    </div>
-   <div class="ed-bar"><label class="switch"><input type="checkbox" name="published" ${p.published!==false?"checked":""}><span>Published on site</span></label><span class="msg" id="edMsg" role="alert"></span><button type="button" class="btn btn-ghost btn-sm" data-cancel>Cancel</button><button class="btn btn-brand btn-sm" ${S.db?"":"disabled"}>${edIsNew?"Save project":"Save changes"}</button></div>
+   <div class="ed-bar"><label class="switch"><input type="checkbox" name="published" ${p.published!==false?"checked":""}><span>Published on site</span></label><span class="ed-status" id="edStatus" aria-live="polite"></span><span class="msg" id="edMsg" role="alert"></span><button type="button" class="btn btn-ghost btn-sm" data-cancel>Cancel</button><button class="btn btn-brand btn-sm" ${S.db?"":"disabled"}>${edIsNew?"Save project":"Save changes"}</button></div>
   </form>`;
 }
-const LAYF=[["Type","Type A","text"],["Size (sqft)","850","number"],["Bedrooms","3","text"],["Bathrooms","2","text"],["Price RM","","number"],["Fee/mo","","fee"],["Parking","1","text"]];
+const LAYF=[["Type","e.g. Type A","text"],["Size (sqft)","e.g. 850","number"],["Bedrooms","e.g. 3","text"],["Bathrooms","e.g. 2","text"],["Price RM","optional","number"],["Fee/mo","","fee"],["Parking","e.g. 1","text"]];
 const okBlob=v=>/^\/_blob\/[a-f0-9]{32}$/.test(v||"");
 function layThumb(plan){return okBlob(plan)?`<img src="${esc(plan)}" alt="Floor plan">`:`<span>+ Upload plan</span>`}
 function layFee(sz,psf){const sq=num(String(sz||"").replace(/[^\d.]/g,"")),r=num(psf);return sq&&r?rmFull(Math.round(sq*r)):"–"}
 function layRow(str){const v=String(str||"").split("|").map(x=>x.trim()),plan=okBlob(v[7])?v[7]:"";
   return `<div class="lay-row" data-plan="${esc(plan)}"><div><label class="lr-thumb${S.assets?"":" off"}" title="Floor plan (JPG/PNG/WebP, max 5MB)">${layThumb(plan)}<input type="file" class="lr-file" accept="image/jpeg,image/png,image/webp" hidden ${S.assets?"":"disabled"}></label><button type="button" class="lr-x" data-lay-unplan ${plan?"":"hidden"}>Remove plan</button></div>
-   <div class="lr-f">${LAYF.map(([l,ph,ty],i)=>ty==="fee"?`<div class="field"><label>${l}</label><output class="lr-fee">${esc(layFee(v[1],editing&&editing.maint))}</output></div>`:`<div class="field"><label>${l}</label><input class="lr-i" data-k="${i}" ${ty==="number"?'inputmode="decimal"':""} value="${esc(v[i]||"")}" placeholder="${esc(ph)}"></div>`).join("")}</div>
+   <div class="lr-f">${LAYF.map(([l,ph,ty],i)=>ty==="fee"?`<div class="field"><label>${l}</label><output class="lr-fee">${esc(layFee(v[1],editing&&editing.maint))}</output></div>`:`<div class="field"><label>${l}</label><input class="lr-i" data-k="${i}" aria-label="Layout ${esc(l)}" ${ty==="number"?'inputmode="decimal"':""} value="${esc(v[i]||"")}" placeholder="${esc(ph)}"></div>`).join("")}</div>
    <button type="button" class="lr-del" data-lay-del aria-label="Remove layout">✕</button></div>`}
 function syncLay(){const box=$("#layRows"),ta=$("#ed_layouts");if(!box||!ta)return;
   const psf=$("#edForm [name=maint]")?.value||"";
@@ -2911,15 +2954,37 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-lay-add],[
   else if(b.hasAttribute("data-lay-del"))b.closest(".lay-row").remove();
   else{const r=b.closest(".lay-row");r.dataset.plan="";r.querySelector(".lr-thumb span,.lr-thumb img").outerHTML=layThumb("");b.hidden=true}
   edDirty=true;updateSeoPanel()});
-const TWF=[["Tower / block","Tower A","text"],["Units","500","number"],["Types","Type A, B, C","text"]];
+/* ===== Project editor: draft kept on this device while typing (recovers after a reload, crash or lost connection) ===== */
+const ED_DRAFT_V=1;let edDraftT=0;
+const edDraftKey=k=>"rh-draft:"+ED_DRAFT_V+":"+k;
+function edDraftLoad(k){try{const d=JSON.parse(localStorage.getItem(edDraftKey(k))||"null");return d&&d.o&&d.v===ED_DRAFT_V?d:null}catch(e){return null}}
+function edDraftClear(k){try{localStorage.removeItem(edDraftKey(k))}catch(e){}}
+function edDraftSave(){const fm=$("#edForm");if(!fm||!edDirty)return;try{const o=readEditor();if(!o)return;const k=fm.dataset.key;
+  localStorage.setItem(edDraftKey(k),JSON.stringify({v:ED_DRAFT_V,t:Date.now(),base:(editing&&editing.updatedAt)||0,o}));edStatus("draft")}catch(e){edStatus("dirty")}}
+function edStatus(s){const el=$("#edStatus");if(!el)return;const t=new Date().toLocaleTimeString("en-MY",{hour:"numeric",minute:"2-digit"});
+  el.className="ed-status st-"+s;el.textContent=({dirty:"● Unsaved changes",draft:"● Unsaved · draft kept on this device "+t,saving:"Saving…",failed:"⚠ Not saved. Your changes are still here"})[s]||""}
+function edDraftBanner(p){const k=edIsNew?"new":(p.slug||"new"),d=edDraftLoad(k);if(!d)return "";
+  const newer=!edIsNew&&(bySlugAll(p.slug)||{}).updatedAt>d.base;const when=new Date(d.t).toLocaleString("en-MY",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"});
+  return `<div class="ed-draft panel" role="status"><div><b>Unsaved changes found</b> from ${esc(when)} on this device.${newer?` <span class="ed-draft-warn">The saved project was updated after that, so restoring will replace those newer changes in this form (nothing is saved until you press Save).</span>`:""}</div><div class="ed-draft-act"><button type="button" class="btn btn-brand btn-sm" data-draft-restore="${esc(k)}">Restore my changes</button><button type="button" class="btn btn-ghost btn-sm" data-draft-discard="${esc(k)}">Discard</button></div></div>`}
+function twSummary(a){const rows=(a||[]).filter(l=>String(l).split("|").some(x=>x.trim()));const n=towerSum(rows);
+  return rows.length?(n?`Total: ${n.toLocaleString("en-MY")} units across ${rows.length} tower${rows.length>1?"s":""}/block${rows.length>1?"s":""}`:`${rows.length} tower/block row${rows.length>1?"s":""}; add unit counts to calculate the total`):"No towers/blocks yet. Total units will be calculated from the rows you add."}
+function edNavHtml(){const L=[["eds-basic","Basic"],["eds-towers","Towers"],["eds-price","Price & units"],["eds-layouts","Layouts"],["eds-content","Content"],["eds-loc","Location"],["eds-photos","Photos"],["eds-seo","SEO"],["enPanel","English"]];
+  return `<nav class="ed-nav" aria-label="Editor sections">${L.map(([i,t])=>`<a href="#${i}" data-ednav="${i}">${t}</a>`).join("")}</nav>`}
+document.addEventListener("click",e=>{const a=e.target.closest("[data-ednav]");if(a){e.preventDefault();const el=document.getElementById(a.dataset.ednav);if(el)el.scrollIntoView({block:"start",behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});return}
+  const r=e.target.closest("[data-draft-restore]");if(r){const d=edDraftLoad(r.dataset.draftRestore);if(!d)return;editing={...(editing||{}),...d.o};edDirty=false;render();edDirty=true;edStatus("draft");toast("Your unsaved changes are back. Press Save to keep them.");return}
+  const x=e.target.closest("[data-draft-discard]");if(x){if(!confirm("Discard the unsaved changes kept on this device?"))return;edDraftClear(x.dataset.draftDiscard);x.closest(".ed-draft").remove();return}});
+document.addEventListener("input",e=>{if(!e.target.closest||!e.target.closest("#edForm"))return;edStatus("dirty");clearTimeout(edDraftT);edDraftT=setTimeout(edDraftSave,700)},true);
+document.addEventListener("change",e=>{if(!e.target.closest||!e.target.closest("#edForm"))return;edStatus("dirty");clearTimeout(edDraftT);edDraftT=setTimeout(edDraftSave,700)},true);
+addEventListener("beforeunload",e=>{if(route().a==="admin"&&admTab==="editor"&&edDirty){edDraftSave();e.preventDefault();e.returnValue=""}});
+const TWF=[["Tower / block","e.g. Tower A","text"],["Units","e.g. 384","number"],["Types","e.g. A, B, C","text"]];
 function twN(v){return num(String(v||"").replace(/[^\d.]/g,""))}
 function towerSum(a){return (a||[]).reduce((s,l)=>s+twN(String(l).split("|")[1]),0)}
 function towerTypes(a){const m=new Map();for(const l of a||[])for(const x of String(String(l).split("|")[2]||"").split(/[,;/]/)){const k=x.trim().replace(/^(type|jenis)\s*/i,"").replace(/\s+/g,"").toLowerCase();if(k&&!m.has(k))m.set(k,x.trim())}return [...m.values()]}
 function twRow(str){const v=String(str||"").split("|").map(x=>x.trim());
-  return `<div class="tw-row">${TWF.map(([l,ph,ty],i)=>`<div class="field"><label>${l}</label><input class="tw-i" data-k="${i}" ${ty==="number"?'inputmode="numeric"':""} value="${esc(v[i]||"")}" placeholder="${esc(ph)}"></div>`).join("")}<button type="button" class="lr-del" data-tw-del aria-label="Remove tower">✕</button></div>`}
+  return `<div class="tw-row">${TWF.map(([l,ph,ty],i)=>`<div class="field"><label>${l}</label><input class="tw-i" data-k="${i}" aria-label="Tower ${l}" ${ty==="number"?'inputmode="numeric"':""} value="${esc(v[i]||"")}" placeholder="${esc(ph)}"></div>`).join("")}<button type="button" class="lr-del" data-tw-del aria-label="Remove tower">✕</button></div>`}
 function syncTw(){const box=$("#twRows"),ta=$("#ed_towers");if(!box||!ta)return;
   ta.value=[...box.querySelectorAll(".tw-row")].map(r=>{const v=Array(3).fill("");r.querySelectorAll(".tw-i").forEach(i=>v[+i.dataset.k]=i.value.replace(/\|/g,"/").trim());if(!v.some(Boolean))return "";while(v.length&&!v[v.length-1])v.pop();return v.join(" | ")}).filter(Boolean).join("\n");
-  const sum=towerSum(ta.value?ta.value.split("\n"):[]),u=$("#ed_units");if(sum&&u)u.value=sum}
+  const sum=towerSum(ta.value?ta.value.split("\n"):[]),u=$("#ed_units");if(sum&&u)u.value=sum;const sl=$("#twSum");if(sl)sl.textContent=twSummary(ta.value?ta.value.split("\n"):[])}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-tw-add],[data-tw-del]");if(!b||!b.closest("#edForm"))return;
   if(b.hasAttribute("data-tw-add")){$("#twRows").insertAdjacentHTML("beforeend",twRow(""));$("#twRows .tw-row:last-child .tw-i").focus()}
   else b.closest(".tw-row").remove();
@@ -2991,8 +3056,9 @@ async function saveProject(e){
   try{
     if(S.sample&&needsTr(o)){out.className="msg";out.textContent="Translating content into BM & English…";try{o=await translateProject(o)}catch(x){toast("Translation failed; project saved without translation")}}
     out.className="msg";out.textContent="Saving to the database…";
-    if(await putProject(o,o.published?"Saved · live on the website":"Saved as draft · not public")){edDirty=false;editing=null;admTab="projects";render();window.scrollTo(0,0)}
-    else{out.className="msg err";out.textContent="Not saved. Check your connection and try again; nothing was lost in this form."}
+    edStatus("saving");
+    if(await putProject(o,o.published?"Saved · live on the website":"Saved as draft · not public")){edDraftClear(edIsNew?"new":o.slug);if(!edIsNew&&editing&&editing.slug!==o.slug)edDraftClear(editing.slug);edDirty=false;editing=null;admTab="projects";render();window.scrollTo(0,0)}
+    else{edStatus("failed");out.className="msg err";out.textContent="Not saved. Check your connection and try again; nothing was lost in this form."}
   }finally{SAVING=false;btns.forEach((b,i)=>{if(b.isConnected){b.disabled=false;b.textContent=lbl[i]}})}
 }
 function galHtml(a){return a.map((u,i)=>`<div class="eg-it${i?"":" cover"}" data-i="${i}"><img src="${esc(u)}" alt="Photo ${i+1}">${i?"":`<span class="eg-tag">Cover</span>`}<div class="eg-act"><button type="button" data-gal="left" ${i?"":"disabled"} aria-label="Move left" title="Move left">←</button><button type="button" data-gal="cover" ${i?"":"disabled"} aria-label="Make cover" title="Make cover">★</button><button type="button" data-gal="right" ${i<a.length-1?"":"disabled"} aria-label="Move right" title="Move right">→</button><button type="button" data-gal="del" aria-label="Remove photo" title="Remove photo">✕</button></div></div>`).join("")}
@@ -3630,7 +3696,9 @@ function render(){
   else if(a==="co-living"){app.innerHTML=viewColiving();const c=colivingSeo();setHead(c);initEnq();window.scrollTo(0,0)}
   else if(a==="privasi"){app.innerHTML=viewPrivacy();setHead({title:L2("Notis privasi","Privacy notice")+" | Rezeki Hartanah",desc:L2("Cara Rezeki Hartanah mengumpul, menggunakan dan melindungi data peribadi anda di bawah PDPA 2010.","How Rezeki Hartanah collects, uses and protects your personal data under the PDPA 2010."),canonical:SITE+"/privasi",ld:null});window.scrollTo(0,0)}
   else if(a==="admin"&&PATHMODE&&!window.RH_CMS){location.replace("/");return}
-  else if(a==="admin"){app.innerHTML=viewAdmin();setHead({title:"Rezeki Hartanah CMS | Admin Dashboard",desc:"",canonical:SITE+"/admin",ld:null,robots:"noindex, nofollow"});if($("#edForm"))updateSeoPanel()}
+  else if(a==="admin"){const keepEd=admTab==="editor"&&edDirty?document.querySelector("#edForm"):null,keepKey=keepEd&&keepEd.dataset.key,sy=scrollY;
+    app.innerHTML=viewAdmin();
+    if(keepEd){const nu=document.querySelector("#edForm");if(nu&&nu.dataset.key===keepKey){nu.replaceWith(keepEd);window.scrollTo(0,sy)}}setHead({title:"Rezeki Hartanah CMS | Admin Dashboard",desc:"",canonical:SITE+"/admin",ld:null,robots:"noindex, nofollow"});if($("#edForm"))updateSeoPanel()}
   else if(PATHMODE&&a&&!/^[?#&]/.test(a)){app.innerHTML=`<div class="wrap" style="padding:80px 18px"><h1>404</h1><p class="sub">${L2("Halaman ini tidak dijumpai.","This page could not be found.")}</p><p><a class="btn btn-brand" href="#/">${t("home")}</a> <a class="btn btn-ghost" href="#/projek">${L2("Semua projek","All projects")}</a></p></div>`;setHead({title:"Halaman tidak dijumpai | Rezeki Hartanah",desc:"Halaman ini tiada atau telah dikeluarkan.",canonical:SITE+"/",ld:null,robots:"noindex, follow"});window.scrollTo(0,0)}
   else{app.innerHTML=viewHome();setHead({title:"Rezeki Hartanah | Projek Hartanah Baharu & Siap",desc:"Bandingkan projek hartanah baharu, siap & komersial di Klang Valley: harga, saiz, ansuran bulanan, susun atur serta pembiayaan bank & LPPSA.",canonical:SITE+"/",ld:null});const sk=$("#skyline");if(sk){SKY=SKY||skylineSVG(11);sk.innerHTML=SKY}renderGrid();updateDial();initCalc();initElig();initEnq();if(reBud&&!$("#budDlg").open)$("#budDlg").showModal()}
   staticI18n();renderCmpBar();
