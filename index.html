@@ -1522,6 +1522,35 @@ html:has(#edForm){scroll-padding-top:72px;scroll-padding-bottom:190px}
 
 .bm-warn{border:1.5px solid var(--gold);background:var(--gold-soft);border-radius:12px;padding:10px 14px}.bm-warn ul{margin:6px 0 0;padding-left:18px;font-size:13px}
 
+/* ===== Layouts section: adapts to how many layouts a project has, using the section's own width ===== */
+.lay-wrap{container-type:inline-size}
+.lay-grid.lay-n2{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.lay-grid.lay-n3{grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr))}
+@container (min-width:900px){.lay-grid.lay-n3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.lay-plan-none{display:grid!important;place-items:center;align-content:center;gap:6px;aspect-ratio:4/3;background:var(--surface-2)!important;color:var(--muted);text-align:center;padding:16px}
+.lay-plan-none span{font-size:30px;opacity:.6}.lay-plan-none small{font:600 13px var(--body)}
+/* ONE layout: featured card (plan left, details right) when the section has room; stacked below that */
+@container (min-width:620px){
+  .lay-grid.lay-n1{grid-template-columns:minmax(0,1fr);max-width:1040px}
+  .lay-grid.lay-n1 .lay{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,1fr);grid-template-rows:auto auto 1fr auto;padding:0;gap:0;overflow:hidden}
+  .lay-grid.lay-n1 .lay-plan{grid-column:1;grid-row:1/-1;margin:0;border-radius:0;border-bottom:0;border-right:1px solid var(--line);display:flex;align-items:center;justify-content:center;min-height:100%}
+  .lay-grid.lay-n1 .lay-plan img{width:100%;height:100%;max-height:520px;aspect-ratio:auto;object-fit:contain;padding:18px}
+  .lay-grid.lay-n1 .lay-plan-none{aspect-ratio:auto;min-height:320px}
+  .lay-grid.lay-n1 .lay header{grid-column:2;margin:0;border-radius:0;padding:16px 20px}
+  .lay-grid.lay-n1 .lay-spec{grid-column:2;padding:16px 20px 4px;font-size:16px}
+  .lay-grid.lay-n1 .lay dl{grid-column:2;align-self:start;padding:6px 20px 0;gap:12px}
+  .lay-grid.lay-n1 .lay dl div{padding-bottom:10px;border-bottom:1px dashed var(--line)}
+  .lay-grid.lay-n1 .lay dl div:last-child{border-bottom:0}
+  .lay-grid.lay-n1 .lay dt{font-size:15px}.lay-grid.lay-n1 .lay dd{font-size:20px;white-space:nowrap}
+  .lay-grid.lay-n1 .lay>.btn{grid-column:2;margin:14px 20px 20px;min-height:48px;font-size:15.5px}
+}
+/* long layout names wrap instead of pushing the page sideways */
+.lay header{flex-wrap:wrap;min-width:0}.lay header b{min-width:0;overflow-wrap:anywhere}
+.lay>.btn{white-space:normal;height:auto;min-height:44px;padding-top:8px;padding-bottom:8px;text-align:center;overflow-wrap:anywhere;line-height:1.25}
+.lay{min-width:0}
+/* phones: labels and values never squeeze each other */
+@container (max-width:420px){.lay dl div{flex-wrap:wrap}.lay dd{margin-left:auto}}
+
 /* =====================================================================
    CMS RESPONSIVE LAYER: one place for phone / iPad / desktop behaviour.
    Phone ≤600 · iPad 601–1023 (and any touch screen) · desktop ≥1024
@@ -2358,13 +2387,13 @@ function layoutCards(p,lay){
     if(!price&&p.pmin&&p.smin&&sq){price=Math.round(p.pmin*(sq/p.smin)/1000)*1000;est=sq!==p.smin}
     else if(!price&&p.pmin&&lay.length===1)price=p.pmin;
     const psf=num(mf)||num(p.maint),fee=psf&&sq?Math.round(psf*sq):0;
-    return `<article class="lay">${okPlan?`<a class="lay-plan" href="${esc(waLink(t("wa_proj").replace("{p}",p.name+" ("+name+")")))}" target="_blank" rel="noopener noreferrer" title="${esc(L2("WhatsApp kami tentang ","WhatsApp us about ")+name)}" data-track="lay_plan_wa"><img src="${esc(plan)}" alt="${esc(t("plan")+": "+name)}" loading="lazy" decoding="async"></a>`:""}<header><b>${esc(name)}</b>${sq?`<span>${sq.toLocaleString("en-MY")} sqft</span>`:""}</header>
+    return `<article class="lay">${!okPlan?`<div class="lay-plan lay-plan-none" aria-hidden="true"><span>📐</span><small>${L2("Pelan lantai akan dikemas kini","Floor plan coming soon")}</small></div>`:""}${okPlan?`<a class="lay-plan" href="${esc(waLink(t("wa_proj").replace("{p}",p.name+" ("+name+")")))}" target="_blank" rel="noopener noreferrer" title="${esc(L2("WhatsApp kami tentang ","WhatsApp us about ")+name)}" data-track="lay_plan_wa"><img src="${esc(plan)}" alt="${esc(t("plan")+": "+name)}" loading="lazy" decoding="async"></a>`:""}<header><b>${esc(name)}</b>${sq?`<span>${sq.toLocaleString("en-MY")} sqft</span>`:""}</header>
       <div class="lay-spec">${bed?`<span>🛏️ ${esc(bed)}${/^\d/.test(bed)?" "+t("beds"):""}</span>`:""}${bath?`<span>🛁 ${esc(bath)} ${t("baths")}</span>`:""}${cp?`<span>🚗 ${esc(cp)} ${t("park")}</span>`:""}</div>
       <dl><div><dt>${t("lay_price")}</dt><dd>${price?(est?"~":"")+rmFull(price):`<span class="tbc">${t("tbc")}</span>`}</dd></div>
       <div><dt>${t("lay_inst")}</dt><dd class="am">${price?(est?"~":"")+rmFull(pmt(price*LTV/100,RATE,TENURE))+t("per"):"–"}</dd></div>
       <div><dt>${t("lay_maint")}</dt><dd>${fee?`${rmFull(fee)}${t("per")} <small>RM${esc(psf)} psf</small>`:`<span class="tbc">${t("tbc")}</span>`}</dd></div></dl>
       <a class="btn btn-wa btn-sm" target="_blank" rel="noopener noreferrer" href="${esc(waLink(t("wa_proj").replace("{p}",p.name+" ("+name+")")))}">${t("ask")} ${esc(name)}</a></article>`}).join("");
-  return `<div class="lay-grid">${cards}</div><p class="fine">${t("lay_note").replace("{n}",TENURE)}</p>`;
+  return `<div class="lay-wrap"><div class="lay-grid lay-n${Math.min(lay.length,3)}">${cards}</div></div><p class="fine">${t("lay_note").replace("{n}",TENURE)}</p>`;
 }
 const D_IC={dot:'<circle cx="12" cy="12" r="3"/>',tag:'<path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.5"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',hammer:'<path d="M4 21h16M6 21V9l6-5 6 5v12M10 21v-6h4v6"/>',home:'<path d="M3 11 12 4l9 7M5 10v10h14V10"/>',key:'<circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l3 3"/>',ruler:'<path d="M3 17 17 3l4 4L7 21z"/><path d="m7 13 2 2M10 10l2 2M13 7l2 2"/>',bed:'<path d="M3 18V7M3 13h18v5M21 13a3 3 0 0 0-3-3H10v3"/><circle cx="7" cy="11" r="1.6"/>',grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',wrench:'<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/>',flag:'<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',sofa:'<path d="M4 12V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3M2 12h20v5H2zM5 17v2M19 17v2"/>',info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',check:'<path d="m5 12 4.5 4.5L19 7"/>',tower:'<path d="M5 21V5l7-2v18M12 7l7 2v12M3 21h18M8 8h1M8 12h1M8 16h1M15 12h1M15 16h1"/>'};
 const FX_IC={from:"tag",inst:"cal",k_inst:"cal",k_dev:"hammer",k_type:"home",k_ten:"key",k_size:"ruler",k_rooms:"bed",k_units:"grid",k_maint:"wrench",k_comp:"flag",k_furn:"sofa",k_status:"info"};
