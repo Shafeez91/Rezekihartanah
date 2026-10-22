@@ -1515,6 +1515,8 @@ html:has(#edForm){scroll-padding-top:72px;scroll-padding-bottom:190px}
 @media (prefers-reduced-motion:reduce){.pin-flash{animation:none}.pin-prog i{transition:none}}
 @container (max-width:760px){.cms .tbl.stack tr.pin-ed-row{display:block;padding:0;border:0;background:none}.cms .tbl.stack tr.pin-ed-row>td{display:block;border-radius:12px;border:1.5px solid var(--gold)}.pin-acts{justify-content:flex-start}.pin-note{min-width:0}}
 
+.bm-warn{border:1.5px solid var(--gold);background:var(--gold-soft);border-radius:12px;padding:10px 14px}.bm-warn ul{margin:6px 0 0;padding-left:18px;font-size:13px}
+
 /* =====================================================================
    CMS RESPONSIVE LAYER: one place for phone / iPad / desktop behaviour.
    Phone ≤600 · iPad 601–1023 (and any touch screen) · desktop ≥1024
@@ -2925,7 +2927,8 @@ function editorView(){
     <section class="panel" id="eds-content"><h3>Content</h3><div class="edgrid">
      <div class="field w3"><label for="ed_summary">Description (≥250 characters for SEO) <span class="counter" id="cntSum"></span></label><textarea id="ed_summary" name="summary" maxlength="4000" style="min-height:150px">${esc(p.summary)}</textarea></div>
      <div class="field w3"><label for="ed_hl">Highlights, one per line</label><textarea id="ed_hl" name="hl">${esc((p.hl||[]).join("\n"))}</textarea></div>
-     <div class="field w3"><label for="ed_fac">Facilities, one per line</label><textarea id="ed_fac" name="fac">${esc((p.fac||[]).join("\n"))}</textarea></div>
+     <div class="field w3"><label for="ed_fac">Facilities, one per line</label><textarea id="ed_fac" name="fac">${esc((p.fac||[]).join("\n"))}</textarea></div>${(()=>{if(edIsNew||!p.slug)return "";const L=bmLeftovers(p);const n=L.hl.length+L.fac.length;if(!n)return "";
+  return `<div class="field w3 bm-warn" role="status"><b>⚠ ${n} item${n>1?"s":""} will still show in English on the BM page</b><ul>${[...L.hl.map(x=>"Highlight: "+x),...L.fac.map(x=>"Facility: "+x)].slice(0,8).map(x=>`<li>${esc(x)}</li>`).join("")}${n>8?`<li>…and ${n-8} more</li>`:""}</ul><p class="fine" style="margin:4px 0 0">Type these in Bahasa Malaysia in the boxes above (the English page has its own text in the English panel). Standard facility names are translated automatically.</p></div>`})()}
     </div></section>
     <section class="panel" id="eds-loc"><h3>Location</h3><div class="edgrid">
      <div class="field w3"><label for="ed_mapUrl">Google Maps link (Share › Copy link)</label><input id="ed_mapUrl" name="mapUrl" type="url" placeholder="https://maps.app.goo.gl/…" value="${esc(p.mapUrl||"")}"></div>
@@ -2981,7 +2984,7 @@ const edDraftKey=k=>"rh-draft:"+ED_DRAFT_V+":"+k;
 function edDraftLoad(k){try{const d=JSON.parse(localStorage.getItem(edDraftKey(k))||"null");return d&&d.o&&d.v===ED_DRAFT_V?d:null}catch(e){return null}}
 function edDraftClear(k){try{localStorage.removeItem(edDraftKey(k))}catch(e){}}
 function edDraftSave(){const fm=$("#edForm");if(!fm||!edDirty)return;try{const o=readEditor();if(!o)return;const k=fm.dataset.key;
-  localStorage.setItem(edDraftKey(k),JSON.stringify({v:ED_DRAFT_V,t:Date.now(),base:(editing&&editing.updatedAt)||0,o}));edStatus("draft")}catch(e){edStatus("dirty")}}
+  localStorage.setItem(edDraftKey(k),JSON.stringify({v:ED_DRAFT_V,t:Date.now(),base:(editing&&editing.updatedAt)||0,o}));if(!$("#edStatus.st-failed"))edStatus("draft")}catch(e){if(!$("#edStatus.st-failed"))edStatus("dirty")}}
 function edStatus(s){const el=$("#edStatus");if(!el)return;const t=new Date().toLocaleTimeString("en-MY",{hour:"numeric",minute:"2-digit"});
   el.className="ed-status st-"+s;el.textContent=({dirty:"● Unsaved changes",draft:"● Unsaved · draft kept on this device "+t,saving:"Saving…",failed:"⚠ Not saved. Your changes are still here"})[s]||""}
 function edDraftBanner(p){const k=edIsNew?"new":(p.slug||"new"),d=edDraftLoad(k);if(!d)return "";
@@ -3618,12 +3621,57 @@ function nearbyProjects(p,ps){
   const gx=geoOf(p);
   return others.map(x=>{const h=geoAny(x),hx=geoOf(x);return {p:x,km:h?kmBetween(g,h):null,exact:!!(gx&&hx),same:!!(p.area&&x.area&&String(p.area).trim().toLowerCase()===String(x.area).trim().toLowerCase())}}).filter(s=>s.km!=null&&s.km<=NEAR_KM).sort((a,b)=>(b.exact-a.exact)||a.km-b.km).slice(0,3).sort((a,b)=>a.km-b.km);
 }
+/* ===== Shared facility-name dictionary (English ⇄ Bahasa Malaysia) =====
+   Applied to every project's facilities on display, in both languages. The stored text is never changed.
+   Proper names (e.g. "Straits Gate") are not in the list, so they stay as written. */
+const FAC_DICT=[["Swimming Pool","Kolam Renang"],["Infinity Swimming Pool","Kolam Renang Infiniti"],["Infinity Pool","Kolam Infiniti"],["50-Metre Infinity Swimming Pool","Kolam Renang Infiniti 50 Meter"],["Lap Pool","Kolam Renang Pusingan"],["Rooftop Swimming Pool","Kolam Renang Bumbung"],
+ ["Wading Pool","Kolam Renang Cetek"],["Kids Pool","Kolam Kanak-kanak"],["Children's Pool","Kolam Kanak-kanak"],["Spa Pool","Kolam Spa"],["Jacuzzi","Jakuzi"],["Wet Play Area","Kawasan Permainan Air"],["Water Features","Ciri Air"],["Water Feature","Ciri Air"],
+ ["Recreational Pickleball Court","Gelanggang Pickleball Rekreasi"],["Pickleball Court","Gelanggang Pickleball"],["Indoor Basketball Court","Gelanggang Bola Keranjang Dalaman"],["Basketball Court","Gelanggang Bola Keranjang"],["Badminton Court","Gelanggang Badminton"],["Tennis Court","Gelanggang Tenis"],["Multipurpose Court","Gelanggang Serbaguna"],["Futsal Court","Gelanggang Futsal"],
+ ["Gym Room","Bilik Gimnasium"],["Gymnasium","Gimnasium"],["Gym","Gimnasium"],["Outdoor Gym","Gimnasium Luar"],["Calisthenics Area","Kawasan Kalistenik"],["Jogging Path","Laluan Joging"],["Jogging Track","Trek Joging"],
+ ["Yoga Deck","Dek Yoga"],["Yoga Room","Bilik Yoga"],["Yoga Studio","Studio Yoga"],["Yoga and Dance Room","Bilik Yoga dan Tarian"],["Meditation & Yoga Deck","Dek Meditasi & Yoga"],["Pilates Room","Bilik Pilates"],["Dance Studio","Studio Tarian"],
+ ["Putting Green","Padang Latihan Golf (Putting Green)"],["Golf Simulator","Simulator Golf"],["Reflexology Path","Laluan Refleksologi"],["Reflex Path / Green","Laluan Refleksologi / Laman Hijau"],
+ ["Playground","Taman Permainan"],["Children's Playground","Taman Permainan Kanak-kanak"],["Kids Playground","Taman Permainan Kanak-kanak"],["Tadika Outdoor Playground","Taman Permainan Luar Tadika"],["Kindergarten Outdoor Playground","Taman Permainan Luar Tadika"],["Snakes and Ladders Playground","Taman Permainan Ular Tangga"],
+ ["Multipurpose Hall","Dewan Serbaguna"],["Multipurpose Hall & Pantry","Dewan Serbaguna & Pantri"],["Multipurpose Room","Bilik Serbaguna"],["Multipurpose Space","Ruang Serbaguna"],["Function Room","Bilik Majlis"],["Pre-Function Area","Ruang Pra-Majlis"],
+ ["Wellness Centre & Game Room","Pusat Kesejahteraan & Bilik Permainan"],["Wellness Dome","Kubah Kesejahteraan"],["Wellness Garden","Taman Kesejahteraan"],["Library & AV Room","Perpustakaan & Bilik Audio Visual"],["Library","Perpustakaan"],["Multigenerational Gathering Space","Ruang Perhimpunan Pelbagai Generasi"],
+ ["BBQ Area","Kawasan BBQ"],["BBQ Deck","Dek BBQ"],["BBQ Pavilion","Pavilion Barbeku"],["BBQ Pit","Tapak BBQ"],["Picnic Space","Ruang Berkelah"],["Picnic Area","Kawasan Berkelah"],["Picnic Meadow","Padang Berkelah"],["Enchanted Forest","Hutan Pesona"],
+ ["Pavilion","Pavilion"],["Gazebos","Gazebo"],["Gazebo","Gazebo"],["Poolside Pavilion","Pavilion Tepi Kolam"],["Poolside Deck","Dek Tepi Kolam"],["Scent Sunken Lawn / Garden","Laman / Taman Wangian Rendah"],["Sunken Seat","Ruang Duduk Rendah"],["Gravel Swale","Alur Kerikil"],
+ ["Open Lawn","Laman Terbuka"],["Green Lawn","Laman Hijau"],["Trellis","Teralis"],["Canopy Walkway","Laluan Berkanopi"],["Herb Farm","Kebun Herba"],["Herb Garden","Kebun Herba"],["Urban Farm","Kebun Bandar"],["Community Garden","Kebun Komuniti"],["Rooftop Urban Farming","Pertanian Bandar di Bumbung"],
+ ["Seating Pods","Pod Tempat Duduk"],["Retail / Shop Lots","Runcit / Lot Kedai"],["Shop Lots","Lot Kedai"],["Convenience Shop Space","Ruang Kedai Serbaneka"],["Convenience Store","Kedai Serbaneka"],["Laundry Space","Ruang Dobi"],["Laundry Room","Bilik Dobi"],["Management Office","Pejabat Pengurusan"],
+ ["Prayer Room (Surau)","Bilik Solat (Surau)"],["Prayer Room","Bilik Solat"],["Toilets & Changing Rooms","Tandas & Bilik Persalinan"],["Changing Room","Bilik Persalinan"],["Changing Rooms","Bilik Persalinan"],["Toilet","Tandas"],["Toilets","Tandas"],["Disabled Toilet","Tandas OKU"],
+ ["Lift Lobby","Lobi Lif"],["Games Room","Bilik Permainan"],["Game Room","Bilik Permainan"],["Entertainment Room","Bilik Hiburan"],["Karaoke Room","Bilik Karaoke"],["Cinema Room","Bilik Pawagam"],["Mini Theatre","Teater Mini"],["Screening Room","Bilik Tayangan"],
+ ["Co-Working Space","Ruang Kerja Bersama"],["Co-working Space","Ruang Kerja Bersama"],["Business Centre","Pusat Perniagaan"],["Study Room","Bilik Belajar"],["Reading Room","Bilik Bacaan"],["Private Dining Room","Bilik Makan Persendirian"],["Dining Facility","Kemudahan Ruang Makan"],["Dining Area","Ruang Makan"],
+ ["Gourmet Kitchen","Dapur Gourmet"],["Show Kitchen","Dapur Pameran"],["Baking Facility","Kemudahan Membakar"],["Camping Zone","Zon Perkhemahan"],["Wetland Landscape","Landskap Tanah Bencah"],["Landscaped Gardens","Taman Berlandskap"],["Landscaped Garden","Taman Berlandskap"],
+ ["Walking Paths","Laluan Pejalan Kaki"],["Walking Path","Laluan Pejalan Kaki"],["Lobby Lounge","Ruang Rehat Lobi"],["Lounge","Ruang Rehat"],["Sun Lounge","Ruang Rehat Berjemur"],["Outdoor Social Lounge","Ruang Sosial Luar"],["Waiting Lounge","Ruang Menunggu"],["Sky Lounge","Ruang Rehat Langit"],
+ ["Guard House","Pondok Pengawal"],["Guardhouse","Pondok Pengawal"],["Drop-Off Lobby","Lobi Menurunkan Penumpang"],["Drop-off Area","Kawasan Menurunkan Penumpang"],["Drop-Off","Kawasan Menurunkan Penumpang"],["Drop Off","Kawasan Menurunkan Penumpang"],
+ ["Food Collection Area","Kawasan Pengambilan Makanan"],["Bicycle Storage","Tempat Simpanan Basikal"],["Bicycle Parking","Tempat Letak Basikal"],["EV Charging Bay","Ruang Pengecasan Kenderaan Elektrik"],["EV Charging Station","Stesen Pengecasan Kenderaan Elektrik"],["EV Charging","Pengecasan Kenderaan Elektrik"],
+ ["Delivery Parcel Room","Bilik Bungkusan Penghantaran"],["Parcel Room","Bilik Bungkusan"],["Parcel Locker","Loker Bungkusan"],["Mailroom","Bilik Mel"],["Main Entrance","Pintu Masuk Utama"],["Floating Deck","Dek Terapung"],["Sky Deck","Dek Langit"],["Urban Deck","Dek Bandar"],["Sky Garden","Taman Langit"],["Rooftop Garden","Taman Bumbung"],["Rooftop Facilities","Kemudahan Bumbung"],["Facilities Podium","Podium Kemudahan"],
+ ["Lookout Point","Tempat Peninjau"],["Viewing Deck","Dek Pemandangan"],["Outdoor Seating Area","Kawasan Tempat Duduk Luar"],["Licence Plate Recognition System","Sistem Pengecaman Nombor Plat"],["Multi-tier Security System","Sistem Keselamatan Berbilang Lapis"],["24-hour Security","Keselamatan 24 Jam"],["CCTV","CCTV"],["Access Card System","Sistem Kad Akses"],
+ ["Sauna","Sauna"],["Steam Room","Bilik Wap"],["Table Tennis","Tenis Meja"],["SPORTS & FITNESS","SUKAN & KECERGASAN"],["Kindergarten","Tadika"],["Mortuary","Bilik Jenazah"],["Bunga Peranakan Water Fountain","Pancutan Air Bunga Peranakan"],["Peranakan Shophouse Mural Art Wall","Dinding Seni Mural Rumah Kedai Peranakan"],["Pedestrian Walkway to Jalan 11","Laluan Pejalan Kaki ke Jalan 11"]];
+const FAC_EN2MS=new Map(),FAC_MS2EN=new Map();for(const [en,ms] of FAC_DICT){const k=en.toLowerCase();if(!FAC_EN2MS.has(k))FAC_EN2MS.set(k,ms);const m=ms.toLowerCase();if(!FAC_MS2EN.has(m))FAC_MS2EN.set(m,en)}
+const FAC_SFX_MS={"male":"Lelaki","female":"Wanita","men":"Lelaki","women":"Wanita"},FAC_SFX_EN={"lelaki":"Male","wanita":"Female","perempuan":"Female"};
+/* translate one facility name into the page language; keeps numbering ("12. "), tower suffix ("Tower A" ⇄ "Menara A"), (Male)/(Female) and "– Name" suffixes */
+function facTr(s,lang){const raw=String(s||"");if(!raw.trim())return raw;const toMs=lang!=="en",map=toMs?FAC_EN2MS:FAC_MS2EN;
+  let m=raw.match(/^(\s*\d+\.\s*)?(.*?)\s*$/),pre=m[1]||"",body=m[2],post="";
+  const dash=body.match(/^(.*?)(\s+[–—-]\s+.+)$/);if(dash&&map.has(dash[1].toLowerCase())){body=dash[1];post=dash[2]}
+  const sx=body.match(/^(.*?)\s*\((male|female|men|women|lelaki|wanita|perempuan)\)$/i);if(sx){const t=(toMs?FAC_SFX_MS:FAC_SFX_EN)[sx[2].toLowerCase()];if(t){body=sx[1];post=` (${t})`+post}}
+  const tw=body.match(/^(.*?)\s+(Tower|Menara|Block|Blok)\s+([A-Z0-9]{1,3})$/i);let tower="";if(tw){body=tw[1];tower=` ${toMs?(/block|blok/i.test(tw[2])?"Blok":"Menara"):(/block|blok/i.test(tw[2])?"Block":"Tower")} ${tw[3]}`}
+  else{const tw2=body.match(/^(Tower|Menara)\s+([A-Z0-9]{1,3})\s+(.+)$/i);if(tw2){body=tw2[3];tower=` ${toMs?"Menara":"Tower"} ${tw2[2]}`}}
+  const t=map.get(body.toLowerCase());if(!t)return raw;return pre+t+tower+post}
+/* highlights: drop stray leading bullets ("•", "-", "*") that would show twice */
+const hlClean=s=>String(s||"").replace(/^\s*[•·▪●\-\*]+\s*/,"");
+/* rough check used only for the CMS warning: does a line still read as English on the BM page? */
+function looksEnglish(s){const t=" "+String(s||"").toLowerCase().replace(/[^a-z\s]/g," ")+" ";const en=(t.match(/\s(the|and|with|room|pool|area|hall|court|garden|gardens|space|lounge|lobby|deck|bay|path|paths|house|storage|zone|access|design|facilities|provisions|kitchen|toilet|track|security|location|students|lifestyle|wellness|connectivity|thoughtful|signature|interior|charging|major|direct|green|from|to|of|for|near)\s/g)||[]).length;
+  const ms=(t.match(/\s(dan|dengan|bilik|kolam|kawasan|dewan|taman|ruang|laluan|dek|kemudahan|ke|dari|untuk|di|lobi|menara|akses|reka|bentuk|lokasi|pelajar)\s/g)||[]).length;return en>=1&&en>ms}
+function bmLeftovers(p){const v=(p.tr&&p.tr.h===trHash(trSrc(p))&&p.tr.ms)||null,hl=v&&Array.isArray(v.hl)&&v.hl.length===(p.hl||[]).length?v.hl:(p.hl||[]),fac=(v&&Array.isArray(v.fac)&&v.fac.length===(p.fac||[]).length?v.fac:(p.fac||[])).map(f=>facTr(f,"ms"));
+  return {hl:hl.map(hlClean).filter(looksEnglish),fac:fac.filter(looksEnglish)}}
 function locP(p){
-  if(!p||!p.tr||p.tr.h!==trHash(trSrc(p)))return p;const v=p.tr[S.lang];if(!v)return p;const o={...p};
+  if(!p)return p;const lang=S.lang==="en"?"en":"ms";
+  const fin=o=>{o.hl=(o.hl||[]).map(hlClean);o.fac=(o.fac||[]).map(f=>facTr(f,lang));return o};
+  if(!p.tr||p.tr.h!==trHash(trSrc(p)))return fin({...p});const v=p.tr[S.lang];if(!v)return fin({...p});const o={...p};
   if(typeof v.summary==="string"&&v.summary.trim())o.summary=v.summary;
   if(Array.isArray(v.hl)&&v.hl.length===(p.hl||[]).length)o.hl=v.hl.map(String);
   if(Array.isArray(v.fac)&&v.fac.length===(p.fac||[]).length)o.fac=v.fac.map(String);
-  return o;
+  return fin(o);
 }
 async function translateProject(p){
   if(!S.sample||!needsTr(p))return p;const src=trSrc(p),h=trHash(src),inp=JSON.parse(src);
