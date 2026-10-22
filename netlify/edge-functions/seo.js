@@ -53,12 +53,53 @@ const enIndexable = (p) => !p.deleted && p.published !== false && !p.redirectTo 
 const pUrl = (p, lang) => SITE + (lang === "en" ? "/en/listings/" : "/listings/") + p.slug;
 const alts = (p) => (enIndexable(p) ? [["ms", pUrl(p)], ["en", pUrl(p, "en")], ["x-default", pUrl(p)]] : []);
 // text shown on a page in a language: the stored translation when it belongs to the current source text
+// shared facility dictionary — identical to the website's (index.html), so Google sees the same names as visitors
+/* ===== Shared facility-name dictionary (English ⇄ Bahasa Malaysia) =====
+   Applied to every project's facilities on display, in both languages. The stored text is never changed.
+   Proper names (e.g. "Straits Gate") are not in the list, so they stay as written. */
+const FAC_DICT=[["Swimming Pool","Kolam Renang"],["Infinity Swimming Pool","Kolam Renang Infiniti"],["Infinity Pool","Kolam Infiniti"],["50-Metre Infinity Swimming Pool","Kolam Renang Infiniti 50 Meter"],["Lap Pool","Kolam Renang Pusingan"],["Rooftop Swimming Pool","Kolam Renang Bumbung"],
+ ["Wading Pool","Kolam Renang Cetek"],["Kids Pool","Kolam Kanak-kanak"],["Children's Pool","Kolam Kanak-kanak"],["Spa Pool","Kolam Spa"],["Jacuzzi","Jakuzi"],["Wet Play Area","Kawasan Permainan Air"],["Water Features","Ciri Air"],["Water Feature","Ciri Air"],
+ ["Recreational Pickleball Court","Gelanggang Pickleball Rekreasi"],["Pickleball Court","Gelanggang Pickleball"],["Indoor Basketball Court","Gelanggang Bola Keranjang Dalaman"],["Basketball Court","Gelanggang Bola Keranjang"],["Badminton Court","Gelanggang Badminton"],["Tennis Court","Gelanggang Tenis"],["Multipurpose Court","Gelanggang Serbaguna"],["Futsal Court","Gelanggang Futsal"],
+ ["Gym Room","Bilik Gimnasium"],["Gymnasium","Gimnasium"],["Gym","Gimnasium"],["Outdoor Gym","Gimnasium Luar"],["Calisthenics Area","Kawasan Kalistenik"],["Jogging Path","Laluan Joging"],["Jogging Track","Trek Joging"],
+ ["Yoga Deck","Dek Yoga"],["Yoga Room","Bilik Yoga"],["Yoga Studio","Studio Yoga"],["Yoga and Dance Room","Bilik Yoga dan Tarian"],["Meditation & Yoga Deck","Dek Meditasi & Yoga"],["Pilates Room","Bilik Pilates"],["Dance Studio","Studio Tarian"],
+ ["Putting Green","Padang Latihan Golf (Putting Green)"],["Golf Simulator","Simulator Golf"],["Reflexology Path","Laluan Refleksologi"],["Reflex Path / Green","Laluan Refleksologi / Laman Hijau"],
+ ["Playground","Taman Permainan"],["Children's Playground","Taman Permainan Kanak-kanak"],["Kids Playground","Taman Permainan Kanak-kanak"],["Tadika Outdoor Playground","Taman Permainan Luar Tadika"],["Kindergarten Outdoor Playground","Taman Permainan Luar Tadika"],["Snakes and Ladders Playground","Taman Permainan Ular Tangga"],
+ ["Multipurpose Hall","Dewan Serbaguna"],["Multipurpose Hall & Pantry","Dewan Serbaguna & Pantri"],["Multipurpose Room","Bilik Serbaguna"],["Multipurpose Space","Ruang Serbaguna"],["Function Room","Bilik Majlis"],["Pre-Function Area","Ruang Pra-Majlis"],
+ ["Wellness Centre & Game Room","Pusat Kesejahteraan & Bilik Permainan"],["Wellness Dome","Kubah Kesejahteraan"],["Wellness Garden","Taman Kesejahteraan"],["Library & AV Room","Perpustakaan & Bilik Audio Visual"],["Library","Perpustakaan"],["Multigenerational Gathering Space","Ruang Perhimpunan Pelbagai Generasi"],
+ ["BBQ Area","Kawasan BBQ"],["BBQ Deck","Dek BBQ"],["BBQ Pavilion","Pavilion Barbeku"],["BBQ Pit","Tapak BBQ"],["Picnic Space","Ruang Berkelah"],["Picnic Area","Kawasan Berkelah"],["Picnic Meadow","Padang Berkelah"],["Enchanted Forest","Hutan Pesona"],
+ ["Pavilion","Pavilion"],["Gazebos","Gazebo"],["Gazebo","Gazebo"],["Poolside Pavilion","Pavilion Tepi Kolam"],["Poolside Deck","Dek Tepi Kolam"],["Scent Sunken Lawn / Garden","Laman / Taman Wangian Rendah"],["Sunken Seat","Ruang Duduk Rendah"],["Gravel Swale","Alur Kerikil"],
+ ["Open Lawn","Laman Terbuka"],["Green Lawn","Laman Hijau"],["Trellis","Teralis"],["Canopy Walkway","Laluan Berkanopi"],["Herb Farm","Kebun Herba"],["Herb Garden","Kebun Herba"],["Urban Farm","Kebun Bandar"],["Community Garden","Kebun Komuniti"],["Rooftop Urban Farming","Pertanian Bandar di Bumbung"],
+ ["Seating Pods","Pod Tempat Duduk"],["Retail / Shop Lots","Runcit / Lot Kedai"],["Shop Lots","Lot Kedai"],["Convenience Shop Space","Ruang Kedai Serbaneka"],["Convenience Store","Kedai Serbaneka"],["Laundry Space","Ruang Dobi"],["Laundry Room","Bilik Dobi"],["Management Office","Pejabat Pengurusan"],
+ ["Prayer Room (Surau)","Bilik Solat (Surau)"],["Prayer Room","Bilik Solat"],["Toilets & Changing Rooms","Tandas & Bilik Persalinan"],["Changing Room","Bilik Persalinan"],["Changing Rooms","Bilik Persalinan"],["Toilet","Tandas"],["Toilets","Tandas"],["Disabled Toilet","Tandas OKU"],
+ ["Lift Lobby","Lobi Lif"],["Games Room","Bilik Permainan"],["Game Room","Bilik Permainan"],["Entertainment Room","Bilik Hiburan"],["Karaoke Room","Bilik Karaoke"],["Cinema Room","Bilik Pawagam"],["Mini Theatre","Teater Mini"],["Screening Room","Bilik Tayangan"],
+ ["Co-Working Space","Ruang Kerja Bersama"],["Co-working Space","Ruang Kerja Bersama"],["Business Centre","Pusat Perniagaan"],["Study Room","Bilik Belajar"],["Reading Room","Bilik Bacaan"],["Private Dining Room","Bilik Makan Persendirian"],["Dining Facility","Kemudahan Ruang Makan"],["Dining Area","Ruang Makan"],
+ ["Gourmet Kitchen","Dapur Gourmet"],["Show Kitchen","Dapur Pameran"],["Baking Facility","Kemudahan Membakar"],["Camping Zone","Zon Perkhemahan"],["Wetland Landscape","Landskap Tanah Bencah"],["Landscaped Gardens","Taman Berlandskap"],["Landscaped Garden","Taman Berlandskap"],
+ ["Walking Paths","Laluan Pejalan Kaki"],["Walking Path","Laluan Pejalan Kaki"],["Lobby Lounge","Ruang Rehat Lobi"],["Lounge","Ruang Rehat"],["Sun Lounge","Ruang Rehat Berjemur"],["Outdoor Social Lounge","Ruang Sosial Luar"],["Waiting Lounge","Ruang Menunggu"],["Sky Lounge","Ruang Rehat Langit"],
+ ["Guard House","Pondok Pengawal"],["Guardhouse","Pondok Pengawal"],["Drop-Off Lobby","Lobi Menurunkan Penumpang"],["Drop-off Area","Kawasan Menurunkan Penumpang"],["Drop-Off","Kawasan Menurunkan Penumpang"],["Drop Off","Kawasan Menurunkan Penumpang"],
+ ["Food Collection Area","Kawasan Pengambilan Makanan"],["Bicycle Storage","Tempat Simpanan Basikal"],["Bicycle Parking","Tempat Letak Basikal"],["EV Charging Bay","Ruang Pengecasan Kenderaan Elektrik"],["EV Charging Station","Stesen Pengecasan Kenderaan Elektrik"],["EV Charging","Pengecasan Kenderaan Elektrik"],
+ ["Delivery Parcel Room","Bilik Bungkusan Penghantaran"],["Parcel Room","Bilik Bungkusan"],["Parcel Locker","Loker Bungkusan"],["Mailroom","Bilik Mel"],["Main Entrance","Pintu Masuk Utama"],["Floating Deck","Dek Terapung"],["Sky Deck","Dek Langit"],["Urban Deck","Dek Bandar"],["Sky Garden","Taman Langit"],["Rooftop Garden","Taman Bumbung"],["Rooftop Facilities","Kemudahan Bumbung"],["Facilities Podium","Podium Kemudahan"],
+ ["Lookout Point","Tempat Peninjau"],["Viewing Deck","Dek Pemandangan"],["Outdoor Seating Area","Kawasan Tempat Duduk Luar"],["Licence Plate Recognition System","Sistem Pengecaman Nombor Plat"],["Multi-tier Security System","Sistem Keselamatan Berbilang Lapis"],["24-hour Security","Keselamatan 24 Jam"],["CCTV","CCTV"],["Access Card System","Sistem Kad Akses"],
+ ["Sauna","Sauna"],["Steam Room","Bilik Wap"],["Table Tennis","Tenis Meja"],["SPORTS & FITNESS","SUKAN & KECERGASAN"],["Kindergarten","Tadika"],["Mortuary","Bilik Jenazah"],["Bunga Peranakan Water Fountain","Pancutan Air Bunga Peranakan"],["Peranakan Shophouse Mural Art Wall","Dinding Seni Mural Rumah Kedai Peranakan"],["Pedestrian Walkway to Jalan 11","Laluan Pejalan Kaki ke Jalan 11"]];
+const FAC_EN2MS=new Map(),FAC_MS2EN=new Map();for(const [en,ms] of FAC_DICT){const k=en.toLowerCase();if(!FAC_EN2MS.has(k))FAC_EN2MS.set(k,ms);const m=ms.toLowerCase();if(!FAC_MS2EN.has(m))FAC_MS2EN.set(m,en)}
+const FAC_SFX_MS={"male":"Lelaki","female":"Wanita","men":"Lelaki","women":"Wanita"},FAC_SFX_EN={"lelaki":"Male","wanita":"Female","perempuan":"Female"};
+/* translate one facility name into the page language; keeps numbering ("12. "), tower suffix ("Tower A" ⇄ "Menara A"), (Male)/(Female) and "– Name" suffixes */
+function facTr(s,lang){const raw=String(s||"");if(!raw.trim())return raw;const toMs=lang!=="en",map=toMs?FAC_EN2MS:FAC_MS2EN;
+  let m=raw.match(/^(\s*\d+\.\s*)?(.*?)\s*$/),pre=m[1]||"",body=m[2],post="";
+  const dash=body.match(/^(.*?)(\s+[–—-]\s+.+)$/);if(dash&&map.has(dash[1].toLowerCase())){body=dash[1];post=dash[2]}
+  const sx=body.match(/^(.*?)\s*\((male|female|men|women|lelaki|wanita|perempuan)\)$/i);if(sx){const t=(toMs?FAC_SFX_MS:FAC_SFX_EN)[sx[2].toLowerCase()];if(t){body=sx[1];post=` (${t})`+post}}
+  const tw=body.match(/^(.*?)\s+(Tower|Menara|Block|Blok)\s+([A-Z0-9]{1,3})$/i);let tower="";if(tw){body=tw[1];tower=` ${toMs?(/block|blok/i.test(tw[2])?"Blok":"Menara"):(/block|blok/i.test(tw[2])?"Block":"Tower")} ${tw[3]}`}
+  else{const tw2=body.match(/^(Tower|Menara)\s+([A-Z0-9]{1,3})\s+(.+)$/i);if(tw2){body=tw2[3];tower=` ${toMs?"Menara":"Tower"} ${tw2[2]}`}}
+  const t=map.get(body.toLowerCase());if(!t)return raw;return pre+t+tower+post}
+/* highlights: drop stray leading bullets ("•", "-", "*") that would show twice */
+const hlClean=s=>String(s||"").replace(/^\s*[•·▪●\-\*]+\s*/,"");
 function textFor(p, lang) {
   const v = p.tr && p.tr.h === trHash(trSrc(p)) && p.tr[lang]; const o = { summary: p.summary, hl: p.hl || [], fac: p.fac || [] };
-  if (!v) return o;
-  if (typeof v.summary === "string" && v.summary.trim()) o.summary = v.summary;
-  if (Array.isArray(v.hl) && v.hl.length === (p.hl || []).length) o.hl = v.hl.map(String);
-  if (Array.isArray(v.fac) && v.fac.length === (p.fac || []).length) o.fac = v.fac.map(String);
+  if (v) {
+    if (typeof v.summary === "string" && v.summary.trim()) o.summary = v.summary;
+    if (Array.isArray(v.hl) && v.hl.length === (p.hl || []).length) o.hl = v.hl.map(String);
+    if (Array.isArray(v.fac) && v.fac.length === (p.fac || []).length) o.fac = v.fac.map(String);
+  }
+  o.hl = o.hl.map(hlClean); o.fac = o.fac.map((f) => facTr(f, lang === "en" ? "en" : "ms"));
   return o;
 }
 const TYPE_EN = { condo: "Condominium", serviced: "Serviced Residence", apartment: "Apartment", terrace: "Terrace House", semid: "Semi-D", bungalow: "Bungalow", townhouse: "Townhouse", soho: "SOHO / SOVO", affordable: "Affordable Home", land: "Land", shop: "Shop / Shoplot", office: "Office", factory: "Factory / Warehouse" };
